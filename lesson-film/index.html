@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How Filming Works</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Anton&family=Special+Elite&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/collage.css">
+<link rel="stylesheet" href="../assets/stage-ui.css">
+<style>
+  /* embedded inside the course page (?embed=1): no masthead, no footer, tight padding */
+  html.is-embed .doc-mast,html.is-embed .doc-foot{display:none}
+  html.is-embed .doc-wrap{padding:14px 18px 24px}
+  /* page-local: five picture cards, a stamp row, the stage. Few words on purpose; the detail lives behind a tap. */
+  .big{font-size:clamp(22px,3vw,34px);font-weight:700;letter-spacing:-.015em;line-height:1.2;color:var(--ink);margin:0 0 18px;max-width:26ch}
+  .big em{font-style:normal;color:var(--volt)}
+  .strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+  @media(max-width:900px){.strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  .card{background:var(--c-paper) url("../assets/paper/paper.png");background-size:640px;color:var(--c-ink);border-radius:10px;padding:12px 12px 14px;box-shadow:2px 3px 0 rgba(0,0,0,.25);display:flex;flex-direction:column;gap:8px;cursor:pointer;position:relative;
+    transition:transform .18s ease,box-shadow .18s ease;border:0;text-align:left;font:inherit}
+  .card:hover,.card:focus-visible{transform:translateY(-4px) rotate(-.4deg);box-shadow:4px 8px 0 rgba(0,0,0,.28);outline:none}
+  .card .more{position:absolute;right:10px;top:10px;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;background:var(--c-ink);color:var(--c-paper);padding:3px 7px;opacity:0;transform:translateY(-4px);transition:opacity .18s,transform .18s;pointer-events:none}
+  .card:hover .more,.card:focus-visible .more{opacity:1;transform:none}
+  .card .fig{aspect-ratio:4/3;border:2px solid var(--c-ink);background:#efe6d3;overflow:hidden;border-radius:2px;position:relative}
+  .card .fig img{display:block;width:100%;height:100%;object-fit:cover}
+  .card .year{font-family:var(--head);font-size:30px;line-height:1;color:var(--c-red)}
+  .card.today .year{color:var(--c-teal)}
+  .card h4{margin:0;font-family:var(--stamp);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--c-ink)}
+  /* small motion, only where it teaches */
+  .spin{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 14px,rgba(22,22,22,.9) 14px 18px);animation:spin 1.4s linear infinite;mix-blend-mode:multiply;opacity:.28}
+  @keyframes spin{from{background-position:0 0}to{background-position:72px 0}}
+  .roll{position:absolute;left:0;right:0;bottom:0;height:22%;background:repeating-linear-gradient(90deg,rgba(22,22,22,.85) 0 3px,transparent 3px 10px);animation:roll .9s linear infinite;opacity:.5}
+  @keyframes roll{from{background-position:0 0}to{background-position:-40px 0}}
+  .tween{position:absolute;inset:0;background:linear-gradient(90deg,transparent 30%,rgba(239,230,211,.75) 30%,rgba(239,230,211,.75) 70%,transparent 70%);animation:tween 2.4s ease-in-out infinite}
+  @keyframes tween{0%,20%{opacity:1}50%,70%{opacity:0}100%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.spin,.roll,.tween{animation:none}}
+  .stamps{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:34px 0 10px}
+  .stamps .tag{position:static;transform:rotate(-2deg);font-size:12px;padding:5px 10px}
+  .stamps .tag.when{background:var(--c-ink);color:var(--c-paper)}
+  .stamps .eq{font-family:var(--stamp);font-size:14px;color:var(--dim);letter-spacing:.06em}
+  #stageRoot{margin-top:8px}
+  .one{font-family:var(--stamp);font-size:15px;letter-spacing:.04em;color:var(--dim);margin:14px 0 0}
+  .one b{color:var(--volt);font-weight:400}
+  /* the shutter (1895): stop · expose · pull */
+  .gate{position:absolute;inset:0;background:#efe6d3;overflow:hidden}
+  .gate .reel{position:absolute;top:50%;left:0;height:62%;width:calc(7 * 100% / 2.35);transform:translateY(-50%);display:flex;animation:pull 2.5s steps(5,end) infinite}
+  .panel .pic .gate .reel img{flex:none;width:calc(100% / 7);height:100%;aspect-ratio:auto;object-fit:cover;border:3px solid #161616;border-left-width:6px;box-sizing:border-box;display:block}
+  .gate .win{position:absolute;inset:0;box-shadow:inset 0 0 0 9999px rgba(22,22,22,.78)}
+  .gate .win::before{content:"";position:absolute;left:0;top:19%;width:calc(100% / 2.35);height:62%;box-shadow:0 0 0 9999px rgba(22,22,22,.78);border:3px solid var(--c-red)}
+  .gate .blade{position:absolute;left:0;top:19%;width:calc(100% / 2.35);height:62%;background:#161616;animation:blade 2.5s steps(1,end) infinite}
+  @keyframes pull{from{margin-left:0}to{margin-left:calc(-5 * 100% / 2.35)}}
+  @keyframes blade{0%,60%{opacity:0}60.01%,100%{opacity:0}} /* placeholder, overridden per step below */
+  .gate .lbl{position:absolute;left:12px;bottom:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--c-paper)}
+  .gate .lbl b{color:var(--c-red);font-weight:400}
+  /* the detail panel: one era, bigger picture, how it works, why it matters to you */
+  .veil{position:fixed;inset:0;background:rgba(6,7,4,.72);z-index:60;display:none;align-items:center;justify-content:center;padding:24px}
+  .veil.on{display:flex}
+  .panel{width:min(880px,100%);max-height:92vh;overflow:auto;background:var(--c-paper) url("../assets/paper/paper.png");background-size:640px;color:var(--c-ink);border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:0;position:relative}
+  @media(max-width:760px){.panel{grid-template-columns:1fr}}
+  .panel .pic{background:#efe6d3;border-right:2px solid var(--c-ink);position:relative}
+  @media(max-width:760px){.panel .pic{border-right:0;border-bottom:2px solid var(--c-ink)}}
+  .panel .pic img{display:block;width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+  .panel .txt{padding:26px 28px 28px}
+  .panel .year{font-family:var(--head);font-size:52px;line-height:.95;color:var(--c-red);margin:0}
+  .panel.today .year{color:var(--c-teal)}
+  .panel h3{margin:6px 0 14px;font-family:var(--stamp);font-size:15px;letter-spacing:.05em;text-transform:uppercase;color:var(--c-ink)}
+  .panel p{font-family:var(--mono);font-size:13.5px;line-height:1.65;color:var(--c-ink);margin:0 0 12px;max-width:44ch}
+  .panel .why{border-top:2px solid var(--c-ink);margin-top:16px;padding-top:12px;font-family:var(--stamp);font-size:13.5px;letter-spacing:.03em;color:var(--c-ink)}
+  .panel .why b{color:var(--c-red);font-weight:400}
+  .panel .x{position:absolute;right:12px;top:10px;width:32px;height:32px;border-radius:50%;border:2px solid var(--c-ink);background:var(--c-paper-2);font:700 16px/1 var(--mono);cursor:pointer;color:var(--c-ink)}
+  .panel .nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .panel .nav button{background:transparent;border:0;color:var(--c-ink-2);cursor:pointer;font:inherit;letter-spacing:inherit;text-transform:inherit;padding:4px 0}
+  .panel .nav button:hover{color:var(--c-red)}
+  /* the horse scrubber (1878): you are the projector */
+  .scrub{position:absolute;left:0;right:0;bottom:0;background:rgba(239,230,211,.92);border-top:2px solid var(--c-ink);padding:10px 14px;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--c-ink-2)}
+  .scrub input{flex:1;accent-color:#d92b2b}
+  .scrub b{color:var(--c-red);font-size:14px;min-width:2ch;text-align:right}
+</style>
+<style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
+/* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
+   Source of truth for the tokens: tools/studio/studio-theme.css + tools/studio/SKIN.md
+   (the skin Danney locked 2026-07-21). This file mirrors those tokens exactly and
+   adds document-scale typography on top, because a plan is read at 15px and a room
+   is used at 14px.
+
+   DO NOT hand-edit a page's <style data-reelix-skin> block. Edit THIS file, then:
+       python3 tools/visual-explainer/apply_skin.py <page.html>
+
+   THE ACCENT CONTRACT (inherited, non-negotiable):
+     --volt  #D4FF3D  identity  → eyebrows, section rules, links, key stats, primary CTA
+     --good  #7fc8a0  semantic  → ready / synced / success ONLY
+     --amber #e8b06a  semantic  → attention / warning ONLY
+   If a heading or a primary action is any colour other than volt, it is wrong.
+   ──────────────────────────────────────────────────────────────────────────────── */
+
+:root{
+  /* surfaces — verbatim from studio-theme.css */
+  --bg:#0c0d0a; --bg2:#101208;
+  --panel:#14160f; --panel2:#1b1e15;
+  --card:#14160f; --card2:#1b1e15;
+  --line:#2a2e20; --line2:#3a4030;
+  --ink:#e9ebda; --dim:#8b9079; --mut:#8b9079; --faint:#5c6150;
+
+  /* brand / semantic */
+  --volt:#D4FF3D; --amber:#e8b06a; --good:#7fc8a0;
+  --heavy:#e0b24f; --check:#e07f86; --brass:#c9973f;
+  --pink:#e85cc0; --lav:#b8a6f0;
+
+  /* room accents */
+  --refkit:#e8b06a; --worldkit:#9fe06a; --cutkit:#d89fe0;
+  --canvaskit:#86c8ea; --dnakit:#e85cc0;
+
+  /* typography */
+  --rs-font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --rs-mono:ui-monospace,"SF Mono","Menlo","Monaco","Consolas",monospace;
+
+  /* geometry */
+  --rs-radius-sm:6px; --rs-radius:10px; --rs-radius-lg:14px; --rs-radius-xl:18px;
+  --rs-shadow:0 4px 18px rgba(0,0,0,.45); --rs-shadow-lg:0 8px 34px rgba(0,0,0,.55);
+  --rs-transition:.15s ease;
+
+  /* primary CTA gradient */
+  --cta-a:#3a4d10; --cta-b:#26330a; --cta-line:#4f6b16; --cta-ink:#eaffc0;
+
+  /* spacing */
+  --rs-space-xs:4px; --rs-space-sm:8px; --rs-space-md:12px;
+  --rs-space-lg:16px; --rs-space-xl:22px; --rs-space-2xl:30px;
+
+  /* doc-only */
+  --doc-maxw:1080px;
+}
+
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 560px at 50% -12%, var(--bg2) 0%, var(--bg) 60%) fixed;
+  color:var(--ink);
+  font-family:var(--rs-font);
+  font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.doc-wrap{max-width:var(--doc-maxw);margin:0 auto;padding:0 26px 110px}
+
+/* ── links ───────────────────────────────────────────────────────────────── */
+a{color:var(--volt);text-decoration:none;border-bottom:1px solid rgba(212,255,61,.28)}
+a:hover{border-bottom-color:var(--volt)}
+
+/* ── masthead ────────────────────────────────────────────────────────────── */
+.doc-mast{padding:46px 0 20px;border-bottom:1px solid var(--line)}
+.doc-kicker{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 16px;
+}
+.doc-mast h1{
+  font-size:clamp(32px,5.6vw,54px);font-weight:800;line-height:1.03;
+  letter-spacing:-.028em;margin:0;color:var(--ink);
+}
+.doc-mast h1 em{font-style:normal;color:var(--volt)}
+.doc-dek{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:70ch;line-height:1.58}
+.doc-byline{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);
+}
+.doc-byline b{color:var(--dim);font-weight:600}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+.doc-sec{margin:58px 0 0;scroll-margin-top:20px}
+.doc-eyebrow{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 10px;
+}
+.doc-sec h2{
+  font-size:clamp(22px,3.2vw,30px);font-weight:700;letter-spacing:-.018em;
+  line-height:1.14;margin:0;color:var(--ink);
+}
+.doc-rule{height:2px;width:56px;background:var(--volt);margin:14px 0 24px;border-radius:2px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.005em;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;max-width:74ch;color:var(--ink)}
+p.lead,.rs-lead{color:var(--dim);max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+strong{font-weight:700;color:var(--ink)}
+em{color:var(--dim);font-style:italic}
+.muted,.rs-muted{color:var(--dim)}
+.faint,.rs-faint{color:var(--faint)}
+.mono,.rs-mono{font-family:var(--rs-mono);font-size:12.5px}
+
+/* ── callout / verdict panel ─────────────────────────────────────────────── */
+.doc-callout{
+  background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--volt);border-radius:var(--rs-radius);
+  padding:20px 22px;margin:0 0 24px;
+}
+.doc-callout.attn{border-left-color:var(--amber)}
+.doc-callout.ok{border-left-color:var(--good)}
+.doc-callout.bad{border-left-color:var(--check)}
+.doc-callout > :last-child{margin-bottom:0}
+
+/* ── quote ───────────────────────────────────────────────────────────────── */
+blockquote,.doc-quote{
+  margin:20px 0;padding:2px 0 2px 20px;border-left:2px solid var(--volt);
+  font-size:17px;line-height:1.5;color:var(--ink);max-width:66ch;
+}
+blockquote cite,.doc-quote cite{
+  display:block;font-family:var(--rs-mono);font-style:normal;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:10px;
+}
+
+/* ── figure / ascii diagram ──────────────────────────────────────────────── */
+pre.doc-fig,pre.rs-code-block{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs-radius);
+  padding:20px;overflow-x:auto;font-family:var(--rs-mono);font-size:12.5px;
+  line-height:1.55;color:var(--ink);margin:0 0 10px;
+}
+.doc-figcap{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 16px}
+code,.rs-code{
+  font-family:var(--rs-mono);background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:1px 6px;font-size:12px;color:var(--brass);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────────── */
+.doc-tscroll{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  background:var(--card);
+}
+table,.rs-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th,.rs-table th{
+  text-align:left;background:var(--panel2);color:var(--dim);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line2);white-space:nowrap;
+}
+td,.rs-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--card2)}
+
+/* ── chips / tags / pills ────────────────────────────────────────────────── */
+.rs-tag,.doc-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  border-radius:999px;padding:3px 9px;white-space:nowrap;
+  border:1px solid currentColor;line-height:1.4;
+}
+.doc-tag.volt{color:var(--volt)}
+.doc-tag.ok{color:var(--good)}
+.doc-tag.attn{color:var(--amber)}
+.doc-tag.bad{color:var(--check)}
+.doc-tag.dim{color:var(--faint)}
+.rs-status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.rs-status-dot.rs-on{background:var(--good)}
+.rs-status-dot.rs-attn{background:var(--amber)}
+.rs-status-dot.rs-bad{background:var(--check)}
+
+/* ── cards ───────────────────────────────────────────────────────────────── */
+.doc-cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:6px}
+.rs-card,.doc-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:var(--rs-space-xl);position:relative;
+  transition:border-color var(--rs-transition),box-shadow var(--rs-transition);
+}
+.rs-card:hover,.doc-card:hover{border-color:var(--line2)}
+.doc-card.is-primary{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
+.doc-card .doc-card-flag{
+  position:absolute;top:-9px;right:16px;background:var(--volt);color:#0c0d0a;
+  font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;
+}
+.doc-card .doc-card-idx{
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);
+  font-weight:700;display:block;margin-bottom:6px;
+}
+.doc-card h3{margin:0 0 3px;font-size:18px;letter-spacing:-.01em}
+.doc-card .doc-card-sub{color:var(--dim);font-size:14px;margin:0 0 14px;font-style:italic}
+.doc-card p{font-size:14px;margin:0 0 11px}
+.doc-card .doc-card-meta{
+  border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+  font-size:13px;color:var(--dim);
+}
+.doc-card .doc-card-meta div{margin:0 0 6px}
+.doc-card .doc-card-meta b{
+  font-family:var(--rs-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:inline-block;min-width:76px;font-weight:600;
+}
+
+/* ── numbered build list ─────────────────────────────────────────────────── */
+ol.doc-steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:74ch}
+ol.doc-steps li{counter-increment:s;position:relative;padding:0 0 16px 44px;margin:0}
+ol.doc-steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--rs-mono);font-size:12px;font-weight:700;color:var(--volt);
+  width:26px;height:26px;line-height:24px;text-align:center;
+  border:1px solid var(--line2);border-radius:999px;background:var(--panel2);
+}
+
+/* ── primary CTA (the canonical olive gradient) ──────────────────────────── */
+.btn-primary,.rs-btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(180deg,var(--cta-a),var(--cta-b));
+  border:1px solid var(--cta-line);color:var(--cta-ink);font-weight:700;
+  letter-spacing:.03em;border-radius:var(--rs-radius);padding:10px 20px;
+  font:inherit;cursor:pointer;text-decoration:none;
+  transition:filter var(--rs-transition);
+}
+.btn-primary:hover,.rs-btn-primary:hover{filter:brightness(1.12)}
+
+/* ── open questions ──────────────────────────────────────────────────────── */
+.doc-open{
+  background:var(--panel);border:1px dashed var(--line2);
+  border-radius:var(--rs-radius-lg);padding:20px 24px;
+}
+.doc-open > :last-child{margin-bottom:0}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.doc-foot{
+  margin-top:72px;border-top:1px solid var(--line);padding-top:16px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);line-height:1.7;
+}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  .doc-wrap{padding:0 18px 80px}
+  .doc-card{padding:var(--rs-space-lg)}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .doc-card,.doc-callout,.doc-tscroll,pre.doc-fig{border-color:#ccc;background:#fff}
+  a{color:#111}
+}
+</style>
+</head>
+<body>
+<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add('is-embed');</script>
+<div class="doc-wrap">
+
+<header class="doc-mast">
+  <p class="doc-kicker">Vibe Film Sessions &middot; session 1 &middot; lesson 1</p>
+  <h1>How filming <em>works</em></h1>
+</header>
+
+<section class="doc-sec" id="history" style="margin-top:30px">
+  <p class="big">Nothing on a screen moves. <em>Still pictures, shown fast.</em></p>
+  <div class="strip" id="strip">
+    <button class="card" data-era="1834"><span class="more">tap for more</span>
+      <div class="fig"><img src="../assets/history/zoetrope.webp" alt="a paper zoetrope"><div class="spin"></div></div>
+      <div class="year">1834</div><h4>Spin a drum</h4>
+    </button>
+    <button class="card" data-era="1878"><span class="more">tap for more</span>
+      <div class="fig"><img src="../assets/history/muybridge-horse.gif" alt="Muybridge's horse, 1878, twelve photographs in sequence"></div>
+      <div class="year">1878</div><h4>Twelve cameras</h4>
+    </button>
+    <button class="card" data-era="1895"><span class="more">tap for more</span>
+      <div class="fig"><img src="../assets/history/film.webp" alt="a paper film projector"><div class="roll"></div></div>
+      <div class="year">1895</div><h4>Film. 24 a second</h4>
+    </button>
+    <button class="card" data-era="1926"><span class="more">tap for more</span>
+      <div class="fig"><img src="../assets/history/cutout.webp" alt="a paper cut-out figure on a lightbox"></div>
+      <div class="year">1926</div><h4>Paper, moved by hand</h4>
+    </button>
+    <button class="card today" data-era="now"><span class="more">tap for more</span>
+      <div class="fig"><img src="../assets/history/inbetween.webp" alt="two paper frames with the in-betweens being filled"><div class="tween"></div></div>
+      <div class="year">now</div><h4>The model fills the gaps</h4>
+    </button>
+  </div>
+  <p class="one">Same trick, five times. <b>Only the hands changed.</b></p>
+</section>
+
+<section class="doc-sec" id="try" style="margin-top:40px">
+  <div class="stamps">
+    <span class="tag where">WHERE</span><span class="eq">+</span><span class="tag who">WHO</span><span class="eq">+</span><span class="tag what">WHAT</span><span class="eq">+</span><span class="tag when">WHEN</span><span class="eq">= a shot</span>
+  </div>
+  <div id="stageRoot"></div>
+</section>
+
+<footer class="doc-foot"><p>projects/vibe-film-sessions/lesson-film &middot; the stage is the shared component in <code>assets/stage.js</code>.</p></footer>
+</div>
+
+<div class="veil" id="veil" role="dialog" aria-modal="true">
+  <div class="panel" id="panel">
+    <div class="pic" id="ppic"></div>
+    <div class="txt">
+      <button class="x" id="pclose" title="close (esc)">&times;</button>
+      <div class="year" id="pyear"></div><h3 id="ptitle"></h3>
+      <div id="pbody"></div>
+      <div class="why" id="pwhy"></div>
+      <div class="nav"><button id="pprev">&larr; earlier</button><button id="pnext">later &rarr;</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/stage.js"></script>
+<script>
+(function(){
+  var S = mountStage(document.getElementById('stageRoot'), { key: 'vfs.lesson-film.v1', inspector: false });
+  S.ready.then(function(){
+    if (S.scene().elements.length) return;
+    S.load({ fps: 2, elements: [ { key:'bg', cid:'where-courtyard', x:.5, y:.5, w:.72, rot:-1 }, { key:'me', cid:'danney-front', x:.22, y:.62, w:.13 }, { key:'cam', cid:'what-camera', x:.66, y:.6, w:.09, rot:2 } ],
+             keys: [ { me:{x:.22} }, { me:{x:.56} } ] });
+  });
+
+  // ---- the detail panel ----
+  var ERAS = [
+    { id:'1834', year:'1834', title:'The spinning drum', img:'../assets/history/zoetrope.webp',
+      body:['A drum with twelve drawings inside and a slit above each one. Spin it and look through the slits.','Each slit shows you one drawing for a split second, then the next slides in. Your eye blends them into one running horse.','Spin faster, smoother run. That is frame rate, before anyone had a camera.'],
+      why:'The stage at <b>2 a second</b> is this drum.' },
+    { id:'1878', year:'1878', title:'Twelve cameras', img:'../assets/history/muybridge-plate.jpg', scrub:true,
+      body:['Eadweard Muybridge lines twelve cameras along a track. The horse breaks a thread as it passes each one, and each shutter fires in turn.','Twelve photographs of one second, in order. It settled a bet: all four hooves leave the ground.','The first time real motion was cut into pictures you could hold.'],
+      why:'A frame is a photo of one moment. Twelve of them is a second. <b>Drag the slider: you are the projector.</b>' },
+    { id:'1895', year:'1895', title:'Film', img:'../assets/history/film.webp', shutter:true,
+      body:['One camera, one strip of film. Behind a shutter the strip stops, exposes, pulls, stops, exposes. Sixteen pictures a second at first, twenty-four once sound arrived in 1927.','A projector runs the same strip past a lamp the same way. A room full of strangers watches a train arrive and flinches.'],
+      why:'<b>24 a second</b> is still the number. Your phone, your TV and the AI model all speak it.' },
+    { id:'1926', year:'1926', title:'Paper, moved by hand', img:'../assets/history/cutout.webp',
+      body:['Lotte Reiniger cuts figures from black paper with jointed limbs, lays them on a glass table lit from below, moves them a hair, takes one photo. Moves them again.','The Adventures of Prince Achmed: about 96,000 photographs, three years, the oldest surviving animated feature.'],
+      why:'That glass table is the stage. <b>Where, who, what on paper</b>, moved a little, photographed, repeat.' },
+    { id:'now', year:'now', title:'The model fills the gaps', img:'../assets/history/inbetween.webp', today:true,
+      body:['You write or show the where, the who, the what and the when. The model makes the pictures, all twenty-four a second, every in-between included.','It does the 96,000 photographs in minutes. What it cannot do is decide the four things for you.'],
+      why:'That is the ladder we climb today: <b>how much of the deciding you keep.</b>' }
+  ];
+  var veil=document.getElementById('veil'), panel=document.getElementById('panel'), cur=-1;
+  function show(i){
+    cur=(i+ERAS.length)%ERAS.length; var e=ERAS[cur];
+    panel.classList.toggle('today', !!e.today);
+    document.getElementById('pyear').textContent=e.year; document.getElementById('ptitle').textContent=e.title;
+    document.getElementById('pbody').innerHTML=e.body.map(function(t){return '<p>'+t+'</p>';}).join('');
+    document.getElementById('pwhy').innerHTML=e.why;
+    var pic=document.getElementById('ppic'); pic.innerHTML='<img src="'+e.img+'" alt="'+e.title+'">';
+    if(e.scrub){
+      var n=15, img=pic.querySelector('img'); img.src='../assets/history/horse/01.webp'; img.style.aspectRatio='3/2';
+      var bar=document.createElement('div'); bar.className='scrub'; bar.innerHTML='<span>frame</span><b id="sv">1</b><input type="range" min="1" max="'+n+'" value="1" step="1"><span>of '+n+'</span>';
+      var inp=bar.querySelector('input'); inp.addEventListener('input', function(){ img.src='../assets/history/horse/'+String(this.value).padStart(2,'0')+'.webp'; bar.querySelector('#sv').textContent=this.value; });
+      pic.appendChild(bar);
+    }
+    if(e.shutter){
+      var g=document.createElement('div'); g.className='gate';
+      g.innerHTML='<div class="reel">'+[1,4,7,10,13,1,4].map(function(n){return '<img src="../assets/history/horse/'+String(n).padStart(2,'0')+'.webp" alt="">';}).join('')+'</div><div class="win"></div><div class="lbl"><b>stop</b> &middot; expose &middot; <b>pull</b> &middot; repeat, 24 times a second</div>';
+      pic.querySelector('img').style.visibility='hidden'; pic.appendChild(g);
+    }
+    veil.classList.add('on'); document.getElementById('pclose').focus();
+  }
+  function hide(){ veil.classList.remove('on'); }
+  document.querySelectorAll('#strip .card').forEach(function(c){ c.addEventListener('click', function(){ show(ERAS.findIndex(function(e){return e.id===c.dataset.era;})); }); });
+  document.getElementById('pclose').addEventListener('click', hide);
+  document.getElementById('pprev').addEventListener('click', function(){ show(cur-1); });
+  document.getElementById('pnext').addEventListener('click', function(){ show(cur+1); });
+  veil.addEventListener('click', function(ev){ if(ev.target===veil) hide(); });
+  document.addEventListener('keydown', function(ev){ if(!veil.classList.contains('on')) return; if(ev.key==='Escape') hide(); else if(ev.key==='ArrowRight') show(cur+1); else if(ev.key==='ArrowLeft') show(cur-1); });
+})();
+</script>
+</body>
+</html>

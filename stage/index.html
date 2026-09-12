@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Cut-Out Stage</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Anton&family=Special+Elite&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/collage.css">
+<link rel="stylesheet" href="../assets/stage-ui.css">
+<style>
+  /* embedded inside the course page (?embed=1): no masthead, no footer, tight padding */
+  html.is-embed .doc-mast,html.is-embed .doc-foot{display:none}
+  html.is-embed .doc-wrap{padding:14px 18px 24px}
+  html.is-embed #stageRoot{margin-top:0}
+  /* page-local: nothing yet — the stage chrome lives in assets/stage-ui.css */
+</style>
+<style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
+/* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
+   Source of truth for the tokens: tools/studio/studio-theme.css + tools/studio/SKIN.md
+   (the skin Danney locked 2026-07-21). This file mirrors those tokens exactly and
+   adds document-scale typography on top, because a plan is read at 15px and a room
+   is used at 14px.
+
+   DO NOT hand-edit a page's <style data-reelix-skin> block. Edit THIS file, then:
+       python3 tools/visual-explainer/apply_skin.py <page.html>
+
+   THE ACCENT CONTRACT (inherited, non-negotiable):
+     --volt  #D4FF3D  identity  → eyebrows, section rules, links, key stats, primary CTA
+     --good  #7fc8a0  semantic  → ready / synced / success ONLY
+     --amber #e8b06a  semantic  → attention / warning ONLY
+   If a heading or a primary action is any colour other than volt, it is wrong.
+   ──────────────────────────────────────────────────────────────────────────────── */
+
+:root{
+  /* surfaces — verbatim from studio-theme.css */
+  --bg:#0c0d0a; --bg2:#101208;
+  --panel:#14160f; --panel2:#1b1e15;
+  --card:#14160f; --card2:#1b1e15;
+  --line:#2a2e20; --line2:#3a4030;
+  --ink:#e9ebda; --dim:#8b9079; --mut:#8b9079; --faint:#5c6150;
+
+  /* brand / semantic */
+  --volt:#D4FF3D; --amber:#e8b06a; --good:#7fc8a0;
+  --heavy:#e0b24f; --check:#e07f86; --brass:#c9973f;
+  --pink:#e85cc0; --lav:#b8a6f0;
+
+  /* room accents */
+  --refkit:#e8b06a; --worldkit:#9fe06a; --cutkit:#d89fe0;
+  --canvaskit:#86c8ea; --dnakit:#e85cc0;
+
+  /* typography */
+  --rs-font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --rs-mono:ui-monospace,"SF Mono","Menlo","Monaco","Consolas",monospace;
+
+  /* geometry */
+  --rs-radius-sm:6px; --rs-radius:10px; --rs-radius-lg:14px; --rs-radius-xl:18px;
+  --rs-shadow:0 4px 18px rgba(0,0,0,.45); --rs-shadow-lg:0 8px 34px rgba(0,0,0,.55);
+  --rs-transition:.15s ease;
+
+  /* primary CTA gradient */
+  --cta-a:#3a4d10; --cta-b:#26330a; --cta-line:#4f6b16; --cta-ink:#eaffc0;
+
+  /* spacing */
+  --rs-space-xs:4px; --rs-space-sm:8px; --rs-space-md:12px;
+  --rs-space-lg:16px; --rs-space-xl:22px; --rs-space-2xl:30px;
+
+  /* doc-only */
+  --doc-maxw:1080px;
+}
+
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 560px at 50% -12%, var(--bg2) 0%, var(--bg) 60%) fixed;
+  color:var(--ink);
+  font-family:var(--rs-font);
+  font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.doc-wrap{max-width:var(--doc-maxw);margin:0 auto;padding:0 26px 110px}
+
+/* ── links ───────────────────────────────────────────────────────────────── */
+a{color:var(--volt);text-decoration:none;border-bottom:1px solid rgba(212,255,61,.28)}
+a:hover{border-bottom-color:var(--volt)}
+
+/* ── masthead ────────────────────────────────────────────────────────────── */
+.doc-mast{padding:46px 0 20px;border-bottom:1px solid var(--line)}
+.doc-kicker{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 16px;
+}
+.doc-mast h1{
+  font-size:clamp(32px,5.6vw,54px);font-weight:800;line-height:1.03;
+  letter-spacing:-.028em;margin:0;color:var(--ink);
+}
+.doc-mast h1 em{font-style:normal;color:var(--volt)}
+.doc-dek{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:70ch;line-height:1.58}
+.doc-byline{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);
+}
+.doc-byline b{color:var(--dim);font-weight:600}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+.doc-sec{margin:58px 0 0;scroll-margin-top:20px}
+.doc-eyebrow{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 10px;
+}
+.doc-sec h2{
+  font-size:clamp(22px,3.2vw,30px);font-weight:700;letter-spacing:-.018em;
+  line-height:1.14;margin:0;color:var(--ink);
+}
+.doc-rule{height:2px;width:56px;background:var(--volt);margin:14px 0 24px;border-radius:2px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.005em;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;max-width:74ch;color:var(--ink)}
+p.lead,.rs-lead{color:var(--dim);max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+strong{font-weight:700;color:var(--ink)}
+em{color:var(--dim);font-style:italic}
+.muted,.rs-muted{color:var(--dim)}
+.faint,.rs-faint{color:var(--faint)}
+.mono,.rs-mono{font-family:var(--rs-mono);font-size:12.5px}
+
+/* ── callout / verdict panel ─────────────────────────────────────────────── */
+.doc-callout{
+  background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--volt);border-radius:var(--rs-radius);
+  padding:20px 22px;margin:0 0 24px;
+}
+.doc-callout.attn{border-left-color:var(--amber)}
+.doc-callout.ok{border-left-color:var(--good)}
+.doc-callout.bad{border-left-color:var(--check)}
+.doc-callout > :last-child{margin-bottom:0}
+
+/* ── quote ───────────────────────────────────────────────────────────────── */
+blockquote,.doc-quote{
+  margin:20px 0;padding:2px 0 2px 20px;border-left:2px solid var(--volt);
+  font-size:17px;line-height:1.5;color:var(--ink);max-width:66ch;
+}
+blockquote cite,.doc-quote cite{
+  display:block;font-family:var(--rs-mono);font-style:normal;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:10px;
+}
+
+/* ── figure / ascii diagram ──────────────────────────────────────────────── */
+pre.doc-fig,pre.rs-code-block{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs-radius);
+  padding:20px;overflow-x:auto;font-family:var(--rs-mono);font-size:12.5px;
+  line-height:1.55;color:var(--ink);margin:0 0 10px;
+}
+.doc-figcap{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 16px}
+code,.rs-code{
+  font-family:var(--rs-mono);background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:1px 6px;font-size:12px;color:var(--brass);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────────── */
+.doc-tscroll{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  background:var(--card);
+}
+table,.rs-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th,.rs-table th{
+  text-align:left;background:var(--panel2);color:var(--dim);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line2);white-space:nowrap;
+}
+td,.rs-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--card2)}
+
+/* ── chips / tags / pills ────────────────────────────────────────────────── */
+.rs-tag,.doc-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  border-radius:999px;padding:3px 9px;white-space:nowrap;
+  border:1px solid currentColor;line-height:1.4;
+}
+.doc-tag.volt{color:var(--volt)}
+.doc-tag.ok{color:var(--good)}
+.doc-tag.attn{color:var(--amber)}
+.doc-tag.bad{color:var(--check)}
+.doc-tag.dim{color:var(--faint)}
+.rs-status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.rs-status-dot.rs-on{background:var(--good)}
+.rs-status-dot.rs-attn{background:var(--amber)}
+.rs-status-dot.rs-bad{background:var(--check)}
+
+/* ── cards ───────────────────────────────────────────────────────────────── */
+.doc-cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:6px}
+.rs-card,.doc-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:var(--rs-space-xl);position:relative;
+  transition:border-color var(--rs-transition),box-shadow var(--rs-transition);
+}
+.rs-card:hover,.doc-card:hover{border-color:var(--line2)}
+.doc-card.is-primary{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
+.doc-card .doc-card-flag{
+  position:absolute;top:-9px;right:16px;background:var(--volt);color:#0c0d0a;
+  font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;
+}
+.doc-card .doc-card-idx{
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);
+  font-weight:700;display:block;margin-bottom:6px;
+}
+.doc-card h3{margin:0 0 3px;font-size:18px;letter-spacing:-.01em}
+.doc-card .doc-card-sub{color:var(--dim);font-size:14px;margin:0 0 14px;font-style:italic}
+.doc-card p{font-size:14px;margin:0 0 11px}
+.doc-card .doc-card-meta{
+  border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+  font-size:13px;color:var(--dim);
+}
+.doc-card .doc-card-meta div{margin:0 0 6px}
+.doc-card .doc-card-meta b{
+  font-family:var(--rs-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:inline-block;min-width:76px;font-weight:600;
+}
+
+/* ── numbered build list ─────────────────────────────────────────────────── */
+ol.doc-steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:74ch}
+ol.doc-steps li{counter-increment:s;position:relative;padding:0 0 16px 44px;margin:0}
+ol.doc-steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--rs-mono);font-size:12px;font-weight:700;color:var(--volt);
+  width:26px;height:26px;line-height:24px;text-align:center;
+  border:1px solid var(--line2);border-radius:999px;background:var(--panel2);
+}
+
+/* ── primary CTA (the canonical olive gradient) ──────────────────────────── */
+.btn-primary,.rs-btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(180deg,var(--cta-a),var(--cta-b));
+  border:1px solid var(--cta-line);color:var(--cta-ink);font-weight:700;
+  letter-spacing:.03em;border-radius:var(--rs-radius);padding:10px 20px;
+  font:inherit;cursor:pointer;text-decoration:none;
+  transition:filter var(--rs-transition);
+}
+.btn-primary:hover,.rs-btn-primary:hover{filter:brightness(1.12)}
+
+/* ── open questions ──────────────────────────────────────────────────────── */
+.doc-open{
+  background:var(--panel);border:1px dashed var(--line2);
+  border-radius:var(--rs-radius-lg);padding:20px 24px;
+}
+.doc-open > :last-child{margin-bottom:0}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.doc-foot{
+  margin-top:72px;border-top:1px solid var(--line);padding-top:16px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);line-height:1.7;
+}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  .doc-wrap{padding:0 18px 80px}
+  .doc-card{padding:var(--rs-space-lg)}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .doc-card,.doc-callout,.doc-tscroll,pre.doc-fig{border-color:#ccc;background:#fff}
+  a{color:#111}
+}
+</style>
+</head>
+<body>
+<script>if(/[?&]embed=1/.test(location.search))document.documentElement.classList.add('is-embed');</script>
+<div class="doc-wrap">
+
+<header class="doc-mast">
+  <p class="doc-kicker">Vibe Film Sessions &middot; session 1 &middot; how pictures move</p>
+  <h1>The Cut-Out <em>Stage</em></h1>
+  <p class="doc-dek">A shot is a <b>where</b>, a <b>who</b>, a <b>what</b> and a <b>when</b>. Build one out of paper, then make it move, and feel what frame rate is. Capture where it starts, capture where it ends, press play &mdash; and switch the frame rate while it runs.</p>
+  <div class="doc-byline"><span><b>COST</b> $0 &middot; runs in the browser</span><span><b>SAVES</b> in this browser, automatically</span><span><b>STYLE</b> Danney's board &ldquo;motionillustration&rdquo;</span></div>
+</header>
+
+<div id="stageRoot"></div>
+
+
+<footer class="doc-foot"><p>projects/vibe-film-sessions/stage &middot; cut-outs from <code>scripts/make_cutouts.py</code> (drop real photos in <code>photos/</code> and re-run) &middot; scene JSON is the hand-off to a HyperFrames render later.</p></footer>
+</div>
+
+<script src="../assets/stage.js"></script>
+<script>window.STAGE = mountStage(document.getElementById('stageRoot'));</script>
+</body>
+</html>

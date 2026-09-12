@@ -1,0 +1,1975 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Call Sheet</title>
+<style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
+/* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
+   Source of truth for the tokens: tools/studio/studio-theme.css + tools/studio/SKIN.md
+   (the skin Danney locked 2026-07-21). This file mirrors those tokens exactly and
+   adds document-scale typography on top, because a plan is read at 15px and a room
+   is used at 14px.
+
+   DO NOT hand-edit a page's <style data-reelix-skin> block. Edit THIS file, then:
+       python3 tools/visual-explainer/apply_skin.py <page.html>
+
+   THE ACCENT CONTRACT (inherited, non-negotiable):
+     --volt  #D4FF3D  identity  → eyebrows, section rules, links, key stats, primary CTA
+     --good  #7fc8a0  semantic  → ready / synced / success ONLY
+     --amber #e8b06a  semantic  → attention / warning ONLY
+   If a heading or a primary action is any colour other than volt, it is wrong.
+   ──────────────────────────────────────────────────────────────────────────────── */
+
+:root{
+  /* surfaces — verbatim from studio-theme.css */
+  --bg:#0c0d0a; --bg2:#101208;
+  --panel:#14160f; --panel2:#1b1e15;
+  --card:#14160f; --card2:#1b1e15;
+  --line:#2a2e20; --line2:#3a4030;
+  --ink:#e9ebda; --dim:#8b9079; --mut:#8b9079; --faint:#5c6150;
+
+  /* brand / semantic */
+  --volt:#D4FF3D; --amber:#e8b06a; --good:#7fc8a0;
+  --heavy:#e0b24f; --check:#e07f86; --brass:#c9973f;
+  --pink:#e85cc0; --lav:#b8a6f0;
+
+  /* room accents */
+  --refkit:#e8b06a; --worldkit:#9fe06a; --cutkit:#d89fe0;
+  --canvaskit:#86c8ea; --dnakit:#e85cc0;
+
+  /* typography */
+  --rs-font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --rs-mono:ui-monospace,"SF Mono","Menlo","Monaco","Consolas",monospace;
+
+  /* geometry */
+  --rs-radius-sm:6px; --rs-radius:10px; --rs-radius-lg:14px; --rs-radius-xl:18px;
+  --rs-shadow:0 4px 18px rgba(0,0,0,.45); --rs-shadow-lg:0 8px 34px rgba(0,0,0,.55);
+  --rs-transition:.15s ease;
+
+  /* primary CTA gradient */
+  --cta-a:#3a4d10; --cta-b:#26330a; --cta-line:#4f6b16; --cta-ink:#eaffc0;
+
+  /* spacing */
+  --rs-space-xs:4px; --rs-space-sm:8px; --rs-space-md:12px;
+  --rs-space-lg:16px; --rs-space-xl:22px; --rs-space-2xl:30px;
+
+  /* doc-only */
+  --doc-maxw:1080px;
+}
+
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 560px at 50% -12%, var(--bg2) 0%, var(--bg) 60%) fixed;
+  color:var(--ink);
+  font-family:var(--rs-font);
+  font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.doc-wrap{max-width:var(--doc-maxw);margin:0 auto;padding:0 26px 110px}
+
+/* ── links ───────────────────────────────────────────────────────────────── */
+a{color:var(--volt);text-decoration:none;border-bottom:1px solid rgba(212,255,61,.28)}
+a:hover{border-bottom-color:var(--volt)}
+
+/* ── masthead ────────────────────────────────────────────────────────────── */
+.doc-mast{padding:46px 0 20px;border-bottom:1px solid var(--line)}
+.doc-kicker{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 16px;
+}
+.doc-mast h1{
+  font-size:clamp(32px,5.6vw,54px);font-weight:800;line-height:1.03;
+  letter-spacing:-.028em;margin:0;color:var(--ink);
+}
+.doc-mast h1 em{font-style:normal;color:var(--volt)}
+.doc-dek{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:70ch;line-height:1.58}
+.doc-byline{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);
+}
+.doc-byline b{color:var(--dim);font-weight:600}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+.doc-sec{margin:58px 0 0;scroll-margin-top:20px}
+.doc-eyebrow{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 10px;
+}
+.doc-sec h2{
+  font-size:clamp(22px,3.2vw,30px);font-weight:700;letter-spacing:-.018em;
+  line-height:1.14;margin:0;color:var(--ink);
+}
+.doc-rule{height:2px;width:56px;background:var(--volt);margin:14px 0 24px;border-radius:2px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.005em;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;max-width:74ch;color:var(--ink)}
+p.lead,.rs-lead{color:var(--dim);max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+strong{font-weight:700;color:var(--ink)}
+em{color:var(--dim);font-style:italic}
+.muted,.rs-muted{color:var(--dim)}
+.faint,.rs-faint{color:var(--faint)}
+.mono,.rs-mono{font-family:var(--rs-mono);font-size:12.5px}
+
+/* ── callout / verdict panel ─────────────────────────────────────────────── */
+.doc-callout{
+  background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--volt);border-radius:var(--rs-radius);
+  padding:20px 22px;margin:0 0 24px;
+}
+.doc-callout.attn{border-left-color:var(--amber)}
+.doc-callout.ok{border-left-color:var(--good)}
+.doc-callout.bad{border-left-color:var(--check)}
+.doc-callout > :last-child{margin-bottom:0}
+
+/* ── quote ───────────────────────────────────────────────────────────────── */
+blockquote,.doc-quote{
+  margin:20px 0;padding:2px 0 2px 20px;border-left:2px solid var(--volt);
+  font-size:17px;line-height:1.5;color:var(--ink);max-width:66ch;
+}
+blockquote cite,.doc-quote cite{
+  display:block;font-family:var(--rs-mono);font-style:normal;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:10px;
+}
+
+/* ── figure / ascii diagram ──────────────────────────────────────────────── */
+pre.doc-fig,pre.rs-code-block{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs-radius);
+  padding:20px;overflow-x:auto;font-family:var(--rs-mono);font-size:12.5px;
+  line-height:1.55;color:var(--ink);margin:0 0 10px;
+}
+.doc-figcap{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 16px}
+code,.rs-code{
+  font-family:var(--rs-mono);background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:1px 6px;font-size:12px;color:var(--brass);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────────── */
+.doc-tscroll{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  background:var(--card);
+}
+table,.rs-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th,.rs-table th{
+  text-align:left;background:var(--panel2);color:var(--dim);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line2);white-space:nowrap;
+}
+td,.rs-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--card2)}
+
+/* ── chips / tags / pills ────────────────────────────────────────────────── */
+.rs-tag,.doc-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  border-radius:999px;padding:3px 9px;white-space:nowrap;
+  border:1px solid currentColor;line-height:1.4;
+}
+.doc-tag.volt{color:var(--volt)}
+.doc-tag.ok{color:var(--good)}
+.doc-tag.attn{color:var(--amber)}
+.doc-tag.bad{color:var(--check)}
+.doc-tag.dim{color:var(--faint)}
+.rs-status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.rs-status-dot.rs-on{background:var(--good)}
+.rs-status-dot.rs-attn{background:var(--amber)}
+.rs-status-dot.rs-bad{background:var(--check)}
+
+/* ── cards ───────────────────────────────────────────────────────────────── */
+.doc-cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:6px}
+.rs-card,.doc-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:var(--rs-space-xl);position:relative;
+  transition:border-color var(--rs-transition),box-shadow var(--rs-transition);
+}
+.rs-card:hover,.doc-card:hover{border-color:var(--line2)}
+.doc-card.is-primary{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
+.doc-card .doc-card-flag{
+  position:absolute;top:-9px;right:16px;background:var(--volt);color:#0c0d0a;
+  font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;
+}
+.doc-card .doc-card-idx{
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);
+  font-weight:700;display:block;margin-bottom:6px;
+}
+.doc-card h3{margin:0 0 3px;font-size:18px;letter-spacing:-.01em}
+.doc-card .doc-card-sub{color:var(--dim);font-size:14px;margin:0 0 14px;font-style:italic}
+.doc-card p{font-size:14px;margin:0 0 11px}
+.doc-card .doc-card-meta{
+  border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+  font-size:13px;color:var(--dim);
+}
+.doc-card .doc-card-meta div{margin:0 0 6px}
+.doc-card .doc-card-meta b{
+  font-family:var(--rs-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:inline-block;min-width:76px;font-weight:600;
+}
+
+/* ── numbered build list ─────────────────────────────────────────────────── */
+ol.doc-steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:74ch}
+ol.doc-steps li{counter-increment:s;position:relative;padding:0 0 16px 44px;margin:0}
+ol.doc-steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--rs-mono);font-size:12px;font-weight:700;color:var(--volt);
+  width:26px;height:26px;line-height:24px;text-align:center;
+  border:1px solid var(--line2);border-radius:999px;background:var(--panel2);
+}
+
+/* ── primary CTA (the canonical olive gradient) ──────────────────────────── */
+.btn-primary,.rs-btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(180deg,var(--cta-a),var(--cta-b));
+  border:1px solid var(--cta-line);color:var(--cta-ink);font-weight:700;
+  letter-spacing:.03em;border-radius:var(--rs-radius);padding:10px 20px;
+  font:inherit;cursor:pointer;text-decoration:none;
+  transition:filter var(--rs-transition);
+}
+.btn-primary:hover,.rs-btn-primary:hover{filter:brightness(1.12)}
+
+/* ── open questions ──────────────────────────────────────────────────────── */
+.doc-open{
+  background:var(--panel);border:1px dashed var(--line2);
+  border-radius:var(--rs-radius-lg);padding:20px 24px;
+}
+.doc-open > :last-child{margin-bottom:0}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.doc-foot{
+  margin-top:72px;border-top:1px solid var(--line);padding-top:16px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);line-height:1.7;
+}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  .doc-wrap{padding:0 18px 80px}
+  .doc-card{padding:var(--rs-space-lg)}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .doc-card,.doc-callout,.doc-tscroll,pre.doc-fig{border-color:#ccc;background:#fff}
+  a{color:#111}
+}
+</style>
+<style>
+/* The Call Sheet — page styles. Tokens come from the Reelix doc skin above. */
+:root{color-scheme:dark}
+.cs{
+  --crew-producer:#d9c49a; --crew-director:#7cc0ee; --crew-colorist:#e393e0; --crew-casting:#9bd98a;
+  --crew-set:#f29fbe; --crew-camera:#62d2d6; --crew-gaffer:#d6dbe6; --crew-effects:#ad9bf5;
+  --crew-editor:#f0a58c; --crew-script:#8ea6f7; --crew-sound:#c99af0;
+  --lane-voice:var(--ink); --lane-sfx:#62d2d6; --lane-music:#c99af0; --lane-sub:#d9c49a;
+  --top-h:62px; --ed-size:14px; --tl-lab:96px;
+  overflow-x:clip; min-height:100vh;
+}
+[data-crew="producer"]{--c:var(--crew-producer)} [data-crew="director"]{--c:var(--crew-director)}
+[data-crew="colorist"]{--c:var(--crew-colorist)} [data-crew="casting"]{--c:var(--crew-casting)}
+[data-crew="set"]{--c:var(--crew-set)} [data-crew="camera"]{--c:var(--crew-camera)}
+[data-crew="gaffer"]{--c:var(--crew-gaffer)} [data-crew="effects"]{--c:var(--crew-effects)}
+[data-crew="editor"]{--c:var(--crew-editor)} [data-crew="script"]{--c:var(--crew-script)}
+[data-crew="sound"]{--c:var(--crew-sound)}
+.ic{width:1em;height:1em;flex:none;display:inline-block;vertical-align:-.14em}
+button{font-family:inherit}
+
+/* top bar */
+.cs-top{position:sticky;top:0;z-index:40;display:flex;align-items:center;flex-wrap:wrap;gap:10px 18px;
+  padding:10px 22px;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.cs-brand{display:flex;align-items:center;gap:14px;margin-right:auto;min-width:0;flex-wrap:wrap}
+.cs-brand h1{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.1;display:flex;align-items:center;gap:9px;white-space:nowrap;color:var(--ink)}
+.cs-brand h1 em{font-style:normal;color:var(--volt)}
+.cs-brand h1 .ic{width:21px;height:21px;color:var(--volt)}
+.cs-actions{display:flex;align-items:center;gap:8px 10px;flex-wrap:wrap}
+.cs-count{font-family:var(--rs-mono);font-size:11.5px;color:var(--dim);white-space:nowrap;min-width:86px;text-align:right}
+.cs-count b{color:var(--ink);font-weight:700}
+.ghost-btn{appearance:none;display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line);
+  color:var(--dim);font:600 12.5px/1 var(--rs-font);padding:9px 12px;border-radius:var(--rs-radius);cursor:pointer;white-space:nowrap}
+.ghost-btn:hover:not(:disabled){border-color:var(--line2);color:var(--ink)}
+.ghost-btn:disabled{opacity:.4;cursor:default}
+.ghost-btn .flip{transform:scaleX(-1)}
+.cs .btn-primary{font:700 13px/1 var(--rs-font);padding:9px 15px;white-space:nowrap}
+.cs .btn-primary .ic{width:15px;height:15px}
+
+/* segmented + chips + switch + stepper */
+.seg{display:inline-flex;flex-wrap:wrap;gap:2px;padding:3px;background:var(--bg);border:1px solid var(--line);border-radius:14px}
+.seg button{appearance:none;border:1px solid transparent;background:transparent;color:var(--dim);font:600 12px/1 var(--rs-font);
+  padding:7px 11px;border-radius:10px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s,border-color .15s}
+.seg button:hover:not(:disabled){color:var(--ink)}
+.seg button.on{background:color-mix(in srgb,var(--volt) 14%,transparent);color:var(--volt);border-color:color-mix(in srgb,var(--volt) 45%,transparent)}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.seg.ro button{cursor:default}
+.seg-level{border-radius:999px}
+.seg-level button{font-size:13px;padding:8px 14px;border-radius:999px}
+/* tiles: ONE object for every visual picker (aspect · resolution · film · grain · genre · time of day · moves) */
+.tiles{display:flex;flex-wrap:wrap;gap:8px}
+.tile{appearance:none;position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;margin:0;padding:5px 5px 7px;
+  background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--dim);font:600 11.5px/1.15 var(--rs-font);
+  cursor:pointer;text-align:center;transition:border-color .15s,color .15s,box-shadow .15s}
+.tile:hover{border-color:var(--line2);color:var(--ink)}
+.tile.on,.tile.on:hover{border-color:var(--volt);color:var(--volt);box-shadow:0 0 0 1px color-mix(in srgb,var(--volt) 30%,transparent)}
+.tile:focus-visible{outline:2px solid color-mix(in srgb,var(--volt) 55%,transparent);outline-offset:2px}
+.tile-l{display:flex;align-items:center;justify-content:center;gap:4px;max-width:100%;white-space:nowrap}
+.tile-l .ic{width:10px;height:10px}
+.pick{max-width:720px}
+.pick .tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.thumb{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:var(--panel2)}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:.82;transition:opacity .15s}
+.tile:hover .thumb img,.tile.on .thumb img{opacity:1}
+.thumb.px1 img{object-fit:none}
+.ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:6px;color:var(--faint);border:1px dashed var(--line2);border-radius:inherit;font:600 12px/1.2 var(--rs-font)}
+.ph .ic{width:16px;height:16px}
+.pv{position:relative;width:100%;aspect-ratio:16/9;margin:0 0 8px;border-radius:var(--rs-radius);overflow:hidden;background:var(--panel2);border:1px solid var(--line)}
+.pv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;max-width:none}
+.pv .pv-base{opacity:.3;filter:saturate(.5)}
+.pv.px1 img{inset:auto;left:50%;top:50%;width:max(100%,640px);height:auto;transform:translate(-50%,-50%);image-rendering:auto}
+.pv .ph{border:0;border-radius:0;flex-direction:column;color:var(--dim)}
+.pv-cap{position:absolute;left:10px;bottom:10px;padding:5px 9px;border-radius:999px;background:rgba(8,9,6,.72);color:var(--ink);font:600 11px/1 var(--rs-font);pointer-events:none}
+.pv-cap:empty{display:none}
+.ar-fr{display:grid;place-items:center;width:52px;height:44px}
+.res-fr{display:grid;place-items:end center;width:44px;height:24px}
+.ar-bx,.res-bx{display:block;border:1.5px solid currentColor;border-radius:2px;transition:border-color .15s,background .15s}
+.tile[data-v="auto"] .ar-bx{border-style:dashed}
+.tile.on .ar-bx,.tile.on .res-bx{border-color:var(--volt);background:color-mix(in srgb,var(--volt) 14%,transparent)}
+.sw-row{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink);flex-wrap:wrap}
+.sw{appearance:none;position:relative;width:40px;height:22px;border-radius:999px;background:var(--line);border:1px solid var(--line2);cursor:pointer;flex:none;transition:background .2s,border-color .2s;padding:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--dim);transition:transform .2s,background .2s}
+.sw.on{background:color-mix(in srgb,var(--volt) 28%,transparent);border-color:color-mix(in srgb,var(--volt) 60%,transparent)}
+.sw.on::after{transform:translateX(18px);background:var(--volt)}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line2);border-radius:999px;overflow:hidden}
+.step button{appearance:none;background:transparent;border:0;color:var(--ink);width:30px;height:28px;cursor:pointer;font:600 16px/1 var(--rs-font)}
+.step button:hover{background:var(--panel2)}
+.step output{min-width:58px;text-align:center;font:600 13px/1 var(--rs-font);color:var(--ink)}
+
+/* layout */
+.cs-main{display:grid;grid-template-columns:minmax(0,46fr) minmax(0,54fr);max-width:1760px;margin:0 auto}
+.pp{position:sticky;top:var(--top-h);height:calc(100vh - var(--top-h));display:flex;flex-direction:column;border-right:1px solid var(--line);min-width:0;z-index:20}
+.pp-head{display:flex;align-items:center;gap:6px 12px;padding:14px 22px 10px;flex-wrap:wrap}
+.pp-head .doc-eyebrow{margin:0}
+.pp-scroll{flex:1;overflow:auto;margin:0 14px 12px;background:var(--panel);border:1px solid var(--line);border-radius:var(--rs-radius-lg);min-height:0;cursor:text}
+.pp-stack{position:relative;min-height:100%}
+.ed{font-family:var(--rs-font);font-size:var(--ed-size);font-weight:400;line-height:1.72;letter-spacing:0;padding:18px 20px 44px;margin:0;border:0;
+  white-space:pre-wrap;overflow-wrap:break-word;word-break:normal;tab-size:4;font-kerning:normal;font-variant-ligatures:normal;text-transform:none}
+.pp-hl{color:var(--ink);background:transparent;min-height:100%;pointer-events:none}
+.pp-ta{position:absolute;inset:0;width:100%;height:100%;resize:none;outline:none;background:transparent;color:transparent;caret-color:var(--volt);overflow:hidden;display:block}
+.pp-ta::selection{background:color-mix(in srgb,var(--volt) 30%,transparent);color:transparent}
+.pp-hl .lab{color:var(--c)}
+.pp-hl .sec-on{background:color-mix(in srgb,var(--c) 11%,transparent)}
+.pp-hl .hot-on{background:color-mix(in srgb,var(--c) 30%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 60%,transparent);border-radius:3px}
+.pp-hl .tk-voice{color:var(--lane-voice);background:color-mix(in srgb,var(--ink) 9%,transparent);border-radius:3px}
+.pp-hl .tk-sfx{color:var(--lane-sfx)}
+.pp-hl .tk-music{color:var(--lane-music)}
+.pp-hl .tk-sub{color:var(--lane-sub)}
+.pp-hl .tk-ref{color:var(--volt)}
+.pp-hl .tk-cut{color:var(--crew-editor)}
+.pp-hl .tk-time{color:color-mix(in srgb,var(--crew-editor) 70%,var(--ink))}
+.pp-hl .tk-deg{color:var(--crew-camera)}
+.pp-hl .warn-u{color:var(--amber);text-decoration:underline wavy var(--amber);text-decoration-thickness:1.5px;text-underline-offset:4px}
+.pp-hl .flash{animation:flash 1.6s ease-out both}
+@keyframes flash{0%{background:color-mix(in srgb,var(--volt) 62%,transparent)}40%{background:color-mix(in srgb,var(--volt) 34%,transparent)}100%{background:color-mix(in srgb,var(--volt) 0%,transparent)}}
+.pp-warn{margin:0 14px 12px;display:flex;flex-direction:column;gap:6px;max-height:132px;overflow:auto}
+.warn-row{appearance:none;display:flex;gap:8px;align-items:flex-start;text-align:left;width:100%;background:color-mix(in srgb,var(--amber) 8%,var(--panel));
+  border:1px solid color-mix(in srgb,var(--amber) 42%,transparent);color:var(--amber);border-radius:10px;padding:8px 12px;font:500 12.5px/1.4 var(--rs-font);cursor:pointer}
+.warn-row:hover{border-color:var(--amber)}
+.warn-row .ic{margin-top:2px;width:14px;height:14px}
+.warn-row b{font-family:var(--rs-mono);font-weight:600;color:var(--ink)}
+.warn-row .where{color:var(--dim);font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.06em}
+
+/* crew column */
+.crew-col{padding:16px 22px 140px;min-width:0}
+
+.crew{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);margin:0 0 14px;
+  scroll-margin-top:calc(var(--top-h) + 14px);transition:border-color .2s,box-shadow .25s}
+.crew::before{content:"";position:absolute;left:-1px;top:16px;width:3px;height:30px;border-radius:3px;background:var(--c)}
+.crew.lit{border-color:color-mix(in srgb,var(--c) 70%,transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 38%,transparent),0 12px 32px rgba(0,0,0,.35)}
+.crew-h{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:14px 18px 12px 20px;border-bottom:1px solid var(--line);cursor:pointer}
+.crew-ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.crew-ic .ic{width:17px;height:17px}
+.crew h3.crew-name{margin:0;font-size:14.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;line-height:1.2;color:var(--ink)}
+.crew p.crew-job{margin:3px 0 0;font-size:12.5px;color:var(--dim);max-width:none;line-height:1.35}
+.crew-b{padding:4px 18px 14px 20px;transition:opacity .25s,filter .25s}
+.crew.muted .crew-b{opacity:.38;filter:saturate(.3)}
+.card-warns:empty{display:none}
+.card-warns{padding:10px 18px 0 20px}
+.muted-note{display:none;margin:10px 18px 0 20px;font-size:12px;color:var(--dim);align-items:center;gap:7px}
+.crew.muted .muted-note{display:flex}
+
+.ctl{padding:12px 0;border-top:1px solid color-mix(in srgb,var(--line) 75%,transparent);position:relative;border-radius:8px;transition:background .25s}
+.crew-b > .ctl:first-child,.ctl-grid > .ctl{border-top:0}
+.ctl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0 18px;border-top:1px solid color-mix(in srgb,var(--line) 75%,transparent)}
+.ctl-h{display:flex;align-items:center;flex-wrap:wrap;gap:6px 8px;margin:0 0 9px;min-height:20px}
+.ctl-l{font:600 10.5px/1.2 var(--rs-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.ctl-st{font-size:11.5px;color:var(--faint);font-style:italic}
+.ctl-grid .ctl-h{flex-direction:column;align-items:flex-start;gap:7px}
+.ctl.lit{background:color-mix(in srgb,var(--c) 8%,transparent);box-shadow:-10px 0 0 color-mix(in srgb,var(--c) 8%,transparent),10px 0 0 color-mix(in srgb,var(--c) 8%,transparent)}
+.pulse{animation:pulse 1.1s ease-out}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--volt) 60%,transparent);background:color-mix(in srgb,var(--volt) 14%,transparent)}
+  100%{box-shadow:0 0 0 12px color-mix(in srgb,var(--volt) 0%,transparent);background:transparent}}
+.iwarn{display:flex;gap:8px;align-items:flex-start;color:var(--amber);font-size:12.5px;line-height:1.4;margin:8px 0 0;padding:7px 10px;border-radius:8px;
+  background:color-mix(in srgb,var(--amber) 8%,transparent);border:1px solid color-mix(in srgb,var(--amber) 35%,transparent);cursor:pointer;text-align:left;width:100%;font-family:inherit}
+.iwarn .ic{width:14px;height:14px;margin-top:2px}
+.iwarn b{font-family:var(--rs-mono);font-weight:600;color:var(--ink)}
+.okline{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim)}
+.note{font-size:11.5px;color:var(--faint);display:flex;gap:6px;align-items:center;margin-top:7px;line-height:1.35}
+.note .ic{width:13px;height:13px}
+.note.attn{color:var(--amber)}
+
+.rng{-webkit-appearance:none;appearance:none;width:100%;height:24px;background:transparent;margin:0;cursor:pointer;--pct:50%}
+.rng::-webkit-slider-runnable-track{height:4px;border-radius:4px;background:linear-gradient(90deg,var(--volt) 0 var(--pct),var(--line2) var(--pct) 100%)}
+.rng::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--volt);border:3px solid var(--bg);box-shadow:0 0 0 1px color-mix(in srgb,var(--volt) 60%,transparent);margin-top:-7px}
+.rng::-moz-range-track{height:4px;border-radius:4px;background:var(--line2)}
+.rng::-moz-range-progress{height:4px;border-radius:4px;background:var(--volt)}
+.rng::-moz-range-thumb{width:13px;height:13px;border-radius:50%;background:var(--volt);border:3px solid var(--bg)}
+.rng:focus{outline:none}
+.rng:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 5px color-mix(in srgb,var(--volt) 28%,transparent)}
+.rng.gone::-webkit-slider-runnable-track{background:repeating-linear-gradient(90deg,var(--line2) 0 6px,transparent 6px 10px)}
+.rng-row{display:flex;align-items:center;gap:14px}
+.rng-val{font:700 20px/1 var(--rs-mono);color:var(--ink);min-width:66px;text-align:right;white-space:nowrap}
+.rng-val small{font-size:12px;color:var(--dim);font-weight:600}
+.ticks{position:relative;height:16px;margin:1px 9px 0}
+.ticks span{position:absolute;transform:translateX(-50%);font:600 9.5px/1 var(--rs-mono);color:var(--faint);top:5px;white-space:nowrap}
+.ticks span::before{content:"";position:absolute;left:50%;top:-5px;width:1px;height:4px;background:var(--line2)}
+
+.fld{display:block;width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);font:400 13px/1.55 var(--rs-font);
+  padding:9px 11px;resize:vertical;field-sizing:content;min-height:40px;max-height:230px;transition:border-color .15s}
+.fld:focus{outline:none;border-color:color-mix(in srgb,var(--volt) 50%,transparent)}
+.fld.gone{border-style:dashed}
+.fld::placeholder{color:var(--faint);font-style:italic}
+.sel-wrap{position:relative;display:block}
+.sel{appearance:none;-webkit-appearance:none;width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--ink);font:500 13px/1.2 var(--rs-font);padding:9px 32px 9px 11px;cursor:pointer}
+.sel:focus{outline:none;border-color:color-mix(in srgb,var(--volt) 50%,transparent)}
+.sel.gone{border-style:dashed;color:var(--dim)}
+.sel-wrap .ic{position:absolute;right:11px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--dim);width:12px;height:12px}
+
+.cost{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.cost b{font:800 28px/1 var(--rs-mono);color:var(--volt);letter-spacing:-.02em}
+.cost span{font-size:12.5px;color:var(--dim)}
+
+.cast-row{display:grid;grid-template-columns:118px minmax(0,1fr);gap:12px;align-items:start;margin:0 0 10px}
+.cast-row:last-child{margin-bottom:0}
+.cast-name{font:700 11px/1.35 var(--rs-mono);letter-spacing:.07em;color:var(--c);padding-top:10px;cursor:pointer}
+.cast-name small{display:block;color:var(--faint);font-weight:600;letter-spacing:.04em;margin-top:2px}
+.refs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.ref{appearance:none;position:relative;display:block;padding:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg);cursor:pointer;aspect-ratio:16/9;width:100%;color:var(--ink);font-family:inherit}
+.ref:hover{border-color:var(--line2)}
+.ref img{width:100%;height:100%;object-fit:cover;display:block}
+.ref-cap{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;gap:6px;padding:16px 8px 6px;background:linear-gradient(transparent,rgba(0,0,0,.78));font:600 10px/1.2 var(--rs-mono);color:var(--ink);text-align:left}
+.ref-cap .tag{color:var(--volt);white-space:nowrap}
+.ref-cap .nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ref-ph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:var(--faint);font-size:11px;padding:8px 8px 22px;text-align:center}
+.ref-ph .ic{width:20px;height:20px}
+.ref.empty{border-style:dashed;background:transparent}
+.ref.empty .ref-cap{background:none;color:var(--faint)}
+
+.cam-row{padding:12px 0;border-top:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:8px}
+.cam-row:first-child{border-top:0}
+.cam-top{display:flex;align-items:center;gap:10px;margin:0 0 6px;flex-wrap:wrap}
+.cam-n{font:700 11px/1.2 var(--rs-mono);letter-spacing:.1em;color:var(--ink);cursor:pointer}
+.cam-n small{color:var(--dim);font-weight:600;margin-left:6px;letter-spacing:.06em}
+.lens-read{margin-left:auto;font:700 14px/1 var(--rs-mono);color:var(--ink);white-space:nowrap}
+.lens-read small{color:var(--c);font-weight:600;font-size:11.5px;margin-left:6px}
+.cam-ctl{display:grid;grid-template-columns:minmax(0,1fr) 226px;gap:18px;align-items:center}
+.cam-ctl > div{display:flex;align-items:center;gap:10px;border-radius:8px}
+.cam-sl{flex:1;min-width:0}
+.cam-ctl .sel-wrap{flex:1;min-width:0}
+.fov{width:46px;height:52px;flex:none;color:var(--c);overflow:visible}
+.fov-w{fill:currentColor;fill-opacity:.16;stroke:currentColor;stroke-width:1.3;stroke-linejoin:round}
+.fov-cam{fill:none;stroke:var(--ink);stroke-width:1.4;stroke-linejoin:round}
+.mvd{width:48px;height:48px;flex:none;color:var(--ink);fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.mvd .subj{fill:currentColor;fill-opacity:.22}
+.mvd .arr{stroke:var(--c)}
+.fov.gone,.mvd.gone{opacity:.35}
+
+.tl-ruler{position:relative;height:18px;margin-left:calc(var(--tl-lab) + 10px)}
+.tl-ruler span{position:absolute;bottom:3px;transform:translateX(-50%);font:600 9.5px/1 var(--rs-mono);color:var(--faint);white-space:nowrap}
+.tl-ruler span:first-child{transform:none}
+.tl-row{display:grid;grid-template-columns:var(--tl-lab) minmax(0,1fr);gap:10px;align-items:center;margin:0 0 6px}
+.tl-lab{font:600 10.5px/1.25 var(--rs-mono);color:var(--dim);letter-spacing:.04em}
+.tl-lab b{display:block;font-size:12px;color:var(--ink);letter-spacing:.02em}
+.tl-track{position:relative;height:44px;background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tl-grid{position:absolute;top:0;bottom:0;width:1px;background:color-mix(in srgb,var(--line) 70%,transparent)}
+.clip{appearance:none;position:absolute;top:5px;bottom:5px;border-radius:5px;padding:3px 7px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;justify-content:center;text-align:left;font-family:inherit;
+  background:color-mix(in srgb,var(--crew-editor) 20%,var(--panel2));border:1px solid color-mix(in srgb,var(--crew-editor) 50%,transparent);color:var(--ink);transition:left .35s ease,width .35s ease}
+.clip.alt{background:color-mix(in srgb,var(--crew-editor) 9%,var(--panel2))}
+.clip b{font:700 10.5px/1.2 var(--rs-mono);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clip small{font:600 9.5px/1.2 var(--rs-mono);color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#picTrack{height:58px}
+.clip{isolation:isolate}
+.clip-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.clip:not(.has-img) .clip-img{visibility:hidden}
+.clip.has-img::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,11,8,.86),rgba(10,11,8,.5));pointer-events:none}
+.clip b,.clip small{position:relative;z-index:1;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+.clip.has-img small{color:#c9ccba}
+.clip.lit,.ev.lit{box-shadow:0 0 0 2px var(--volt)}
+.cutmark{position:absolute;top:0;bottom:0;width:2px;margin-left:-1px;background:var(--volt);opacity:.9;transition:left .35s ease}
+.tail{position:absolute;top:0;bottom:0;right:0;background:repeating-linear-gradient(135deg,transparent 0 6px,color-mix(in srgb,var(--ink) 7%,transparent) 6px 7px)}
+.over{position:absolute;top:0;bottom:0;background:color-mix(in srgb,var(--amber) 22%,transparent);border-left:1px dashed var(--amber)}
+.cuts-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:13px;color:var(--ink)}
+.cuts-line b{font:700 18px/1 var(--rs-mono);color:var(--volt)}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px 16px}
+.time-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);border-radius:8px;padding:2px 4px}
+.time-row .sn{font:700 10.5px/1 var(--rs-mono);color:var(--ink);min-width:44px;letter-spacing:.06em}
+.num{width:66px;background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--ink);font:600 12.5px/1 var(--rs-mono);padding:6px 6px}
+.num:focus{outline:none;border-color:color-mix(in srgb,var(--volt) 50%,transparent)}
+.row-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+.lock-row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:start;margin:0 0 8px;border-radius:8px}
+.chk{appearance:none;width:22px;height:22px;border-radius:6px;border:1px solid var(--line2);background:var(--bg);display:grid;place-items:center;cursor:pointer;margin-top:9px;color:transparent;padding:0}
+.chk.on{background:var(--volt);border-color:var(--volt);color:var(--bg)}
+.chk .ic{width:14px;height:14px}
+.lock-row.off .fld{text-decoration:line-through;color:var(--faint);border-style:dashed}
+
+.lanes .tl-track{height:auto;min-height:32px}
+.ev{appearance:none;position:absolute;height:22px;border-radius:5px;font:600 10.5px/20px var(--rs-font);padding:0 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border:1px solid;text-align:left;transition:left .35s,width .35s}
+.ev.voice{color:var(--lane-voice);border-color:color-mix(in srgb,var(--lane-voice) 40%,transparent);background:color-mix(in srgb,var(--lane-voice) 12%,var(--panel2))}
+.ev.sfx{color:var(--lane-sfx);border-color:color-mix(in srgb,var(--lane-sfx) 45%,transparent);background:color-mix(in srgb,var(--lane-sfx) 12%,var(--panel2))}
+.ev.music{color:var(--lane-music);border-color:color-mix(in srgb,var(--lane-music) 45%,transparent);background:color-mix(in srgb,var(--lane-music) 12%,var(--panel2))}
+.ev.sub{color:var(--lane-sub);border-color:color-mix(in srgb,var(--lane-sub) 45%,transparent);background:color-mix(in srgb,var(--lane-sub) 12%,var(--panel2))}
+.ev.untimed{border-style:dashed}
+.ev:hover{box-shadow:0 0 0 2px color-mix(in srgb,var(--volt) 55%,transparent)}
+.lane-none{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--faint);font-style:italic}
+.marker-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--dim)}
+.marker-legend span{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.marker-legend code{background:none;border:0;padding:0;font:700 13px/1 var(--rs-mono)}
+.mk-music{color:var(--lane-music)} .mk-sfx{color:var(--lane-sfx)} .mk-voice{color:var(--lane-voice)} .mk-sub{color:var(--lane-sub)}
+.reftag{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+.reftag b{font-family:var(--rs-mono);color:var(--volt);font-weight:700}
+
+[hidden]{display:none!important}
+.tl-layer{position:absolute;inset:0}
+.tl-ruler span.end{transform:translateX(-100%)}
+.iwarn.inline{width:auto;margin:0}
+.ics{display:inline-flex}
+.step button:disabled{opacity:.35;cursor:default}
+.cast-row.lit,.cam-row.lit,.time-row.lit,.lock-row.lit,.cam-ctl > div.lit{background:color-mix(in srgb,var(--c) 9%,transparent);box-shadow:0 0 0 6px color-mix(in srgb,var(--c) 9%,transparent)}
+.ref.lit{box-shadow:0 0 0 2px var(--volt)}
+
+@media (max-width:900px){
+  .cs{--ed-size:13px;--tl-lab:70px}
+  .cs-top{position:static;padding:10px 14px}
+  .cs-brand h1{font-size:19px}
+  .cs-count{min-width:0;text-align:left}
+  .cs-main{grid-template-columns:minmax(0,1fr)}
+  .pp{top:0;height:46vh;height:46dvh;border-right:0;border-bottom:1px solid var(--line);background:var(--bg)}
+  .pp-head{padding:8px 14px 6px}
+  .pp-scroll{margin:0 10px 8px}
+  .ed{padding:12px 14px 28px}
+  .pp-warn{margin:0 10px 8px;max-height:76px}
+  .crew-col{padding:14px 10px 90px}
+  .crew{scroll-margin-top:calc(46vh + 12px)}
+  .crew-h{padding:12px 14px 10px 16px;gap:10px}
+  .crew-b{padding:2px 14px 12px 16px}
+  .cast-row{grid-template-columns:minmax(0,1fr);gap:4px}
+  .cast-name{padding-top:0}
+  .cam-ctl{grid-template-columns:minmax(0,1fr);gap:8px}
+}
+@media (max-width:560px){
+  .pick .tiles{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+</style>
+</head>
+<body>
+<div class="cs" id="app">
+  <header class="cs-top" id="top">
+    <div class="cs-brand">
+      <h1 id="brandTitle">The <em>Call Sheet</em></h1>
+    </div>
+    <div class="cs-actions">
+      <div class="seg seg-level" id="levelSeg" role="group" aria-label="Prompt level">
+        <button type="button" data-level="1">Prompt only</button>
+        <button type="button" data-level="2">+ References</button>
+      </div>
+      <span class="cs-count" id="count" aria-live="polite"></span>
+      <button type="button" class="ghost-btn" id="undoBtn" disabled></button>
+      <button type="button" class="ghost-btn" id="resetBtn"></button>
+      <button type="button" class="btn-primary" id="copyBtn"></button>
+    </div>
+  </header>
+  <main class="cs-main">
+    <section class="pp" id="pp" aria-label="Prompt">
+      <div class="pp-head">
+        <span class="doc-eyebrow">The prompt</span>
+      </div>
+      <div class="pp-scroll" id="ppScroll">
+        <div class="pp-stack">
+          <pre class="pp-hl ed" id="hl" aria-hidden="true"></pre>
+          <textarea class="pp-ta ed" id="ta" spellcheck="false" autocomplete="off" aria-label="Prompt text"></textarea>
+        </div>
+      </div>
+      <div class="pp-warn" id="ppWarn" hidden></div>
+    </section>
+    <section class="crew-col" id="crewCol" aria-label="Crew">
+      <div id="crewList"></div>
+    </section>
+  </main>
+</div>
+<script>
+(() => {
+'use strict';
+/* ── The two prompts (synced from ../story/STORY.md by sync-prompts.mjs) ── */
+const PROMPTS = /*PROMPTS:START*/{"a":"GLOBAL STYLE: Quiet naturalistic drama, photoreal live action, shot on 35mm color negative film, fine organic grain, gentle halation on highlights, a muted palette in which the red paper lanterns and the man's dark green sweater are the only strong colors. No subtitles, no captions, no on-screen text, no logos, nothing readable anywhere.\n\nSCENE: A man in his thirties returns the old film camera an elderly neighbor lent him when he was ten, and shows her the fifteen-second film he finally made for her.\n\nCHARACTERS: THE MAN, an East Asian man in his early thirties, lean build, black hair in a short textured crop with tapered sides, clean-shaven, dark brown eyes, a dark green crew-neck knit sweater, slim black trousers, black low-top sneakers. THE WOMAN, an East Asian woman in her late seventies, small and slight, silver-white hair pulled back in a low bun with loose strands at the temples, deep laugh lines, warm dark brown eyes, thin gold-rimmed reading glasses on a beaded cord at her chest, a faded indigo knit cardigan over a cream cotton blouse, loose dark grey trousers, black cloth slippers. Only these two people exist in the entire video.\n\nPROP: THE CAMERA, one worn 1970s silver-and-black 35mm rangefinder film camera, fixed lens with no cap, brassing on its corners where the chrome has rubbed through, black leatherette peeling at one corner, a scuffed brown leather strap. There is only one camera in the entire video. The man's phone is a plain black smartphone.\n\nLOCATION 1, THE DESK, night: a small apartment corner, a plain wooden desk against a bare off-white wall under one window, city lights blurred into soft bokeh outside the glass, an open silver laptop showing an abstract editing timeline of colored bars, a switched-off brass desk lamp.\nLOCATION 2, THE COURTYARD, early morning: a courtyard of grey flagstones framed by dark timber pillars and grey tiled roofs, red paper lanterns hanging from the eaves, rows of potted bonsai along the walls, a wooden gate on the left side, soft mist in the air.\n\nFIRST FRAME AND BLOCKING: Segment 1, THE MAN sits at the desk screen-left with his back three-quarters to camera, the laptop glowing in front of him, THE CAMERA resting on the desk to the right of the laptop. Segments 2 to 4, THE WOMAN sits on a low wooden stool beside the potted bonsai on the right side of the courtyard with a bowl of pea pods in her lap. THE MAN enters through the gate on the left and always stays on her left side. They never swap sides.\n\nFORMAT MODE: Controlled four-segment sequence, three HARD CUTs, 15 seconds total, real-time motion.\n\nOPTICS AND CAMERA: Segment 1 at a 47° field of view, a slow push-in over the man's shoulder toward the glowing screen, the screen content never readable. Segment 2 at 84°, wide from just inside the gate, locked-off at chest height. Segment 3 at 29°, short telephoto two-shot from 3 meters, slow push-in, shallow focus with the lanterns melting into soft red bokeh. Segment 4 at 47°, medium two-shot, locked-off with a gentle handheld breath.\n\nACTION TIMING: 0.0s to 3.5s, SEGMENT 1, THE DESK: he drags the last clip into place on the timeline, then reaches over and rests his hand on THE CAMERA. HARD CUT. 3.5s to 7.0s, SEGMENT 2, THE COURTYARD: the gate swings open and he walks in holding THE CAMERA by its strap; she looks up from the pea pods, her eyes narrow, then widen in recognition. HARD CUT. 7.0s to 11.0s, SEGMENT 3: he crouches at her left side and holds up his phone so she can see the screen; its cool light plays across her face; at 9.5s her hand rises to her mouth and her eyes glisten. HARD CUT. 11.0s to 15.0s, SEGMENT 4: he places THE CAMERA in her hands; she turns it over, laughs and swats his arm; at 12.5s she speaks her line; at 14.0s she lifts THE CAMERA to her eye and takes his picture, and he grins.\n\nPHYSICS: Mist drifts slowly through the courtyard, lantern tassels sway in a light breeze, the camera strap swings with real weight, pea pods shift in the bowl when she moves.\n\nLIGHTING: Segment 1, the only light is the cool blue-white laptop glow on his face and hands plus faint city glow through the window. Segments 2 to 4, soft overcast morning skylight diffused by mist, no hard shadows; in Segment 3 the phone adds a soft cool glow on her face and glasses.\n\nAUDIO: Off-screen narration in THE MAN's voice, calm and warm, spoken in English, his mouth stays closed while it plays: at 0.5s {Everything I film started with her camera.} At 4.0s {I borrowed it when I was ten.} At 7.5s {Twenty years, to make her fifteen seconds.} On screen, only THE WOMAN speaks, at 12.5s, amused, in English: {Took you long enough.} Sound effects: <soft laptop key taps> and <a wall clock ticking> in Segment 1, <an old wooden gate creaks open> at 3.6s, <morning birdsong> through Segments 2 to 4, <a film camera shutter clicks> at 14.2s. Music: (a gentle solo piano melody enters at 7.0s and swells softly to the end). No other voices.\n\nPOSITIVE LOCKS: Exactly two people, never a third. Both keep the same face, hair and wardrobe across every cut. Only one camera, and it passes from his hand to hers at 11.5s and stays in hers. The phone and laptop screens never show readable text. No subtitles.","refs":"REFERENCES: @Image 1 is THE MAN's character sheet, one person in three views, both sides of his face: use his face, hair, build and wardrobe, not the grey studio background. @Image 2 is THE WOMAN's character sheet, one person in three views, both sides of her face: use her face, hair, glasses and wardrobe, not the grey studio background. @Image 3 is THE COURTYARD, one wide shot of the whole empty place: use its layout, flagstones, lanterns, bonsai and misty light. @Image 4 is a B-roll angle of THE COURTYARD, from just inside the wooden gate on the left. @Image 5 is a B-roll angle of THE COURTYARD, from under the walkway on the right, looking back at the gate. @Image 6 is THE DESK, one wide shot of the room at night: use the desk, window, laptop and night light. @Image 7 is a B-roll angle of THE DESK, from the doorway across the room. @Image 8 is a B-roll angle of THE DESK, from behind the chair toward the window. @Image 9 is THE CAMERA prop sheet, one object in three views: use its exact shape, brassing and strap. @Audio 1 is THE MAN's narration voice: use its voice and pacing for the three narration lines. Where these references and the shot description disagree, the shot description wins."}/*PROMPTS:END*/;
+
+/* ── Icons: Phosphor regular (MIT), inlined so the page works from file:// ── */
+const ICONS = {
+  slate:'M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.550,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07-22.62,6L147.42,51.830Zm-66.69,17.6,28.12,16.24-36.94,9.75L88.53,67.37Zm-79.4,44.62-6-22.08,26.5-7L94.69,89.4ZM208,200H48V120H208v80Z',
+  coins:'M184,89.57V84c0-25.08-37.83-44-88-44S8,58.92,8,84v40c0,20.89,26.25,37.49,64,42.46V172c0,25.08,37.83,44,88,44s88-18.920,88-44V132C248,111.3,222.58,94.68,184,89.57ZM232,132c0,13.22-30.79,28-72,28-3.73,0-7.43-.13-11.080-.37C170.49,151.77,184,139,184,124V105.74C213.87,110.19,232,122.27,232,132ZM72,150.25V126.46A183.74,183.74,0,0,0,96,128a183.74,183.74,0,0,0,24-1.54v23.79A163,163,0,0,1,96,152,163,163,0,0,1,72,150.25Zm96-40.32V124c0,8.39-12.41,17.4-32,22.87V123.5C148.91,120.37,159.84,115.71,168,109.93ZM96,56c41.21,0,72,14.78,72,28s-30.79,28-72,28S24,97.22,24,84,54.79,56,96,56ZM24,124V109.93c8.16,5.78,19.09,10.44,32,13.57v23.37C36.41,141.4,24,132.39,24,124Zm64,48v-4.17c2.63.1,5.290.17,8,.17,3.88,0,7.67-.13,11.39-.35A121.92,121.92,0,0,0,120,171.41v23.46C100.41,189.4,88,180.39,88,172Zm48,26.25V174.4a179.48,179.48,0,0,0,24,1.6,183.74,183.74,0,0,0,24-1.54v23.79a165.45,165.45,0,0,1-48,0Zm64-3.38V171.5c12.91-3.13,23.84-7.79,32-13.57V172C232,180.39,219.59,189.4,200,194.87Z',
+  megaphone:'M248,120a48.05,48.05,0,0,0-48-48H160.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,32,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,159.12,214l11,7.33A16,16,0,0,0,194.5,212l11.77-44.36A48.07,48.07,0,0,0,248,120ZM48,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C134.65,155,90.84,164.07,48,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM200,152H168V88h32a32,32,0,1,1,0,64Z',
+  palette:'M200.77,53.89A103.27,103.27,0,0,0,128,24h-1.07A104,104,0,0,0,24,128c0,43,26.58,79.06,69.36,94.17A32,32,0,0,0,136,192a16,16,0,0,1,16-16h46.21a31.81,31.81,0,0,0,31.2-24.880,104.43,104.43,0,0,0,2.59-24A103.28,103.28,0,0,0,200.77,53.89Zm13,93.71A15.89,15.89,0,0,1,198.21,160H152a32,32,0,0,0-32,32,16,16,0,0,1-21.31,15.07C62.49,194.3,40,164,40,128a88,88,0,0,1,87.09-88h.9a88.35,88.35,0,0,1,88,87.25A88.86,88.86,0,0,1,213.81,147.6ZM140,76a12,12,0,1,1-12-12A12,12,0,0,1,140,76ZM96,100A12,12,0,1,1,84,88,12,12,0,0,1,96,100Zm0,56a12,12,0,1,1-12-12A12,12,0,0,1,96,156Zm88-56a12,12,0,1,1-12-12A12,12,0,0,1,184,100Z',
+  users:'M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.890,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z',
+  map:'M228.92,49.69a8,8,0,0,0-6.86-1.45L160.93,63.52,99.58,32.84a8,8,0,0,0-5.52-.6l-64,16A8,8,0,0,0,24,56V200a8,8,0,0,0,9.94,7.76l61.13-15.28,61.35,30.68A8.15,8.15,0,0,0,160,224a8,8,0,0,0,1.94-.24l64-16A8,8,0,0,0,232,200V56A8,8,0,0,0,228.92,49.69ZM104,52.94l48,24V203.06l-48-24ZM40,62.25l48-12v127.5l-48,12Zm176,131.5-48,12V78.25l48-12Z',
+  camera:'M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM192,184H32V72H192V184Zm48-22.95-32-21.33V116.28L240,95Z',
+  bulb:'M176,232a8,8,0,0,1-8,8H88a8,8,0,0,1,0-16h80A8,8,0,0,1,176,232Zm40-128a87.55,87.55,0,0,1-33.64,69.21A16.24,16.24,0,0,0,176,186v6a16,16,0,0,1-16,16H96a16,16,0,0,1-16-16v-6a16,16,0,0,0-6.23-12.66A87.59,87.59,0,0,1,40,104.49C39.74,56.83,78.26,17.14,125.88,16A88,88,0,0,1,216,104Zm-16,0a72,72,0,0,0-73.74-72c-39,.92-70.47,33.39-70.26,72.39a71.65,71.65,0,0,0,27.64,56.3A32,32,0,0,1,96,186v6h64v-6a32.15,32.15,0,0,1,12.47-25.35A71.65,71.65,0,0,0,200,104Zm-16.11-9.34a57.6,57.6,0,0,0-46.56-46.55,8,8,0,0,0-2.66,15.78c16.57,2.79,30.63,16.85,33.44,33.45A8,8,0,0,0,176,104a9,9,0,0,0,1.35-.11A8,8,0,0,0,183.89,94.66Z',
+  sparkle:'M197.58,129.06,146,110l-19-51.62a15.92,15.92,0,0,0-29.88,0L78,110l-51.62,19a15.92,15.92,0,0,0,0,29.88L78,178l19,51.62a15.92,15.92,0,0,0,29.88,0L146,178l51.62-19a15.92,15.92,0,0,0,0-29.88ZM137,164.22a8,8,0,0,0-4.74,4.74L112,223.85,91.78,169A8,8,0,0,0,87,164.22L32.15,144,87,123.78A8,8,0,0,0,91.78,119L112,64.15,132.22,119a8,8,0,0,0,4.74,4.74L191.85,144ZM144,40a8,8,0,0,1,8-8h16V16a8,8,0,0,1,16,0V32h16a8,8,0,0,1,0,16H184V64a8,8,0,0,1-16,0V48H152A8,8,0,0,1,144,40ZM248,88a8,8,0,0,1-8,8h-8v8a8,8,0,0,1-16,0V96h-8a8,8,0,0,1,0-16h8V72a8,8,0,0,1,16,0v8h8A8,8,0,0,1,248,88Z',
+  scissors:'M157.73,113.13A8,8,0,0,1,159.82,102L227.48,55.7a8,8,0,0,1,9,13.21l-67.67,46.3a7.92,7.92,0,0,1-4.51,1.4A8,8,0,0,1,157.73,113.13Zm80.87,85.09a8,8,0,0,1-11.12,2.08L136,137.7,93.49,166.78a36,36,0,1,1-9-13.19L121.83,128,84.44,102.41a35.86,35.86,0,1,1,9-13.19l143,97.87A8,8,0,0,1,238.6,198.22ZM80,180a20,20,0,1,0-5.86,14.14A19.85,19.85,0,0,0,80,180ZM74.14,90.13a20,20,0,1,0-28.28,0A19.85,19.85,0,0,0,74.14,90.13Z',
+  clipboard:'M168,152a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,152Zm-8-40H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm56-64V216a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V48A16,16,0,0,1,56,32H92.26a47.92,47.92,0,0,1,71.48,0H200A16,16,0,0,1,216,48ZM96,64h64a32,32,0,0,0-64,0ZM200,48H173.25A47.93,47.93,0,0,1,176,64v8a8,8,0,0,1-8,8H88a8,8,0,0,1-8-8V64a47.93,47.93,0,0,1,2.75-16H56V216H200Z',
+  speaker:'M155.51,24.81a8,8,0,0,0-8.42.88L77.25,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V32A8,8,0,0,0,155.51,24.81ZM32,96H72v64H32ZM144,207.64,88,164.09V91.91l56-43.55Zm54-106.08a40,40,0,0,1,0,52.88,8,8,0,0,1-12-10.58,24,24,0,0,0,0-31.72,8,8,0,0,1,12-10.58ZM248,128a79.9,79.9,0,0,1-20.37,53.34,8,8,0,0,1-11.92-10.67,64,64,0,0,0,0-85.33,8,8,0,1,1,11.92-10.67A79.83,79.83,0,0,1,248,128Z',
+  info:'M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm16-40a8,8,0,0,1-8,8,16,16,0,0,1-16-16V128a8,8,0,0,1,0-16,16,16,0,0,1,16,16v40A8,8,0,0,1,144,176ZM112,84a12,12,0,1,1,12,12A12,12,0,0,1,112,84Z',
+  check:'M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z',
+  plus:'M224,128a8,8,0,0,1-8,8H136v80a8,8,0,0,1-16,0V136H40a8,8,0,0,1,0-16h80V40a8,8,0,0,1,16,0v80h80A8,8,0,0,1,224,128Z',
+  reset:'M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.270a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z',
+  image:'M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z',
+  warning:'M236.8,188.09,149.35,36.22h0a24.76,24.76,0,0,0-42.7,0L19.2,188.09a23.51,23.51,0,0,0,0,23.72A24.35,24.35,0,0,0,40.55,224h174.9a24.35,24.35,0,0,0,21.33-12.19A23.51,23.51,0,0,0,236.8,188.090ZM222.93,203.8a8.5,8.5,0,0,1-7.48,4.2H40.55a8.5,8.5,0,0,1-7.48-4.2,7.59,7.59,0,0,1,0-7.72L120.52,44.21a8.75,8.75,0,0,1,15,0l87.45,151.870A7.59,7.59,0,0,1,222.93,203.8ZM120,144V104a8,8,0,0,1,16,0v40a8,8,0,0,1-16,0Zm20,36a12,12,0,1,1-12-12A12,12,0,0,1,140,180Z',
+  caret:'M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z'
+};
+const ic = (n, cls) => `<svg class="ic${cls ? ' ' + cls : ''}" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="${ICONS[n]}"/></svg>`;
+
+/* ── The crew, in call-sheet order ── */
+const CREW = [
+  {id:'producer', name:'Producer',          job:'Length, shape, quality, cost.',                      icon:'coins'},
+  {id:'director', name:'Director',          job:'The scene in one line, the genre, who stands where.', icon:'megaphone'},
+  {id:'colorist', name:'Colorist',          job:'Color and grain.',                                           icon:'palette'},
+  {id:'casting',  name:'Casting',           job:'Faces, hair, wardrobe.',                              icon:'users'},
+  {id:'set',      name:'Set designer',      job:'The places and props.',                               icon:'map'},
+  {id:'camera',   name:'Camera (DP)',       job:'Film, lens, move.',                                 icon:'camera'},
+  {id:'gaffer',   name:'Gaffer',            job:'Where the light comes from.',                         icon:'bulb'},
+  {id:'effects',  name:'Effects',           job:'Water, hair, smoke, fabric.',                         icon:'sparkle'},
+  {id:'editor',   name:'Editor',            job:'Shot 1, hard cut, shot 2.',                           icon:'scissors'},
+  {id:'script',   name:'Script supervisor', job:'What must never change.',                             icon:'clipboard'},
+  {id:'sound',    name:'Sound',             job:'Voice, effects, music.',                              icon:'speaker'}
+];
+const OWNER = {'GLOBAL STYLE':'colorist','SCENE':'director','REFERENCES':'casting','CHARACTERS':'casting','PROP':'set','LOCATION':'set',
+  'FIRST FRAME AND BLOCKING':'director','FORMAT MODE':'editor','OPTICS AND CAMERA':'camera','ACTION TIMING':'editor','PHYSICS':'effects',
+  'LIGHTING':'gaffer','AUDIO':'sound','POSITIVE LOCKS':'script'};
+const ORDER = ['GLOBAL STYLE','SCENE','REFERENCES','CHARACTERS','PROP','LOCATION','FIRST FRAME AND BLOCKING','FORMAT MODE',
+  'OPTICS AND CAMERA','ACTION TIMING','PHYSICS','LIGHTING','AUDIO','POSITIVE LOCKS'];
+const HEAD_RE = /^(GLOBAL STYLE|SCENE|REFERENCES|CHARACTERS|PROP|LOCATION[ \t]+(\d+)|FIRST FRAME AND BLOCKING|FORMAT MODE|OPTICS AND CAMERA|ACTION TIMING|PHYSICS|LIGHTING|AUDIO|POSITIVE LOCKS)\b([^:\n]{0,80}):[ \t]*/gm;
+
+const GENRES = ['Drama','Action','Commercial','Epic','Noir','Horror','UGC','Documentary','Fantasy'];
+const STOCKS = ['35mm color negative film','65mm large-format film','16mm film','digital cinema camera','iPhone footage'];
+const GRAINS = [
+  {v:'no grain',           re:/\bno\s+(?:film\s+)?grain\b/i},
+  {v:'fine organic grain', re:/\b(?:fine|subtle|light)\s+(?:organic\s+)?(?:film\s+)?grain\b/i},
+  {v:'heavy grain',        re:/\b(?:heavy|coarse|thick)\s+(?:film\s+)?grain\b/i}
+];
+/* the colorist's job: the colour grade. Film SIZE (16/35/65mm) changes grain and sharpness, never colour — it lives with the camera. */
+const COLORS = [
+  {v:'warm',            phrase:'a warm color grade',               re:/(?:\b(?:a|an)\s+)?\bwarm\s+(?:colou?r\s+)?(?:grade|tones?|palette|look)\b/i},
+  {v:'neutral',         phrase:'a neutral color grade',            re:/(?:\b(?:a|an)\s+)?\bneutral\s+(?:colou?r\s+)?(?:grade|tones?|palette|look)\b/i},
+  {v:'cool',            phrase:'a cool color grade',               re:/(?:\b(?:a|an)\s+)?\b(?:cool|cold)\s+(?:colou?r\s+)?(?:grade|tones?|palette|look)\b/i},
+  {v:'faded',           phrase:'a faded, low-contrast color grade', re:/(?:\b(?:a|an)\s+)?\b(?:faded|washed[- ]out)(?:,?\s+low[- ]contrast)?\s+(?:colou?r\s+)?(?:grade|tones?|palette|look|colou?rs)\b/i},
+  {v:'black and white', phrase:'black and white',                  re:/\b(?:black[- ]and[- ]white|monochrome)\b/i}
+];
+const MOVES = [
+  {v:'locked-off',   re:/\blocked[- ]off\b/i},
+  {v:'slow push-in', re:/\b(?:slow\s+)?push(?:es|ing)?[- ]in\b/i},
+  {v:'pull back',    re:/\bpull(?:s|ing)?[- ]back\b/i},
+  {v:'dolly left',   re:/\bdolly(?:ing)?\s+left\b/i},
+  {v:'dolly right',  re:/\bdolly(?:ing)?\s+right\b/i},
+  {v:'handheld',     re:/\bhand-?held\b/i},
+  {v:'orbit',        re:/\borbit(?:s|ing)?\b/i},
+  {v:'crane up',     re:/\bcrane(?:s|ing)?\s+up\b/i}
+];
+const LENS_STOPS = [18, 29, 47, 63, 84, 100];
+const lensName = d => d < 24 ? 'telephoto' : d < 38 ? 'short telephoto' : d < 55 ? 'normal' : d < 95 ? 'wide' : 'ultra-wide';
+const TOD = [
+  {v:'night',       re:/\b(?:night(?:time)?|midnight|moonlight)\b/gi,      add:'Night, lit only by practical lights.'},
+  {v:'dawn',        re:/\b(?:dawn|sunrise|early morning|morning)\b/gi,     add:'Soft dawn light, cool and low.'},
+  {v:'day',         re:/\b(?:daylight|daytime|midday|noon|afternoon)\b/gi, add:'Bright midday daylight.'},
+  {v:'golden hour', re:/\b(?:golden hour|sunset)\b/gi,                     add:'Golden hour sun, low and warm, long soft shadows.'},
+  {v:'blue hour',   re:/\b(?:blue hour|twilight|dusk)\b/gi,                add:'Blue hour dusk, deep blue ambient light.'}
+];
+const FX = [
+  {v:'mist',   re:/\b(?:mist|misty|fog|foggy|haze|hazy)\b/gi,                      add:'Soft mist drifts through the air.'},
+  {v:'rain',   re:/\b(?:rain|raining|rainy|raindrops?|drizzle)\b/gi,               add:'Light rain falls, drops beading on every surface.'},
+  {v:'smoke',  re:/\b(?:smoke|smoky|steam|steaming)\b/gi,                          add:'Thin smoke curls upward and drifts.'},
+  {v:'hair',   re:/\b(?:hair|strands?)\b/gi,                                       add:'Hair moves naturally with every turn of the head.'},
+  {v:'fabric', re:/\b(?:fabric|cloth|clothing|tassels?|curtains?|scarf|sleeves?|cardigan|sweater|dress|coat|flags?|banners?)\b/gi, add:'Clothing folds and sways with each movement.'},
+  {v:'water',  re:/\b(?:water|splash(?:es)?|ripples?|puddles?|waves?)\b/gi,        add:'Water ripples and splashes with real weight.'},
+  {v:'dust',   re:/\b(?:dust|dusty|motes?|particles)\b/gi,                         add:'Dust motes drift through the light.'}
+];
+const RATES = {'480p':{r:2.5}, '720p':{r:6.5}, '1080p':{r:9}};   // Higgsfield price check 2026-09-11 · 15 s = 37.5 / 97.5 / 135 · references don't change it
+
+/* ── pictures: assets/*.webp. A missing file shows a placeholder, never a broken image. ── */
+const A = n => 'assets/' + n + '.webp';
+const PICS = {
+  stock: {'35mm color negative film':'film-35mm', '65mm large-format film':'film-65mm', '16mm film':'film-16mm', 'digital cinema camera':'film-digital', 'iPhone footage':'film-iphone'},
+  grain: {'no grain':'grain-none', 'fine organic grain':'grain-fine', 'heavy grain':'grain-heavy'},
+  color: {warm:'color-warm', neutral:'color-neutral', cool:'color-cool', faded:'color-faded', 'black and white':'color-bw'},
+  genre: {Drama:'genre-drama', Action:'genre-action', Commercial:'genre-commercial', Epic:'genre-epic', Noir:'genre-noir', Horror:'genre-horror', UGC:'genre-ugc', Documentary:'genre-documentary', Fantasy:'genre-fantasy'},
+  tod:   {night:'tod-night', dawn:'tod-dawn', day:'tod-day', 'golden hour':'tod-golden-hour', 'blue hour':'tod-blue-hour'},
+  fx:    {mist:'fx-mist', rain:'fx-rain', smoke:'fx-smoke', hair:'fx-hair', fabric:'fx-fabric', water:'fx-water', dust:'fx-dust'}
+};
+const SHOTS = 4;   // assets/shot-1 … shot-4 sit behind the picture-track clips
+const ASSETS = ['base', ...Object.values(PICS).flatMap(o => Object.values(o)), ...Array.from({length: SHOTS}, (_, i) => 'shot-' + (i + 1))];
+const LABEL = {'35mm color negative film':'35mm', '65mm large-format film':'65mm', '16mm film':'16mm', 'digital cinema camera':'Digital', 'iPhone footage':'iPhone',
+  'no grain':'None', 'fine organic grain':'Fine', 'heavy grain':'Heavy', 'black and white':'Black & white'};
+const PICK = {   // which values are lit, read straight from the model
+  stock: {lit: M => M.stock ? [M.stock.v] : [], px1: true},   // film + grain pictures are 1:1 face crops: shown at full size, never scaled down
+  grain: {lit: M => M.grain ? [M.grain.v] : [], px1: true},
+  color: {lit: M => M.color ? [M.color.v] : []},
+  genre: {lit: M => M.genre ? [M.genre.v] : []},
+  tod:   {lit: M => TOD.filter(x => M.tod[x.v].length).map(x => x.v), multi: true},
+  fx:    {lit: M => FX.filter(x => M.fx[x.v].length).map(x => x.v), multi: true}
+};
+const PIC = {};   // asset name → 'ok' | 'missing', filled in as images load or fail
+const AR = ['auto', '21:9', '16:9', '4:3', '1:1', '3:4', '9:16'];
+const RES = {'480p': [854, 480], '720p': [1280, 720], '1080p': [1920, 1080]};
+
+/* ── small helpers ── */
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => [...(r || document).querySelectorAll(s)];
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const fmt1 = v => (Math.round(v * 10) / 10).toFixed(1);
+const fmtN = v => String(Math.round(v * 10) / 10);
+const cap = s => s ? s[0].toUpperCase() + s.slice(1) : s;
+const isWs = c => c === ' ' || c === '\n' || c === '\t' || c === '\r';
+const NUMW = ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+const w2n = w => /^\d+$/.test(w) ? +w : NUMW.indexOf(String(w).toLowerCase());
+const n2w = (n, like) => {
+  if (like && /^\d+$/.test(like)) return String(n);
+  let w = n >= 0 && n <= 20 ? NUMW[n] : String(n);
+  return like && /^[A-Z]/.test(like) ? cap(w) : w;
+};
+const anArt = n => n === 8 || n === 11 || n === 18 || (n >= 80 && n < 90) || (n >= 800 && n < 900);
+const hasName = (hay, name) => new RegExp('(^|[^A-Za-z])' + reEsc(name) + '(?![A-Za-z])').test(hay);
+
+function splitSentences(str, base) {
+  const out = []; const n = str.length; let st = 0;
+  while (st < n && isWs(str[st])) st++;
+  for (let i = st; i < n; i++) {
+    const ch = str[i];
+    if ((ch === '.' || ch === '!' || ch === '?') && (i + 1 === n || isWs(str[i + 1]))) {
+      out.push({s: base + st, e: base + i + 1, text: str.slice(st, i + 1)});
+      st = i + 1; while (st < n && isWs(str[st])) st++; i = st - 1;
+    }
+  }
+  if (st < n) { let e = n; while (e > st && isWs(str[e - 1])) e--; if (e > st) out.push({s: base + st, e: base + e, text: str.slice(st, e)}); }
+  return out;
+}
+
+/* ── parse(prompt) → model. The prompt string is the only source of truth. ── */
+function sectionsOf(t) {
+  const secs = []; HEAD_RE.lastIndex = 0; let m;
+  while ((m = HEAD_RE.exec(t))) {
+    const kind = m[2] ? 'LOCATION' : m[1];
+    secs.push({kind, key: m[2] ? 'LOCATION ' + m[2] : m[1], num: m[2] ? +m[2] : null, start: m.index,
+      labelEnd: m.index + m[1].length + m[3].length + 1, bodyStart: m.index + m[0].length, extra: m[3], crew: OWNER[kind]});
+  }
+  secs.forEach((s, i) => {
+    let e = i + 1 < secs.length ? secs[i + 1].start : t.length;
+    while (e > s.labelEnd && isWs(t[e - 1])) e--;
+    s.end = e; if (s.bodyStart > e) s.bodyStart = e;
+    s.body = t.slice(s.bodyStart, e);
+  });
+  return secs;
+}
+const secAt = (secs, pos) => { let f = null; for (const s of secs) { if (s.start <= pos) f = s; else break; } return f; };
+function rx(sec, re) {
+  if (!sec) return null; re.lastIndex = 0; const m = re.exec(sec.body); if (!m) return null;
+  const o = sec.bodyStart;
+  return {m, s: o + m.index, e: o + m.index + m[0].length, g: i => m.indices && m.indices[i] ? [o + m.indices[i][0], o + m.indices[i][1]] : null};
+}
+const NAME_RE = /(?:^|(?<=[.!?;]\s+))((?:THE\s+)?[A-Z][A-Z'’-]+(?:\s+[A-Z][A-Z'’-]+){0,3})(?:\s*\([^)\n]*\))?\s*,\s*/g;
+
+function parse(t) {
+  const secs = sectionsOf(t);
+  const by = {}; for (const s of secs) if (!by[s.key]) by[s.key] = s;
+  const M = {t, secs, by, hot: [], warnings: [], tokens: []};
+  const hot = (s, e, crew, ctl) => { if (s != null && e > s) M.hot.push({s, e, crew, ctl}); };
+  const gs = by['GLOBAL STYLE'], fm = by['FORMAT MODE'];
+
+  /* producer */
+  let r = rx(fm, /(\d+(?:\.\d+)?)\s*-?\s*seconds?\s+total/di);
+  M.length = r ? {v: +r.m[1], s: r.s, e: r.e, num: r.g(1)} : null;
+  if (r) hot(r.s, r.e, 'producer', 'length');
+  M.aspect = [];
+  for (const m of t.matchAll(/(?<![\d.:])(21:9|16:9|4:3|1:1|3:4|9:16)(?![\d:])/g)) {
+    M.aspect.push({v: m[1], s: m.index, e: m.index + m[0].length}); hot(m.index, m.index + m[0].length, 'producer', 'aspect');
+  }
+  M.refTokens = [...t.matchAll(/@(Image|Audio|Video)\s*(\d+)/g)].map(m => ({kind: m[1], num: +m[2], s: m.index, e: m.index + m[0].length}));
+  M.mode = M.refTokens.length ? 'omni_reference' : 't2v';
+
+  /* director: genre word in the first sentence of GLOBAL STYLE */
+  M.genre = null;
+  if (gs) {
+    const first = splitSentences(gs.body, gs.bodyStart)[0];
+    if (first) for (const m of first.text.matchAll(/\b(drama|action|commercial|epic|noir|horror|ugc|documentary|fantasy)\b/gi)) {
+      const s = first.s + m.index;
+      if (m[1].toLowerCase() === 'action' && /live[\s-]$/i.test(t.slice(Math.max(0, s - 5), s))) continue;
+      M.genre = {v: GENRES.find(g => g.toLowerCase() === m[1].toLowerCase()), word: m[1], s, e: s + m[1].length};
+      hot(M.genre.s, M.genre.e, 'director', 'genre'); break;
+    }
+  }
+
+  /* colorist */
+  M.stock = null; M.grain = null; M.readable = null; M.color = null;
+  if (gs) {
+    const low = gs.body.toLowerCase();
+    for (const st of STOCKS) { const i = low.indexOf(st.toLowerCase()); if (i >= 0 && (!M.stock || gs.bodyStart + i < M.stock.s)) M.stock = {v: st, s: gs.bodyStart + i, e: gs.bodyStart + i + st.length}; }
+    if (!M.stock) {
+      const m = /\b(8|16|35|65|70)\s?mm\b[\w\s-]{0,30}?\bfilm\b/i.exec(gs.body);
+      if (m) M.stock = {v: {8:'16mm film',16:'16mm film',35:'35mm color negative film',65:'65mm large-format film',70:'65mm large-format film'}[m[1]], s: gs.bodyStart + m.index, e: gs.bodyStart + m.index + m[0].length};
+    }
+    if (M.stock) hot(M.stock.s, M.stock.e, 'camera', 'stock');   /* film size is the camera department's call */
+    for (const G of GRAINS) { const m = G.re.exec(gs.body); if (m && (!M.grain || gs.bodyStart + m.index < M.grain.s)) M.grain = {v: G.v, s: gs.bodyStart + m.index, e: gs.bodyStart + m.index + m[0].length}; }
+    if (M.grain) hot(M.grain.s, M.grain.e, 'colorist', 'grain');
+    for (const C of COLORS) { const m = C.re.exec(gs.body); if (m && (!M.color || gs.bodyStart + m.index < M.color.s)) M.color = {v: C.v, s: gs.bodyStart + m.index, e: gs.bodyStart + m.index + m[0].length}; }
+    if (M.color) hot(M.color.s, M.color.e, 'colorist', 'color');
+    r = rx(gs, /nothing readable anywhere/di);
+    if (r) { M.readable = {s: r.s, e: r.e}; hot(r.s, r.e, 'colorist', 'readable'); }
+  }
+
+  /* casting */
+  const ch = by['CHARACTERS']; M.chars = []; M.lock = null;
+  if (ch) {
+    const o = ch.bodyStart;
+    const lm = /\bOnly\s+(these|this)\s+(\w+)\s+(people|persons?|characters?)(\s+exists?)?[^.!?\n]*[.!?]?/di.exec(ch.body);
+    if (lm) {
+      M.lock = {n: w2n(lm[2]), word: lm[2], s: o + lm.index, e: o + lm.index + lm[0].length,
+        ps: o + lm.index, pe: o + (lm.indices[4] ? lm.indices[4][1] : lm.indices[3][1]), noun: lm[3], verb: !!lm[4]};
+      hot(M.lock.s, M.lock.e, 'casting', 'lock');
+    }
+    const found = [...ch.body.matchAll(NAME_RE)].filter(m => !(lm && m.index >= lm.index && m.index < lm.index + lm[0].length));
+    found.forEach((m, i) => {
+      const ns = o + m.index, ds = o + m.index + m[0].length;
+      let de = i + 1 < found.length ? o + found[i + 1].index : ch.end;
+      if (lm && o + lm.index > ns && o + lm.index < de) de = o + lm.index;
+      while (de > ds && isWs(t[de - 1])) de--;
+      const name = m[1].replace(/\s+/g, ' ');
+      M.chars.push({name, s: ns, ds, de, desc: t.slice(ds, de)});
+      hot(ns, de, 'casting', 'char:' + name);
+    });
+  }
+
+  /* set designer */
+  M.locs = secs.filter(s => s.kind === 'LOCATION').map(s => {
+    const nm = /([A-Z][A-Z'’-]+(?:\s+[A-Z][A-Z'’-]+)*)/.exec(s.extra);
+    const parts = s.extra.replace(/^[\s,]+/, '').split(',').map(x => x.trim()).filter(Boolean);
+    return {sec: s, num: s.num, key: s.key, name: nm ? nm[1] : '', when: parts.slice(1).join(', ')};
+  });
+  M.props = by['PROP'] ? [...by['PROP'].body.matchAll(NAME_RE)].map(m => ({name: m[1].replace(/\s+/g, ' ')})) : [];
+
+  /* references: which @ token points at which name */
+  const rf = by['REFERENCES']; M.refs = [];
+  if (rf) {
+    const ms = [...rf.body.matchAll(/@(Image|Audio|Video)\s*(\d+)/g)];
+    ms.forEach((m, i) => {
+      const s = rf.bodyStart + m.index, ce = i + 1 < ms.length ? rf.bodyStart + ms[i + 1].index : rf.end;
+      const clause = t.slice(s, ce); let target = null, crew = 'casting';
+      for (const c of M.chars) if (hasName(clause, c.name)) { target = c.name; break; }
+      if (!target) for (const l of M.locs) if (l.name && hasName(clause, l.name)) { target = l.name; crew = 'set'; break; }
+      if (!target) for (const p of M.props) if (hasName(clause, p.name)) { target = p.name; crew = 'set'; break; }
+      if (m[1] !== 'Image') crew = 'sound';
+      const id = 'ref:' + m[1] + m[2];
+      M.refs.push({kind: m[1], num: +m[2], tag: '@' + m[1] + ' ' + m[2], s, e: s + m[0].length, ce, target, crew, id});
+      hot(s, ce, crew, id);
+    });
+  }
+
+  /* camera */
+  const op = by['OPTICS AND CAMERA']; M.optics = [];
+  if (op) {
+    const o = op.bodyStart;
+    const ms = [...op.body.matchAll(/Segment\s+(\d+)\s+at\s+(?:(an?)\s+)?(\d+(?:\.\d+)?)\s*°/gdi)];
+    ms.forEach((m, i) => {
+      const cs = o + m.index; let ce = i + 1 < ms.length ? o + ms[i + 1].index : op.end;
+      while (ce > cs && isWs(t[ce - 1])) ce--;
+      const after = o + m.index + m[0].length, tail = t.slice(after, ce);
+      let mv = null;
+      for (const MV of MOVES) { const mm = MV.re.exec(tail); if (mm && (!mv || mm.index < mv.idx)) mv = {v: MV.v, idx: mm.index, s: after + mm.index, e: after + mm.index + mm[0].length}; }
+      const seg = +m[1];
+      M.optics.push({seg, deg: +m[3], ns: o + m.indices[3][0], ne: o + m.indices[3][1], art: m[2] ? [o + m.indices[2][0], o + m.indices[2][1]] : null, cs, ce, move: mv});
+      hot(cs, ce, 'camera', 'seg:' + seg);
+      hot(o + m.indices[3][0], after, 'camera', 'lens:' + seg);
+      if (mv) hot(mv.s, mv.e, 'camera', 'move:' + seg);
+    });
+  }
+
+  /* editor */
+  const at = by['ACTION TIMING']; M.timing = [];
+  if (at) {
+    const o = at.bodyStart; let lastLoc = '';
+    const ms = [...at.body.matchAll(/(\d+(?:\.\d+)?)\s*s\s*(?:to|-|–)\s*(\d+(?:\.\d+)?)\s*s\s*,\s*SEGMENT\s+(\d+)\s*(?:,\s*([^:\n]{1,40}?))?\s*:/gd)];
+    ms.forEach((m, i) => {
+      const cs = o + m.index; let ce = i + 1 < ms.length ? o + ms[i + 1].index : at.end;
+      while (ce > cs && isWs(t[ce - 1])) ce--;
+      const loc = m[4] ? m[4].trim() : ''; if (loc) lastLoc = loc;
+      const seg = +m[3];
+      M.timing.push({seg, t0: +m[1], t1: +m[2], r0: [o + m.indices[1][0], o + m.indices[1][1]], r1: [o + m.indices[2][0], o + m.indices[2][1]],
+        loc: loc || lastLoc, inherited: !loc && !!lastLoc, cs, ce});
+      hot(cs, ce, 'editor', 'clip:' + seg);
+    });
+  }
+  r = rx(fm, /\b(\w+)\s+HARD\s+CUTs?\b/di);
+  M.cutsWord = r ? {word: r.m[1], n: w2n(r.m[1]), s: r.s, e: r.e} : null;
+  if (r) hot(r.s, r.e, 'editor', 'cuts');
+  r = rx(fm, /\b(\w+)-segment\b/di);
+  M.segWord = r ? {word: r.m[1], n: w2n(r.m[1]), s: r.g(1)[0], e: r.g(1)[1]} : null;
+  if (r) hot(r.s, r.e, 'editor', 'cuts');
+
+  /* gaffer + effects: keyword detection */
+  M.tod = {};
+  const todScopes = [by['LIGHTING'], ...M.locs.map(l => ({bodyStart: l.sec.start, body: t.slice(l.sec.start, l.sec.labelEnd)}))].filter(Boolean);
+  for (const T of TOD) { M.tod[T.v] = []; for (const sc of todScopes) for (const m of sc.body.matchAll(T.re)) { const s = sc.bodyStart + m.index; M.tod[T.v].push({s, e: s + m[0].length}); hot(s, s + m[0].length, 'gaffer', 'tod'); } }
+  M.fx = {}; const ph = by['PHYSICS'];
+  for (const F of FX) { M.fx[F.v] = []; if (ph) for (const m of ph.body.matchAll(F.re)) { const s = ph.bodyStart + m.index; M.fx[F.v].push({s, e: s + m[0].length}); hot(s, s + m[0].length, 'effects', 'fx'); } }
+
+  /* script supervisor */
+  const pl = by['POSITIVE LOCKS'];
+  M.locks = pl ? splitSentences(pl.body, pl.bodyStart) : [];
+  M.locks.forEach((x, i) => hot(x.s, x.e, 'script', 'lock:' + i));
+
+  /* sound: bracket tokens, timing, warnings */
+  for (const m of t.matchAll(/\{[^{}\n]*\}|<[^<>\n]*>|\([^()\n]*\)|【[^【】\n]*】/g)) {
+    const c = m[0][0], lane = c === '{' ? 'voice' : c === '<' ? 'sfx' : c === '(' ? 'music' : 'sub';
+    M.tokens.push({lane, s: m.index, e: m.index + m[0].length, inner: m[0].slice(1, -1), sec: secAt(secs, m.index)});
+  }
+  const au = by['AUDIO'];
+  const evs = M.tokens.filter(k => k.sec && k.sec.kind === 'AUDIO');
+  const segSpan = n => { const x = M.timing.find(q => q.seg === n); return x ? [x.t0, x.t1] : null; };
+  evs.forEach((k, i) => {
+    const prevEnd = i > 0 ? evs[i - 1].e : au.bodyStart, nextStart = i + 1 < evs.length ? evs[i + 1].s : au.end;
+    const after = t.slice(k.e, Math.min(nextStart, k.e + 70)), before = t.slice(prevEnd, k.s);
+    let t0 = null, t1 = null, a;
+    const viaAfter = () => {
+      if ((a = /^\s*,?\s*(?:at|@)\s+(\d+(?:\.\d+)?)\s*s\b/i.exec(after))) { t0 = +a[1]; return true; }
+      if ((a = /^\s*,?\s*(?:through|across|over|during|in)\s+Segments\s+(\d+)\s*(?:to|-|–|and|through)\s*(\d+)\b/i.exec(after))) { const p = segSpan(+a[1]), q = segSpan(+a[2]); if (p && q) { t0 = p[0]; t1 = q[1]; return true; } }
+      if ((a = /^\s*,?\s*(?:in|during)\s+Segment\s+(\d+)\b/i.exec(after))) { const p = segSpan(+a[1]); if (p) { t0 = p[0]; t1 = p[1]; return true; } }
+      return false;
+    };
+    const viaBefore = () => { let last = null; for (const b of before.matchAll(/\bat\s+(\d+(?:\.\d+)?)\s*s\b/gi)) last = b; if (last) { t0 = +last[1]; return true; } return false; };
+    const inner = /\b(?:enters|starts|begins|comes in|kicks in|fades in)\s+at\s+(\d+(?:\.\d+)?)\s*s\b/i.exec(k.inner) || /\bat\s+(\d+(?:\.\d+)?)\s*s\b/i.exec(k.inner);
+    if (inner) {
+      t0 = +inner[1];
+      const e2 = /\b(?:until|till|ends? at|stops? at|out at)\s+(\d+(?:\.\d+)?)\s*s\b/i.exec(k.inner);
+      if (e2) t1 = +e2[1]; else if (/\b(?:to|until|through) the end\b/i.test(k.inner)) t1 = 'END';
+    } else if (k.lane === 'voice' || k.lane === 'sub') { viaBefore() || viaAfter(); }
+    else { viaAfter() || viaBefore(); }
+    k.t0 = t0; k.t1 = t1; k.idx = i;
+  });
+  for (let i = evs.length - 2; i >= 0; i--) {   /* "<a> and <b> in Segment 1" share b's time */
+    const k = evs[i], nx = evs[i + 1];
+    if (k.t0 == null && nx.t0 != null && /^\s*(?:,|and|&|,\s*and)\s*$/i.test(t.slice(k.e, nx.s))) { k.t0 = nx.t0; k.t1 = nx.t1; }
+  }
+  M.events = evs;
+  evs.forEach(k => hot(k.s, k.e, 'sound', 'ev:' + k.idx));
+  const upperNames = M.chars.map(c => c.name);
+  for (const k of M.tokens) {
+    const inAudio = k.sec && k.sec.kind === 'AUDIO';
+    let msg = null;
+    if (k.lane === 'music' && !inAudio) msg = 'Seedance will read this as music.';
+    else if (k.lane === 'voice' && !inAudio) msg = 'Seedance will read this as spoken words.';
+    else if (k.lane === 'sfx' && (upperNames.some(n => hasName(k.inner, n)) || /\bTHE\s+[A-Z]{2,}/.test(k.inner))) msg = 'Seedance will read this as a sound effect.';
+    if (msg) { M.warnings.push({s: k.s, e: k.e, lane: k.lane, text: t.slice(k.s, k.e), msg, where: k.sec ? k.sec.key : 'top', crew: k.sec ? k.sec.crew : 'sound'}); hot(k.s, k.e, 'sound', 'brackets'); }
+  }
+
+  const lastEnd = M.timing.reduce((a, x) => Math.max(a, x.t1), 0);
+  const lastEv = evs.reduce((a, k) => Math.max(a, typeof k.t0 === 'number' ? k.t0 + 0.5 : 0), 0);
+  M.T = Math.max(M.length ? M.length.v : 0, lastEnd, lastEv, 4);
+  return M;
+}
+/* ── state ── */
+const S = {text: '', model: null, refsStash: '', res: '480p', aspect: '16:9', sound: true, bitrate: 'standard',
+  activeCrew: null, activeCtl: null, hoverCrew: null, hoverCtl: null, flash: null, flashTimer: 0,
+  hist: [], histSrc: null, histT: 0, session: null, src: 'init', prev: {}, pulseOK: false, ghosts: [], ghostId: 0, pvHover: null};
+const el = {};
+
+/* ── edit engine: every control write goes through here ── */
+function applyEdits(t, edits) {
+  edits = edits.filter(Boolean).sort((a, b) => a.s - b.s);
+  let out = '', last = 0, shift = 0, fr = null;
+  for (const ed of edits) {
+    out += t.slice(last, ed.s);
+    const ns = ed.s + shift; out += ed.str;
+    if (ed.flash) fr = [ns + (ed.fo || 0), ns + ed.str.length + (ed.fx || 0)];
+    shift += ed.str.length - (ed.e - ed.s); last = ed.e;
+  }
+  return {text: out + t.slice(last), fr};
+}
+const rep = (s, e, str, extra) => Object.assign({s, e, str, flash: true}, extra || {});
+
+function ensureSection(key, body) {
+  const t = S.text, M = S.model;
+  const kind = /^LOCATION/.test(key) ? 'LOCATION' : key, num = kind === 'LOCATION' ? +key.split(/\s+/)[1] : null;
+  const oi = ORDER.indexOf(kind);
+  const next = M.secs.find(s => { const si = ORDER.indexOf(s.kind); return si > oi || (si === oi && kind === 'LOCATION' && s.num > num); });
+  const block = key + ': ' + body;
+  if (next) return {text: t.slice(0, next.start) + block + '\n\n' + t.slice(next.start), fr: [next.start, next.start + block.length], bodyAt: next.start + key.length + 2};
+  let at = t.length; while (at > 0 && isWs(t[at - 1])) at--;
+  const pre = at > 0 ? '\n\n' : '';
+  return {text: t.slice(0, at) + pre + block + t.slice(at), fr: [at + pre.length, at + pre.length + block.length], bodyAt: at + pre.length + key.length + 2};
+}
+/* add words to a section: 'sentence' appends a sentence, 'clause' slots ", words" before the final full stop */
+function addToSection(key, piece, mode) {
+  const t = S.text, sec = S.model.by[key];
+  if (!sec) return ensureSection(key, mode === 'clause' ? cap(piece) + '.' : piece);
+  if (!sec.body.trim()) { const w = mode === 'clause' ? cap(piece) + '.' : piece; return applyEdits(t, [rep(sec.labelEnd, sec.end, ' ' + w, {fo: 1})]); }
+  if (mode === 'clause') {
+    const at = /[.!?]$/.test(sec.body) ? sec.end - 1 : sec.end;
+    return applyEdits(t, [rep(at, at, ', ' + piece, {fo: 2})]);
+  }
+  const sep = /[.!?]$/.test(sec.body) ? ' ' : '. ';
+  return applyEdits(t, [rep(sec.end, sec.end, sep + piece, {fo: sep.length})]);
+}
+function clauseIntoFirstSentence(sec, piece, afterPos) {
+  const t = S.text;
+  if (afterPos != null) return applyEdits(t, [rep(afterPos, afterPos, ', ' + piece, {fo: 2})]);
+  const first = splitSentences(sec.body, sec.bodyStart)[0];
+  if (!first) return addToSection(sec.key, piece, 'clause');
+  const at = /[.!?]$/.test(first.text) ? first.e - 1 : first.e;
+  return applyEdits(t, [rep(at, at, ', ' + piece, {fo: 2})]);
+}
+
+function pushHistory(src) {
+  const now = Date.now();
+  if (S.histSrc === src && now - S.histT < 900) { S.histT = now; return; }
+  S.hist.push(S.text); if (S.hist.length > 120) S.hist.shift();
+  S.histSrc = src; S.histT = now; el.undo.disabled = false;
+}
+function commit(res, src) {
+  if (!res || res.text === S.text) return;
+  pushHistory(src);
+  const sc = el.scroll.scrollTop;
+  S.text = res.text; el.ta.value = res.text; S.src = src;
+  S.flash = res.fr ? {s: res.fr[0], e: Math.max(res.fr[1], res.fr[0] + 1), t: performance.now()} : null;
+  sync();
+  el.scroll.scrollTop = sc;
+  if (res.fr) revealRange(res.fr[0], res.fr[1]);
+  clearTimeout(S.flashTimer);
+  S.flashTimer = setTimeout(() => { S.flash = null; renderHL(); }, 1700);
+}
+
+/* ── writes, one per control ── */
+const W = {
+  length(v) {
+    const M = S.model; v = Math.round(v);
+    if (M.length) return commit(applyEdits(S.text, [rep(M.length.num[0], M.length.num[1], String(v), {fo: 0, fx: M.length.e - M.length.num[1]})]), 'length');
+    commit(addToSection('FORMAT MODE', v + ' seconds total', 'clause'), 'length');
+  },
+  aspect(v) {
+    S.aspect = v; const M = S.model;
+    if (M.aspect.length && v !== 'auto') return commit(applyEdits(S.text, M.aspect.map((a, i) => rep(a.s, a.e, v, {flash: i === 0}))), 'aspect');
+    renderControls();
+  },
+  genre(v) {
+    const M = S.model, t = S.text;
+    if (M.genre) {
+      const w = M.genre.word, gsec = M.by['GLOBAL STYLE'];
+      const atStart = gsec && M.genre.s === gsec.bodyStart;
+      let nw = v === 'UGC' ? 'UGC' : (w === 'UGC' ? (atStart ? v : v.toLowerCase()) : (w === w.toUpperCase() ? v.toUpperCase() : /^[A-Z]/.test(w) ? v : v.toLowerCase()));
+      return commit(applyEdits(t, [rep(M.genre.s, M.genre.e, nw)]), 'genre');
+    }
+    const gs = M.by['GLOBAL STYLE'];
+    if (!gs || !gs.body.trim()) return commit(gs ? addToSection('GLOBAL STYLE', v, 'clause') : ensureSection('GLOBAL STYLE', v + '.'), 'genre');
+    const body = gs.body, lower = /^[A-Z][a-z]/.test(body) ? body[0].toLowerCase() : body[0];
+    commit(applyEdits(t, [rep(gs.bodyStart, gs.bodyStart + 1, v + ', ' + lower, {fx: -(1 + (lower.length - 1))})]), 'genre');
+  },
+  stock(v) {
+    const M = S.model; if (!v) return;
+    if (M.stock) return commit(applyEdits(S.text, [rep(M.stock.s, M.stock.e, v)]), 'stock');
+    const gs = M.by['GLOBAL STYLE'];
+    commit(gs ? clauseIntoFirstSentence(gs, 'shot on ' + v) : ensureSection('GLOBAL STYLE', 'Shot on ' + v + '.'), 'stock');
+  },
+  grain(v) {
+    const M = S.model;
+    if (M.grain) return commit(applyEdits(S.text, [rep(M.grain.s, M.grain.e, v)]), 'grain');
+    const gs = M.by['GLOBAL STYLE'];
+    commit(gs ? clauseIntoFirstSentence(gs, v, M.stock ? M.stock.e : null) : ensureSection('GLOBAL STYLE', cap(v) + '.'), 'grain');
+  },
+  color(v) {
+    const M = S.model, C = COLORS.find(x => x.v === v); if (!C) return;
+    if (M.color) return commit(applyEdits(S.text, [rep(M.color.s, M.color.e, C.phrase)]), 'color');
+    const gs = M.by['GLOBAL STYLE'];
+    commit(gs ? clauseIntoFirstSentence(gs, C.phrase, M.grain ? M.grain.e : (M.stock ? M.stock.e : null)) : ensureSection('GLOBAL STYLE', cap(C.phrase) + '.'), 'color');
+  },
+  readable(on) {
+    const M = S.model, t = S.text, gs = M.by['GLOBAL STYLE'];
+    if (on && !M.readable) {
+      if (!gs) return commit(ensureSection('GLOBAL STYLE', 'Nothing readable anywhere.'), 'readable');
+      const ns = splitSentences(gs.body, gs.bodyStart).reverse().find(x => /^no\b/i.test(x.text) && /[.!?]$/.test(x.text));
+      if (ns) return commit(applyEdits(t, [rep(ns.e - 1, ns.e - 1, ', nothing readable anywhere', {fo: 2})]), 'readable');
+      return commit(addToSection('GLOBAL STYLE', 'Nothing readable anywhere.', 'sentence'), 'readable');
+    }
+    if (!on && M.readable) {
+      let a = M.readable.s, b = M.readable.e;
+      const pre = /(,\s*(?:and\s+)?|\s+and\s+)$/.exec(t.slice(Math.max(gs.bodyStart, a - 8), a));
+      if (pre) a -= pre[0].length;
+      else { if (t[b] === '.') b++; while (t[b] === ' ') b++; }
+      const res = applyEdits(t, [{s: a, e: b, str: ''}]);
+      res.fr = [Math.max(0, a - 1), a + 1];
+      commit(res, 'readable');
+    }
+  },
+  lockOn(on) {
+    const M = S.model, t = S.text;
+    if (on && !M.lock) {
+      const n = Math.max(1, M.chars.length || 2);
+      const s = n === 1 ? 'Only this one person exists in the entire video.' : `Only these ${n2w(n)} people exist in the entire video.`;
+      return commit(addToSection('CHARACTERS', s, 'sentence'), 'lock');
+    }
+    if (!on && M.lock) {
+      let a = M.lock.s, b = M.lock.e; while (a > 0 && t[a - 1] === ' ') a--;
+      const res = applyEdits(t, [{s: a, e: b, str: ''}]); res.fr = [Math.max(0, a - 1), a]; commit(res, 'lock');
+    }
+  },
+  lockN(n) {
+    const M = S.model; n = clamp(n, 1, 20);
+    if (!M.lock) return;
+    const plural = /character/i.test(M.lock.noun) ? ['character', 'characters'] : ['person', 'people'];
+    const lead = M.lock.word && /^[A-Z]/.test(S.text.slice(M.lock.ps, M.lock.ps + 1)) ? 'Only' : 'only';
+    const str = n === 1 ? `${lead} this one ${plural[0]}${M.lock.verb ? ' exists' : ''}` : `${lead} these ${n2w(n)} ${plural[1]}${M.lock.verb ? ' exist' : ''}`;
+    commit(applyEdits(S.text, [rep(M.lock.ps, M.lock.pe, str)]), 'lock');
+  },
+  lens(seg, deg) {
+    const M = S.model; deg = Math.round(deg);
+    const o = M.optics.find(x => x.seg === seg);
+    if (!o) return commit(opticsClause(seg, `Segment ${seg} at ${deg}°, locked-off.`), 'lens:' + seg);
+    const edits = [rep(o.ns, o.ne, String(deg), {fx: 1})];
+    if (o.art) {
+      const cur = S.text.slice(o.art[0], o.art[1]), want = anArt(deg) ? 'an' : 'a';
+      if (cur.toLowerCase() !== want) edits.push({s: o.art[0], e: o.art[1], str: /^[A]/.test(cur) ? cap(want) : want});
+    }
+    commit(applyEdits(S.text, edits), 'lens:' + seg);
+  },
+  move(seg, v) {
+    const M = S.model, t = S.text; if (!v) return;
+    const o = M.optics.find(x => x.seg === seg);
+    if (!o) return commit(opticsClause(seg, `Segment ${seg} at 47°, ${v}.`), 'move:' + seg);
+    if (o.move) {
+      const edits = [rep(o.move.s, o.move.e, v)];
+      const art = /(?:^|\s)(an?)\s+$/i.exec(t.slice(Math.max(o.cs, o.move.s - 4), o.move.s));
+      if (art) {
+        const as = o.move.s - art[0].length + art[0].indexOf(art[1]), want = /^[aeiou]/i.test(v) ? 'an' : 'a';
+        if (art[1].toLowerCase() !== want) edits.push({s: as, e: as + art[1].length, str: /^A/.test(art[1]) ? cap(want) : want});
+      }
+      return commit(applyEdits(t, edits), 'move:' + seg);
+    }
+    const at = /[.!?]/.test(t[o.ce - 1]) ? o.ce - 1 : o.ce;
+    commit(applyEdits(t, [rep(at, at, ', ' + v, {fo: 2})]), 'move:' + seg);
+  },
+  time(seg, which, v) {
+    const M = S.model; if (!isFinite(v)) return;
+    v = Math.max(0, Math.round(v * 10) / 10);
+    const i = M.timing.findIndex(x => x.seg === seg); if (i < 0) return;
+    const cur = M.timing[i], str = fmt1(v), edits = [];
+    if (which === 1) {
+      edits.push(rep(cur.r1[0], cur.r1[1], str, {fx: 1}));
+      const nx = M.timing[i + 1]; if (nx && Math.abs(nx.t0 - cur.t1) < 1e-6) edits.push({s: nx.r0[0], e: nx.r0[1], str});
+    } else {
+      edits.push(rep(cur.r0[0], cur.r0[1], str, {fx: 1}));
+      const pv = M.timing[i - 1]; if (pv && Math.abs(pv.t1 - cur.t0) < 1e-6) edits.push({s: pv.r1[0], e: pv.r1[1], str});
+    }
+    commit(applyEdits(S.text, edits), 'clip:' + seg);
+  },
+  cutWords(segCount) {
+    const M = S.model, edits = [];
+    if (M.cutsWord) { const n = Math.max(0, segCount - 1); edits.push({s: M.cutsWord.s, e: M.cutsWord.e, str: `${n2w(n, M.cutsWord.word)} HARD CUT${n === 1 ? '' : 's'}`, flash: true}); }
+    if (M.segWord) edits.push({s: M.segWord.s, e: M.segWord.e, str: n2w(segCount, M.segWord.word)});
+    return edits;
+  },
+  addShot() {
+    const M = S.model, at = M.by['ACTION TIMING'], segs = M.timing, last = segs[segs.length - 1];
+    const n = last ? last.seg + 1 : 1, t0 = last ? last.t1 : 0, t1 = t0 + 3;
+    if (t1 > 30) return;
+    const clause = `${fmt1(t0)}s to ${fmt1(t1)}s, SEGMENT ${n}: describe the action.`;
+    if (!at) return commit(ensureSection('ACTION TIMING', clause), 'addshot');
+    const pre = last ? (/[.!?]$/.test(at.body) ? ' ' : '. ') + 'HARD CUT. ' : (at.body.trim() ? ' ' : '');
+    const edits = [{s: at.end, e: at.end, str: pre + clause, flash: true, fo: pre.length}, ...W.cutWords(segs.length + 1).map(x => Object.assign(x, {flash: false}))];
+    if (M.length && t1 > M.length.v) edits.push({s: M.length.num[0], e: M.length.num[1], str: String(Math.ceil(t1))});
+    commit(applyEdits(S.text, edits), 'addshot');
+  },
+  syncCuts() { commit(applyEdits(S.text, W.cutWords(S.model.timing.length)), 'cuts'); },
+  chipAdd(key, sentence, src) { commit(addToSection(key, sentence, 'sentence'), src); },
+  lockToggle(i, on, ghost) {
+    const M = S.model, t = S.text;
+    if (!on) {
+      const x = M.locks[i]; if (!x) return;
+      let a = x.s, b = x.e; while (b < t.length && t[b] === ' ') b++;
+      if (b === x.e) while (a > 0 && t[a - 1] === ' ') a--;
+      S.ghosts.push({id: ++S.ghostId, text: x.text, after: i > 0 ? M.locks[i - 1].text : null});
+      const res = applyEdits(t, [{s: a, e: b, str: ''}]); res.fr = [Math.max(0, a - 1), a + 1];
+      return commit(res, 'lock:' + i);
+    }
+    const g = S.ghosts.find(q => q.id === ghost); if (!g) return;
+    S.ghosts = S.ghosts.filter(q => q !== g);
+    const pl = M.by['POSITIVE LOCKS'];
+    if (!pl) return commit(ensureSection('POSITIVE LOCKS', g.text), 'lock');
+    const anchor = g.after ? M.locks.find(q => q.text === g.after) : null;
+    if (anchor) return commit(applyEdits(t, [rep(anchor.e, anchor.e, ' ' + g.text, {fo: 1})]), 'lock');
+    if (!g.after && M.locks.length) return commit(applyEdits(t, [rep(M.locks[0].s, M.locks[0].s, g.text + ' ', {fx: -1})]), 'lock');
+    commit(addToSection('POSITIVE LOCKS', g.text, 'sentence'), 'lock');
+  },
+  addLock() { commit(addToSection('POSITIVE LOCKS', 'Describe what must never change.', 'sentence'), 'addlock'); }
+};
+function opticsClause(seg, clause) {
+  const M = S.model, op = M.by['OPTICS AND CAMERA'];
+  if (!op) return ensureSection('OPTICS AND CAMERA', clause);
+  const next = M.optics.find(x => x.seg > seg);
+  if (next) return applyEdits(S.text, [rep(next.cs, next.cs, clause + ' ', {fx: -1})]);
+  if (!op.body.trim()) return applyEdits(S.text, [rep(op.labelEnd, op.end, ' ' + clause, {fo: 1})]);
+  return applyEdits(S.text, [rep(op.end, op.end, ' ' + clause, {fo: 1})]);
+}
+
+/* ── text-field sessions: a focused field owns one exact range until it blurs ── */
+function fieldTarget(key) {
+  const M = S.model;
+  if (key.startsWith('body:')) { const sec = M.by[key.slice(5)]; return sec ? {s: sec.bodyStart, e: sec.end, empty: !sec.body.trim(), sec} : null; }
+  if (key.startsWith('char:')) { const c = M.chars.find(x => x.name === key.slice(5)); return c ? {s: c.ds, e: c.de} : null; }
+  if (key.startsWith('lockx:')) { const x = M.locks[+key.slice(6)]; return x ? {s: x.s, e: x.e} : null; }
+  return null;
+}
+function fieldInput(f) {
+  const key = f.dataset.field, v = f.value;
+  let ss = S.session;
+  if (!ss || ss.el !== f) {
+    const tg = fieldTarget(key);
+    ss = S.session = {el: f, key, s: tg ? tg.s : null, len: tg ? tg.e - tg.s : 0, empty: tg ? tg.empty : false, sec: tg ? tg.sec : null};
+  }
+  if (ss.s == null) {
+    if (!key.startsWith('body:') || !v) return;
+    const res = ensureSection(key.slice(5), v);
+    ss.s = res.bodyAt; ss.len = v.length;
+    return commit({text: res.text, fr: [res.bodyAt, res.bodyAt + v.length]}, key);
+  }
+  if (ss.empty) { ss.empty = false; const at = ss.sec.labelEnd; const t = S.text; ss.s = at + 1; ss.len = v.length;
+    return commit({text: t.slice(0, at) + ' ' + v + t.slice(ss.sec.end), fr: [at + 1, at + 1 + v.length]}, key); }
+  const t = S.text, out = t.slice(0, ss.s) + v + t.slice(ss.s + ss.len);
+  ss.len = v.length;
+  commit({text: out, fr: [ss.s, ss.s + v.length]}, key);
+}
+
+/* ── highlighter: a mirrored <pre> under a transparent textarea ── */
+function renderHL() {
+  const t = S.text, M = S.model, n = t.length, marks = [];
+  const crewOn = S.hoverCrew || S.activeCrew;
+  const ctlOn = S.hoverCtl || (S.hoverCrew ? null : S.activeCtl);
+  for (const s of M.secs) {
+    marks.push({s: s.start, e: s.labelEnd, cls: 'lab', crew: s.crew});
+    if (crewOn && s.crew === crewOn) marks.push({s: s.start, e: s.end, cls: 'sec-on', crew: s.crew});
+  }
+  if (crewOn) for (const h of M.hot) if (h.crew === crewOn) { const sec = secAt(M.secs, h.s); if (!sec || sec.crew !== crewOn) marks.push({s: h.s, e: h.e, cls: 'sec-on', crew: h.crew}); }
+  if (ctlOn) {
+    if (ctlOn.startsWith('sec:')) { const sec = M.by[ctlOn.slice(4)]; if (sec) marks.push({s: sec.bodyStart, e: sec.end, cls: 'hot-on', crew: sec.crew}); }
+    for (const h of M.hot) if (h.ctl === ctlOn) marks.push({s: h.s, e: h.e, cls: 'hot-on', crew: h.crew});
+  }
+  for (const k of M.tokens) marks.push({s: k.s, e: k.e, cls: 'tk-' + k.lane});
+  for (const r of M.refTokens) marks.push({s: r.s, e: r.e, cls: 'tk-ref'});
+  for (const m of t.matchAll(/\bHARD CUTs?\b/g)) marks.push({s: m.index, e: m.index + m[0].length, cls: 'tk-cut'});
+  for (const m of t.matchAll(/(?<![\w.])(?:\d+\.\d+|\d{1,2})\s?s\b/g)) marks.push({s: m.index, e: m.index + m[0].length, cls: 'tk-time'});
+  for (const m of t.matchAll(/\d+(?:\.\d+)?\s?°/g)) marks.push({s: m.index, e: m.index + m[0].length, cls: 'tk-deg'});
+  for (const w of M.warnings) marks.push({s: w.s, e: w.e, cls: 'warn-u'});
+  if (S.flash) marks.push({s: S.flash.s, e: Math.min(n, S.flash.e), cls: 'flash'});
+  const pts = new Set([0, n]);
+  for (const m of marks) { m.s = clamp(m.s, 0, n); m.e = clamp(m.e, 0, n); pts.add(m.s); pts.add(m.e); }
+  const arr = [...pts].sort((a, b) => a - b);
+  marks.sort((a, b) => a.s - b.s);
+  let html = '';
+  const delay = S.flash ? Math.round(performance.now() - S.flash.t) : 0;
+  for (let i = 0; i < arr.length - 1; i++) {
+    const a = arr[i], b = arr[i + 1]; if (a === b) continue;
+    const cls = []; let crew = null, clen = Infinity;
+    for (const m of marks) {
+      if (m.s > a) break;
+      if (m.e >= b && m.e > m.s) { if (!cls.includes(m.cls)) cls.push(m.cls); if (m.crew && (m.e - m.s) < clen) { crew = m.crew; clen = m.e - m.s; } }
+    }
+    const txt = esc(t.slice(a, b));
+    if (!cls.length) { html += txt; continue; }
+    const needCrew = crew && cls.some(c => c === 'lab' || c === 'sec-on' || c === 'hot-on');
+    html += `<span class="${cls.join(' ')}"${needCrew ? ` data-crew="${crew}"` : ''}${cls.includes('flash') ? ` style="animation-delay:-${delay}ms"` : ''}>${txt}</span>`;
+  }
+  el.hl.innerHTML = html + ' ';
+}
+function rectOfOffset(off) {
+  const walker = document.createTreeWalker(el.hl, NodeFilter.SHOW_TEXT);
+  let acc = 0, node;
+  while ((node = walker.nextNode())) {
+    const len = node.nodeValue.length;
+    if (acc + len >= off) { const rg = document.createRange(); const k = clamp(off - acc, 0, len); rg.setStart(node, k); rg.setEnd(node, Math.min(len, k + 1)); return rg.getBoundingClientRect(); }
+    acc += len;
+  }
+  return null;
+}
+function revealRange(s, e) {
+  const r = rectOfOffset(s); if (!r) return;
+  const box = el.scroll.getBoundingClientRect();
+  const r2 = e != null ? rectOfOffset(Math.max(s, e - 1)) : r;
+  const bottom = r2 ? r2.bottom : r.bottom;
+  if (r.top < box.top + 10 || bottom > box.bottom - 10) {
+    el.scroll.scrollTo({top: el.scroll.scrollTop + (r.top - box.top) - Math.min(90, box.height * 0.25), behavior: 'smooth'});
+  }
+}
+function selectRange(s, e) {
+  el.ta.focus({preventScroll: true});
+  el.ta.setSelectionRange(s, e);
+  revealRange(s, e);
+  onCaret(true);
+}
+/* ── building the crew cards (once) ── */
+const FIELD_SIZING = window.CSS && CSS.supports('field-sizing', 'content');
+function autosize(f) { if (FIELD_SIZING || f.tagName !== 'TEXTAREA') return; f.style.height = 'auto'; f.style.height = Math.min(230, f.scrollHeight + 2) + 'px'; }
+const ctlH = (label, st) => `<div class="ctl-h"><span class="ctl-l">${label}</span><span class="ctl-st" data-st="${st || ''}"></span></div>`;
+const picLabel = v => LABEL[v] || cap(v);
+const thumbHtml = (name, px1) => `<span class="thumb${px1 ? ' px1' : ''}"><img alt="" src="${A(name)}" data-pic="${name}"><span class="ph" hidden>${ic('image')}</span></span>`;
+/* a picker: one large preview (hovered tile › first lit tile › the plain base frame, dimmed) above a row of image tiles */
+const pickHtml = (key, id, values) => { const P = PICK[key]; return `<div class="pick" data-pick="${key}">
+  <div class="pv${P.px1 ? ' px1' : ''} none" id="pv-${key}"><img class="pv-base" alt="" src="${A('base')}" data-pic="base"><img class="pv-img" alt="" hidden><span class="ph pv-ph" hidden>${ic('image')}<span></span></span><span class="pv-cap"></span></div>
+  <div class="tiles" id="${id}">${values.map(v => `<button type="button" class="tile" data-v="${esc(v)}"${picLabel(v).toLowerCase() !== v.toLowerCase() ? ` title="${esc(v)}"` : ''}>${thumbHtml(PICS[key][v], P.px1)}<span class="tile-l">${P.multi ? '<span class="ics"></span>' : ''}${esc(picLabel(v))}</span></button>`).join('')}</div></div>`; };
+const arBox = v => { const [w, h] = v === 'auto' ? [1, 1] : v.split(':').map(Number), r = w / h;   /* same area (900 px²) for every ratio */
+  return `width:${Math.sqrt(900 * r).toFixed(2)}px;height:${Math.sqrt(900 / r).toFixed(2)}px`; };
+const resBox = v => `width:${(RES[v][0] / 48).toFixed(2)}px;height:${(RES[v][1] / 48).toFixed(2)}px`;   /* 1920 px wide → 40 px */
+const field = (key, rows, ph) => `<textarea class="fld" rows="${rows}" data-field="${key}" placeholder="${ph || 'Not in the words yet. Type here to add it.'}"></textarea>`;
+const selWrap = (attrs, opts) => `<label class="sel-wrap"><select class="sel" ${attrs}>${opts}</select>${ic('caret')}</label>`;
+const ticksHtml = (min, max, stops, unit) => `<div class="ticks">${stops.map(v => `<span style="left:${((v - min) / (max - min) * 100).toFixed(2)}%">${v}${unit}</span>`).join('')}</div>`;
+const LANES = [['voice', 'Voice', '{ }'], ['sfx', 'Effects', '< >'], ['music', 'Music', '( )'], ['sub', 'Subtitles', '【 】']];
+
+const BODIES = {
+  producer: () => `
+    <div class="ctl" data-ctl="length">${ctlH('Length', 'length')}
+      <div class="rng-row"><input class="rng" type="range" min="4" max="30" step="1" value="15" id="len" aria-label="Length in seconds"><span class="rng-val" id="lenVal"></span></div>
+      ${ticksHtml(4, 30, [4, 10, 15, 20, 25, 30], 's')}<div id="lenNote"></div></div>
+    <div class="ctl" data-ctl="aspect">${ctlH('Aspect', 'aspect')}
+      <div class="tiles" id="aspectSeg">${AR.map(v => `<button type="button" class="tile" data-v="${v}" aria-label="Aspect ${v}"><span class="ar-fr"><i class="ar-bx" style="${arBox(v)}"></i></span><span class="tile-l">${v}</span></button>`).join('')}</div></div>
+    <div class="ctl-grid">
+      <div class="ctl" data-ctl="res">${ctlH('Resolution')}<div class="tiles" id="resSeg">${Object.keys(RES).map(v => `<button type="button" class="tile" data-v="${v}" title="${RES[v].join(' × ')}"><span class="res-fr"><i class="res-bx" style="${resBox(v)}"></i></span><span class="tile-l">${v}</span></button>`).join('')}</div></div>
+      <div class="ctl" data-ctl="sound">${ctlH('Sound')}<div class="sw-row"><button type="button" class="sw" id="soundSw" role="switch" aria-label="Sound"></button><span id="soundLbl"></span></div></div>
+      <div class="ctl" data-ctl="bitrate">${ctlH('Bitrate')}<div class="seg" id="bitSeg">${['standard', 'high'].map(v => `<button type="button" data-v="${v}">${v}</button>`).join('')}</div></div>
+    </div>
+    <div class="ctl" data-ctl="mode">${ctlH('Mode')}
+      <div class="seg ro" id="modeSeg"><button type="button" data-v="t2v" title="t2v">Words</button><button type="button" data-v="omni_reference" title="omni_reference">References</button><button type="button" data-v="video_edit" disabled title="video_edit · needs a source video">Edit</button><button type="button" data-v="video_extension" disabled title="video_extension · needs a source video">Extend</button></div></div>
+    <div class="ctl" data-ctl="cost">${ctlH('Cost')}<div class="cost" id="cost"></div></div>`,
+  director: () => `
+    <div class="ctl" data-ctl="sec:SCENE">${ctlH('Scene', 'sec:SCENE')}${field('body:SCENE', 2)}</div>
+    <div class="ctl" data-ctl="genre">${ctlH('Genre', 'genre')}${pickHtml('genre', 'genreTiles', GENRES)}</div>
+    <div class="ctl" data-ctl="sec:FIRST FRAME AND BLOCKING">${ctlH('Blocking', 'sec:FIRST FRAME AND BLOCKING')}${field('body:FIRST FRAME AND BLOCKING', 3)}</div>`,
+  colorist: () => `
+    <div class="ctl" data-ctl="color">${ctlH('Color', 'color')}${pickHtml('color', 'colorTiles', COLORS.map(c => c.v))}</div>
+    <div class="ctl" data-ctl="grain">${ctlH('Grain', 'grain')}${pickHtml('grain', 'grainTiles', GRAINS.map(g => g.v))}</div>
+    <div class="ctl" data-ctl="readable">${ctlH('No text on screen')}<div class="sw-row"><button type="button" class="sw" id="readSw" role="switch" aria-label="No text on screen" title="nothing readable anywhere"></button><span id="readLbl"></span></div></div>`,
+  casting: () => `
+    <div class="ctl" data-ctl="cast">${ctlH('Cast', 'cast')}<div id="castRows"></div></div>
+    <div class="ctl" data-ctl="lock">${ctlH('People', 'lock')}
+      <div class="sw-row"><button type="button" class="sw" id="lockSw" role="switch" aria-label="People lock"></button><span>Only</span><div class="step" id="lockStep"><button type="button" data-d="-1" aria-label="Fewer">&minus;</button><output id="lockOut"></output><button type="button" data-d="1" aria-label="More">+</button></div><span>people exist</span></div><div id="lockWarn"></div></div>
+    <div class="ctl" data-ctl="castrefs">${ctlH('Sheets', 'castrefs')}<div class="refs" id="castRefs"></div></div>`,
+  set: () => `
+    <div class="ctl" data-ctl="locs">${ctlH('Locations', 'locs')}<div id="locRows"></div></div>
+    <div class="ctl" data-ctl="sec:PROP">${ctlH('Prop', 'sec:PROP')}${field('body:PROP', 2)}</div>
+    <div class="ctl" data-ctl="setrefs">${ctlH('Sheets', 'setrefs')}<div class="refs" id="setRefs"></div></div>`,
+  camera: () => `
+    <div class="ctl" data-ctl="stock">${ctlH('Film', 'stock')}${pickHtml('stock', 'stockTiles', STOCKS)}</div>
+    <div class="ctl" data-ctl="cam">${ctlH('Lens + move', 'cam')}<div id="camRows"></div></div>`,
+  gaffer: () => `
+    <div class="ctl" data-ctl="sec:LIGHTING">${ctlH('Lighting', 'sec:LIGHTING')}${field('body:LIGHTING', 3)}</div>
+    <div class="ctl" data-ctl="tod">${ctlH('Time of day')}${pickHtml('tod', 'todTiles', TOD.map(x => x.v))}</div>`,
+  effects: () => `
+    <div class="ctl" data-ctl="sec:PHYSICS">${ctlH('Physics', 'sec:PHYSICS')}${field('body:PHYSICS', 2)}</div>
+    <div class="ctl" data-ctl="fx">${ctlH('Moves')}${pickHtml('fx', 'fxTiles', FX.map(x => x.v))}</div>`,
+  editor: () => `
+    <div class="ctl" data-ctl="track">${ctlH('Shots')}
+      <div class="tl-ruler" id="picRuler"></div>
+      <div class="tl-row"><span class="tl-lab"><b>Picture</b></span><div class="tl-track" id="picTrack"><div class="tl-layer" id="picGrid"></div><div class="tl-layer" id="picClips"></div><div class="tl-layer" id="picMarks"></div></div></div>
+      <div id="picNote"></div></div>
+    <div class="ctl" data-ctl="cuts">${ctlH('Cuts', 'cuts')}<div class="cuts-line" id="cutsLine"></div></div>
+    <div class="ctl" data-ctl="times">${ctlH('Times', 'times')}<div class="times" id="timeRows"></div>
+      <div class="row-btns"><button type="button" class="ghost-btn" id="addShot">${ic('plus')}Add shot</button></div></div>`,
+  script: () => `
+    <div class="ctl" data-ctl="locks">${ctlH('Locks', 'locks')}<div id="lockRows"></div>
+      <div class="row-btns"><button type="button" class="ghost-btn" id="addLock">${ic('plus')}Add lock</button></div></div>`,
+  sound: () => `
+    <div class="ctl" data-ctl="markers">${ctlH('Markers')}<div class="marker-legend">
+      <span><code class="mk-music">( )</code>music</span><span><code class="mk-sfx">&lt; &gt;</code>effect</span><span><code class="mk-voice">{ }</code>voice</span><span><code class="mk-sub">【 】</code>subtitles</span></div></div>
+    <div class="ctl" data-ctl="timeline">${ctlH('Timeline')}
+      <div class="tl-ruler" id="sndRuler"></div>
+      <div class="lanes">${LANES.map(([k, name, mk]) => `<div class="tl-row"><span class="tl-lab"><b>${name}</b><span class="mk-${k}">${mk}</span></span><div class="tl-track" id="lane-${k}"><div class="tl-layer" data-evs="${k}"></div><span class="lane-none" hidden>none in the words</span></div></div>`).join('')}</div>
+      <div id="audioRef"></div></div>
+    <div class="ctl" data-ctl="brackets">${ctlH('Brackets', 'brackets')}<div id="bracketList"></div></div>`
+};
+
+function buildUI() {
+  el.list.innerHTML = CREW.map(c => `
+    <article class="crew" id="crew-${c.id}" data-crew="${c.id}">
+      <header class="crew-h">
+        <span class="crew-ic">${ic(c.icon)}</span>
+        <div><h3 class="crew-name">${c.name}</h3><p class="crew-job">${c.job}</p></div>
+      </header>
+      ${c.id === 'sound' ? `<div class="muted-note">${ic('info')}Sound is off in the Producer card.</div>` : ''}
+      <div class="card-warns" data-cardwarn="${c.id}"></div>
+      <div class="crew-b">${BODIES[c.id]()}</div>
+    </article>`).join('');
+}
+
+/* ── keyed list reconcile: reuse rows by key so a focused field is never rebuilt ── */
+function keyed(box, items, keyOf, create, update) {
+  const have = new Map([...box.children].filter(c => c.dataset.key != null).map(c => [c.dataset.key, c]));
+  const keep = new Set(); let prev = null;
+  items.forEach((it, i) => {
+    const k = keyOf(it, i); keep.add(k);
+    let node = have.get(k);
+    if (!node) { node = create(it, i); node.dataset.key = k; }
+    const want = prev ? prev.nextElementSibling : box.firstElementChild;
+    if (node !== want) box.insertBefore(node, want);
+    update(node, it, i); prev = node;
+  });
+  for (const [k, node] of have) if (!keep.has(k)) node.remove();
+}
+const mk = (tag, cls, html) => { const d = document.createElement(tag); if (cls) d.className = cls; if (html) d.innerHTML = html; return d; };
+function setVal(inp, v) { if (document.activeElement === inp) return; if (inp.value !== String(v)) inp.value = v; autosize(inp); }
+function setSt(id, txt) { for (const n of $$('[data-st]')) if (n.dataset.st === id) n.textContent = txt || ''; }
+function segOn(box, v) { for (const b of box.querySelectorAll('button')) b.classList.toggle('on', b.dataset.v === v); }
+function setPct(inp) { inp.style.setProperty('--pct', ((+inp.value - +inp.min) / (+inp.max - +inp.min) * 100).toFixed(2) + '%'); }
+function tween(inp, to) {
+  if (document.activeElement === inp && inp.matches(':active')) { setPct(inp); return; }
+  cancelAnimationFrame(inp._raf);
+  const from = +inp.value;
+  if (Math.abs(from - to) < 1e-6 || !S.pulseOK) { inp.value = to; setPct(inp); return; }
+  const t0 = performance.now(), D = 420, step = inp.step;
+  inp.step = 'any';
+  const tick = now => {
+    const k = Math.min(1, (now - t0) / D), e = 1 - Math.pow(1 - k, 3);
+    inp.value = from + (to - from) * e; setPct(inp);
+    if (k < 1) inp._raf = requestAnimationFrame(tick); else { inp.step = step; inp.value = to; setPct(inp); }
+  };
+  inp._raf = requestAnimationFrame(tick);
+}
+function note(id, v) {
+  const old = S.prev[id]; S.prev[id] = v;
+  if (!S.pulseOK || old === undefined || old === v || S.src === id) return;
+  for (const n of $$('[data-ctl]')) if (n.dataset.ctl === id && !n.contains(document.activeElement)) { n.classList.remove('pulse'); void n.offsetWidth; n.classList.add('pulse'); }
+}
+function bodyField(key) {
+  const f = $$('[data-field]').find(x => x.dataset.field === 'body:' + key); if (!f) return;
+  const sec = S.model.by[key];
+  setVal(f, sec ? sec.body : ''); f.classList.toggle('gone', !sec);
+  setSt('sec:' + key, sec ? '' : 'not in the words yet'); note('sec:' + key, sec ? sec.body : '\u0000');
+}
+const sheetSrc = name => '../sheets/' + name.replace(/^THE\s+/i, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-sheet.webp';
+function refSlots(box, names, crew) {
+  const M = S.model;
+  const items = names.map(name => ({name, r: M.refs.find(x => x.kind === 'Image' && x.target === name)}));
+  for (const r of M.refs) if (r.kind === 'Image' && r.crew === crew && !r.target) items.push({name: '', r});
+  keyed(box, items, it => (it.r ? it.r.tag : 'none') + '|' + it.name, it => {
+    const b = mk('button', 'ref' + (it.r ? '' : ' empty')); b.type = 'button';
+    if (it.r) {
+      b.dataset.selref = it.r.id; b.dataset.ctl = it.r.id;
+      b.innerHTML = `<img alt="" src="${esc(sheetSrc(it.name || 'sheet'))}"><span class="ref-ph" hidden>${ic('image')}Sheet not made yet</span><span class="ref-cap"><span class="nm">${esc(it.name || 'reference')}</span><span class="tag">${it.r.tag}</span></span>`;
+      const img = b.querySelector('img');
+      img.addEventListener('error', () => { img.hidden = true; b.querySelector('.ref-ph').hidden = false; b.classList.add('empty'); });
+    } else {
+      b.innerHTML = `<span class="ref-ph">${ic('image')}Words only</span><span class="ref-cap"><span class="nm">${esc(it.name)}</span><span class="tag"></span></span>`;
+    }
+    return b;
+  }, () => {});
+}
+function ruler(box, T) {
+  const step = T <= 12 ? 2 : T <= 24 ? 5 : 10; let h = '';
+  for (let s = 0; s <= T + 1e-6; s += step) h += `<span${s > 0 && T - s < step * 0.35 ? ' class="end"' : ''} style="left:${(s / T * 100).toFixed(3)}%">${s}s</span>`;
+  if (T % step > step * 0.35) h += `<span class="end" style="left:100%">${fmtN(T)}s</span>`;
+  if (box.dataset.h !== h) { box.innerHTML = h; box.dataset.h = h; }
+}
+
+/* ── camera diagrams: a field-of-view wedge (its angle = the degrees) and a top-down sketch of the move ── */
+function fovPath(deg) {
+  const hA = clamp(deg, 1, 170) * Math.PI / 360, R = 38, ax = 15, ay = 32;
+  const x = (ax + R * Math.cos(hA)).toFixed(2), y1 = (ay - R * Math.sin(hA)).toFixed(2), y2 = (ay + R * Math.sin(hA)).toFixed(2);
+  return `M${ax} ${ay}L${x} ${y1}A${R} ${R} 0 0 1 ${x} ${y2}Z`;
+}
+const FOV_SVG = `<svg class="fov" viewBox="0 0 56 64" aria-hidden="true"><path class="fov-w"/><path class="fov-cam" d="M1.5 27.5h8.5v9H1.5zM10 29.5l5-2v9l-5-2z"/></svg>`;
+function arrow(x1, y1, x2, y2, headOnly) {
+  const a = Math.atan2(y2 - y1, x2 - x1), p = k => `${(x2 - 4.5 * Math.cos(a + k)).toFixed(1)} ${(y2 - 4.5 * Math.sin(a + k)).toFixed(1)}`;
+  return `<path class="arr" d="${headOnly ? '' : `M${x1} ${y1}L${x2} ${y2}`}M${p(-0.5)}L${x2} ${y2}L${p(0.5)}"/>`;
+}
+const camTop = (y = 30) => `<circle class="subj" cx="24" cy="9" r="4.5"/><rect x="18" y="${y}" width="12" height="8" rx="1.5"/><path d="M21.5 ${y}v-3h5v3"/>`;
+function moveSvg(v) {
+  switch (v) {
+    case 'locked-off':   return camTop() + '<rect x="35" y="33" width="8" height="6.5" rx="1"/><path d="M36.8 33v-2.2a2.2 2.2 0 0 1 4.4 0V33"/>';
+    case 'slow push-in': return camTop() + arrow(24, 24, 24, 15.5);
+    case 'pull back':    return camTop(22) + arrow(24, 33.5, 24, 45);
+    case 'dolly left':   return camTop() + arrow(15, 34, 4, 34);
+    case 'dolly right':  return camTop() + arrow(33, 34, 44, 34);
+    case 'handheld':     return camTop() + '<path class="arr" d="M10 44q1.75 -3 3.5 0t3.5 0t3.5 0t3.5 0t3.5 0t3.5 0t3.5 0t3.5 0"/>';
+    case 'orbit': {
+      const P = d => [24 + 22 * Math.cos(d * Math.PI / 180), 9 + 22 * Math.sin(d * Math.PI / 180)].map(n => +n.toFixed(2));
+      const [sx, sy] = P(62), [ex, ey] = P(-12), [bx, by] = P(-2);
+      return camTop() + `<path class="arr" d="M${sx} ${sy}A22 22 0 0 0 ${ex} ${ey}"/>` + arrow(bx, by, ex, ey, true);
+    }
+    case 'crane up':     return '<path d="M4 44H44M34 24.5V44M12.5 37V44"/><circle class="subj" cx="34" cy="21" r="3.5"/><rect x="7" y="29" width="11" height="8" rx="1.5"/><path d="M18 31h3v4h-3"/>' + arrow(12.5, 25, 12.5, 11);
+    default:             return camTop();
+  }
+}
+
+/* ── pictures: the large previews + load state (a failed image hides and shows its placeholder) ── */
+function renderPv(key) {
+  const box = document.getElementById('pv-' + key); if (!box || !S.model) return;
+  const hov = S.pvHover && S.pvHover.key === key ? S.pvHover.v : null;
+  const v = hov != null ? hov : (PICK[key].lit(S.model)[0] ?? null);
+  const name = v != null ? PICS[key][v] : null, missing = !!name && PIC[name] === 'missing';
+  const img = box.querySelector('.pv-img'), ph = box.querySelector('.pv-ph');
+  if (name && img.dataset.name !== name) { img.dataset.name = name; img.src = A(name); }
+  box.classList.toggle('none', !name);
+  img.hidden = !name || missing;
+  ph.hidden = !missing; ph.lastElementChild.textContent = missing ? picLabel(v) : '';
+  box.querySelector('.pv-cap').textContent = name && !missing ? picLabel(v) : '';
+}
+function renderPvs() { for (const k in PICK) renderPv(k); }
+function setPvHover(key, v) {
+  const cur = S.pvHover;
+  if ((cur ? cur.key : null) === key && (cur ? cur.v : null) === v) return;
+  S.pvHover = key ? {key, v} : null;
+  if (cur && cur.key !== key) renderPv(cur.key);
+  if (key) renderPv(key);
+}
+function onPic(e) {
+  const img = e.target; if (!img || img.tagName !== 'IMG') return;
+  const pv = img.classList.contains('pv-img'), name = pv ? img.dataset.name : img.dataset.pic;
+  if (!name || img.getAttribute('src') !== A(name)) return;
+  const ok = e.type === 'load' && img.naturalWidth > 0, was = PIC[name];
+  PIC[name] = ok ? 'ok' : 'missing';
+  if (!pv) {
+    img.hidden = !ok;
+    const ph = img.nextElementSibling; if (ph && ph.classList.contains('ph')) ph.hidden = ok;
+    const clip = img.closest('.clip'); if (clip) clip.classList.toggle('has-img', ok);
+  }
+  if (was !== PIC[name]) renderPvs();
+}
+
+/* ── render every control from the model ── */
+function renderControls() {
+  const M = S.model, T = M.T, pct = v => (clamp(v, 0, T) / T * 100).toFixed(3) + '%';
+  const lvl = M.by['REFERENCES'] ? 2 : 1;
+  for (const b of el.levelSeg.children) b.classList.toggle('on', +b.dataset.level === lvl);
+  el.count.innerHTML = `<b>${S.text.length.toLocaleString('en-US')}</b> chars`;
+
+  /* producer */
+  const L = M.length, lenInp = $('#len');
+  if (L) tween(lenInp, clamp(Math.round(L.v), 4, 30));
+  lenInp.classList.toggle('gone', !L);
+  $('#lenVal').innerHTML = `${L ? fmtN(L.v) : lenInp.value}<small> s</small>`;
+  setSt('length', L ? '' : 'not in the words yet');
+  $('#lenNote').innerHTML = L && (L.v < 4 || L.v > 30) ? `<div class="note attn">${ic('warning')}Higgsfield allows 4 to 30 seconds.</div>` : '';
+  note('length', L ? String(L.v) : '');
+  if (M.aspect.length && S.aspect !== 'auto') S.aspect = M.aspect[0].v;
+  segOn($('#aspectSeg'), S.aspect);
+  setSt('aspect', M.aspect.length && S.aspect === 'auto' ? `words say ${M.aspect[0].v}` : '');
+  note('aspect', S.aspect);
+  segOn($('#resSeg'), S.res); segOn($('#bitSeg'), S.bitrate);
+  const ssw = $('#soundSw'); ssw.classList.toggle('on', S.sound); ssw.setAttribute('aria-checked', String(S.sound));
+  $('#soundLbl').textContent = S.sound ? 'On' : 'Off';
+  $('#crew-sound').classList.toggle('muted', !S.sound);
+  segOn($('#modeSeg'), M.mode);
+  note('mode', M.mode);
+  const secs = L ? clamp(L.v, 4, 30) : +lenInp.value, R = RATES[S.res], credits = Math.round(secs * R.r * 10) / 10;
+  $('#cost').innerHTML = `<b>≈ ${Number.isInteger(credits) ? credits : credits.toFixed(1)}</b><span>credits</span>`;
+  $('#cost').title = 'From Higgsfield’s own price check, 2026-09-11: 15 s costs 37.5 credits at 480p, 97.5 at 720p, 135 at 1080p. Adding references does not change the price.';
+
+  /* director */
+  bodyField('SCENE'); bodyField('FIRST FRAME AND BLOCKING');
+  for (const b of $$('#genreTiles .tile')) b.classList.toggle('on', !!M.genre && b.dataset.v === M.genre.v);
+  setSt('genre', M.genre ? '' : 'not in the words yet'); note('genre', M.genre ? M.genre.v : '');
+
+  /* colorist */
+  for (const b of $$('#stockTiles .tile')) b.classList.toggle('on', !!M.stock && b.dataset.v === M.stock.v);
+  setSt('stock', M.stock ? '' : 'not in the words yet'); note('stock', M.stock ? M.stock.v : '');
+  for (const b of $$('#grainTiles .tile')) b.classList.toggle('on', !!M.grain && b.dataset.v === M.grain.v);
+  setSt('grain', M.grain ? '' : 'not in the words yet'); note('grain', M.grain ? M.grain.v : '');
+  for (const b of $$('#colorTiles .tile')) b.classList.toggle('on', !!M.color && b.dataset.v === M.color.v);
+  setSt('color', M.color ? '' : 'not in the words yet'); note('color', M.color ? M.color.v : '');
+  const rsw = $('#readSw'); rsw.classList.toggle('on', !!M.readable); rsw.setAttribute('aria-checked', String(!!M.readable)); note('readable', String(!!M.readable));
+  $('#readLbl').textContent = M.readable ? 'On' : 'Off';
+
+  /* casting */
+  keyed($('#castRows'), M.chars, c => c.name, c => {
+    const d = mk('div', 'cast-row'); d.dataset.ctl = 'char:' + c.name;
+    d.innerHTML = `<span class="cast-name" data-selchar="${esc(c.name)}">${esc(c.name)}</span>${field('char:' + esc(c.name), 2, 'Describe the face, hair and wardrobe.')}`;
+    return d;
+  }, (d, c) => { setVal(d.querySelector('textarea'), c.desc); note('char:' + c.name, c.desc); });
+  setSt('cast', M.chars.length ? '' : M.by['CHARACTERS'] ? 'no NAMES IN CAPS found' : 'not in the words yet');
+  const lk = M.lock;
+  const lsw = $('#lockSw'); lsw.classList.toggle('on', !!lk); lsw.setAttribute('aria-checked', String(!!lk));
+  $('#lockOut').textContent = lk ? (lk.n >= 0 ? n2w(lk.n) : lk.word) : '—';
+  for (const b of $$('#lockStep button')) b.disabled = !lk || lk.n < 0;
+  setSt('lock', lk ? '' : 'not in the words yet'); note('lock', lk ? lk.word : '');
+  $('#lockWarn').innerHTML = lk && lk.n >= 0 && M.chars.length && lk.n !== M.chars.length
+    ? `<div class="note attn">${ic('warning')}The lock says ${esc(lk.word)}. The cast lists ${M.chars.length}.</div>` : '';
+  refSlots($('#castRefs'), M.chars.map(c => c.name), 'casting');
+
+  /* set designer */
+  keyed($('#locRows'), M.locs, l => l.key, l => {
+    const d = mk('div', 'cast-row'); d.dataset.ctl = 'sec:' + l.key;
+    d.innerHTML = `<span class="cast-name" data-selsec="${l.key}"><span class="lk"></span><small></small></span>${field('body:' + l.key, 2)}`;
+    return d;
+  }, (d, l) => {
+    d.querySelector('.lk').textContent = l.key;
+    d.querySelector('small').textContent = [l.name, l.when].filter(Boolean).join(' · ');
+    setVal(d.querySelector('textarea'), l.sec.body); note('sec:' + l.key, l.sec.body);
+  });
+  setSt('locs', M.locs.length ? '' : 'not in the words yet');
+  bodyField('PROP');
+  refSlots($('#setRefs'), [...M.locs.map(l => l.name).filter(Boolean), ...M.props.map(p => p.name)], 'set');
+
+  /* camera */
+  const segNums = [...new Set([...M.timing.map(x => x.seg), ...M.optics.map(x => x.seg)])].sort((a, b) => a - b);
+  keyed($('#camRows'), segNums, n => String(n), n => {
+    const d = mk('div', 'cam-row'); d.dataset.ctl = 'seg:' + n;
+    d.innerHTML = `<div class="cam-top"><span class="cam-n" data-selseg="${n}">SEGMENT ${n}<small></small></span><span class="lens-read"></span></div>
+      <div class="cam-ctl">
+        <div class="cam-lens" data-ctl="lens:${n}">${FOV_SVG}<div class="cam-sl"><input class="rng" type="range" min="12" max="110" step="1" value="47" data-lens="${n}" aria-label="Segment ${n} lens in degrees">${ticksHtml(12, 110, LENS_STOPS, '°')}</div></div>
+        <div class="cam-move" data-ctl="move:${n}"><svg class="mvd" viewBox="0 0 48 48" aria-hidden="true"></svg>${selWrap(`data-move="${n}" aria-label="Segment ${n} camera move"`, `<option value="" disabled>Not in the words yet</option>${MOVES.map(m => `<option value="${m.v}">${m.v}</option>`).join('')}`)}</div>
+      </div>`;
+    return d;
+  }, (d, n) => {
+    const o = M.optics.find(x => x.seg === n), tm = M.timing.find(x => x.seg === n);
+    d.querySelector('.cam-n small').textContent = tm && tm.loc ? tm.loc.replace(/^THE\s+/, '') : '';
+    const rg = d.querySelector('[data-lens]');
+    if (o) tween(rg, clamp(Math.round(o.deg), 12, 110));
+    rg.classList.toggle('gone', !o);
+    d.querySelector('.lens-read').innerHTML = o ? `${fmtN(o.deg)}°<small>${lensName(o.deg)}</small>` : `<small>not in the words yet</small>`;
+    const sel = d.querySelector('[data-move]'); setVal(sel, o && o.move ? o.move.v : ''); sel.classList.toggle('gone', !(o && o.move));
+    const fw = d.querySelector('.fov-w'), fp = fovPath(o ? o.deg : +rg.value);
+    if (fw.getAttribute('d') !== fp) fw.setAttribute('d', fp);
+    d.querySelector('.fov').classList.toggle('gone', !o);
+    const mv = o && o.move ? o.move.v : '', mvd = d.querySelector('.mvd');
+    if (mvd.dataset.v !== mv) { mvd.dataset.v = mv; mvd.innerHTML = moveSvg(mv); }
+    mvd.classList.toggle('gone', !mv);
+    note('lens:' + n, o ? String(o.deg) : ''); note('move:' + n, o && o.move ? o.move.v : '');
+  });
+  setSt('cam', segNums.length ? '' : 'no “Segment N at NN°” yet');
+
+  /* gaffer + effects */
+  bodyField('LIGHTING'); bodyField('PHYSICS');
+  const chipState = (sel, found) => {
+    for (const b of $$(sel)) {
+      const on = (found[b.dataset.v] || []).length > 0, state = on ? '1' : '0';
+      b.classList.toggle('on', on);
+      if (b.dataset.state !== state) { b.dataset.state = state; b.querySelector('.ics').innerHTML = ic(on ? 'check' : 'plus'); }
+    }
+  };
+  chipState('#todTiles .tile', M.tod); chipState('#fxTiles .tile', M.fx);
+  note('tod', TOD.filter(x => M.tod[x.v].length).map(x => x.v).join());
+  note('fx', FX.filter(x => M.fx[x.v].length).map(x => x.v).join());
+
+  /* editor */
+  ruler($('#picRuler'), T); ruler($('#sndRuler'), T);
+  const gridH = Array.from({length: Math.floor(T) + 1}, (_, s) => `<i class="tl-grid" style="left:${pct(s)}"></i>`).join('');
+  if ($('#picGrid').dataset.h !== gridH) { $('#picGrid').innerHTML = gridH; $('#picGrid').dataset.h = gridH; }
+  const locIdx = {}; let li = 0;
+  keyed($('#picClips'), M.timing, x => String(x.seg), x => {
+    const shot = x.seg >= 1 && x.seg <= SHOTS ? 'shot-' + x.seg : '';
+    const b = mk('button', 'clip', (shot ? `<img class="clip-img" alt="" src="${A(shot)}" data-pic="${shot}">` : '') + '<b></b><small></small>');
+    b.type = 'button'; b.dataset.ctl = 'clip:' + x.seg; b.dataset.selclip = x.seg;
+    if (shot && PIC[shot] === 'ok') b.classList.add('has-img');
+    return b;
+  }, (b, x) => {
+    const lw = x.loc ? x.loc.replace(/^THE\s+/, '') : 'SHOT';
+    if (!(lw in locIdx)) locIdx[lw] = li++;
+    b.classList.toggle('alt', locIdx[lw] % 2 === 1);
+    b.style.left = `calc(${pct(x.t0)} + 1px)`;
+    b.style.width = `max(18px, calc(${pct(Math.max(0, x.t1 - x.t0))} - 2px))`;
+    b.querySelector('b').textContent = `${x.seg} · ${lw}`;
+    b.querySelector('small').textContent = `${fmt1(x.t0)}–${fmt1(x.t1)}s`;
+    b.title = `Segment ${x.seg}, ${lw}, ${fmt1(x.t0)} to ${fmt1(x.t1)} s`;
+  });
+  const lastEnd = M.timing.reduce((a, x) => Math.max(a, x.t1), 0);
+  let marks = M.timing.slice(0, -1).map(x => `<i class="cutmark" style="left:${pct(x.t1)}"></i>`).join('');
+  if (M.timing.length && lastEnd < T - 1e-6) marks += `<i class="tail" style="left:${pct(lastEnd)}"></i>`;
+  if (L && lastEnd > L.v + 1e-6) marks += `<i class="over" style="left:${pct(L.v)};right:0"></i>`;
+  $('#picMarks').innerHTML = marks;
+  const issues = [];
+  M.timing.forEach((x, i) => { const p = M.timing[i - 1]; if (p && x.t0 > p.t1 + 1e-6) issues.push(`Gap between segment ${p.seg} and ${x.seg}.`); if (p && x.t0 < p.t1 - 1e-6) issues.push(`Segment ${x.seg} starts before ${p.seg} ends.`); });
+  if (L && M.timing.length && lastEnd > L.v + 1e-6) issues.push(`Shots run to ${fmt1(lastEnd)} s. The clip is ${fmtN(L.v)} s.`);
+  if (L && M.timing.length && lastEnd < L.v - 1e-6) issues.push(`Shots cover ${fmt1(lastEnd)} s of ${fmtN(L.v)} s.`);
+  $('#picNote').innerHTML = issues.map(s => `<div class="note attn">${ic('warning')}${s}</div>`).join('');
+  const segCount = M.timing.length, needCuts = Math.max(0, segCount - 1), cw = M.cutsWord, sw = M.segWord;
+  const mismatch = (cw && cw.n !== needCuts) || (sw && sw.n !== segCount);
+  const badWord = cw && cw.n !== needCuts ? cw.word : sw ? sw.word : '';
+  $('#cutsLine').innerHTML = !segCount ? `<span class="ctl-st">not in the words yet</span>`
+    : `<b>${needCuts}</b><span>cut${needCuts === 1 ? '' : 's'}</span>` +
+      (!cw && !sw ? `<span class="ctl-st">not in the words yet</span>`
+        : mismatch ? `<button type="button" class="iwarn inline" id="syncCuts">${ic('warning')}<span>Prompt says <b>${esc(badWord)}</b> · fix</span></button>` : '');
+  note('cuts', (cw ? cw.word : '') + '|' + needCuts);
+  keyed($('#timeRows'), M.timing, x => String(x.seg), x => {
+    const d = mk('div', 'time-row'); d.dataset.ctl = 'clip:' + x.seg;
+    d.innerHTML = `<span class="sn">SEG ${x.seg}</span><input class="num" type="number" min="0" max="60" step="0.1" data-time="${x.seg}" data-which="0" aria-label="Segment ${x.seg} start"><span>to</span><input class="num" type="number" min="0" max="60" step="0.1" data-time="${x.seg}" data-which="1" aria-label="Segment ${x.seg} end"><span>s</span>`;
+    return d;
+  }, (d, x) => { const ins = d.querySelectorAll('input'); setVal(ins[0], fmt1(x.t0)); setVal(ins[1], fmt1(x.t1)); note('clip:' + x.seg, x.t0 + '-' + x.t1); });
+  setSt('times', segCount ? '' : 'not in the words yet');
+  const addBtn = $('#addShot'); addBtn.disabled = lastEnd + 3 > 30; addBtn.title = addBtn.disabled ? 'Higgsfield stops at 30 seconds.' : '';
+
+  /* script supervisor */
+  const rows = M.locks.map((x, i) => ({kind: 'lock', i, x}));
+  for (const g of S.ghosts) {
+    const ai = g.after ? rows.findIndex(r => r.kind === 'lock' && r.x.text === g.after) : -1;
+    const row = {kind: 'ghost', g};
+    if (ai >= 0) rows.splice(ai + 1, 0, row); else if (!g.after) rows.unshift(row); else rows.push(row);
+  }
+  keyed($('#lockRows'), rows, r => r.kind === 'lock' ? 'l' + r.i : 'g' + r.g.id, () => {
+    const d = mk('div', 'lock-row'); d.innerHTML = `<button type="button" class="chk" role="checkbox">${ic('check')}</button><textarea class="fld" rows="1"></textarea>`; return d;
+  }, (d, r) => {
+    const chk = d.querySelector('.chk'), f = d.querySelector('textarea');
+    if (r.kind === 'lock') {
+      d.classList.remove('off'); chk.classList.add('on'); chk.setAttribute('aria-checked', 'true'); chk.dataset.lock = r.i; delete chk.dataset.ghost;
+      f.dataset.field = 'lockx:' + r.i; f.readOnly = false; d.dataset.ctl = 'lock:' + r.i; setVal(f, r.x.text); note('lock:' + r.i, r.x.text);
+    } else {
+      d.classList.add('off'); chk.classList.remove('on'); chk.setAttribute('aria-checked', 'false'); chk.dataset.ghost = r.g.id; delete chk.dataset.lock;
+      delete f.dataset.field; f.readOnly = true; d.dataset.ctl = 'ghost'; setVal(f, r.g.text);
+    }
+  });
+  setSt('locks', M.by['POSITIVE LOCKS'] ? '' : 'not in the words yet');
+
+  /* sound */
+  for (const [lane] of LANES) {
+    const track = $('#lane-' + lane), layer = track.querySelector('.tl-layer');
+    const pxPerSec = (track.clientWidth || 500) / T;
+    const evs = M.events.filter(k => k.lane === lane).map(k => {
+      const timed = typeof k.t0 === 'number', label = k.inner.trim();
+      let t0 = timed ? k.t0 : 0, dur;
+      if (k.t1 === 'END') dur = T - t0; else if (typeof k.t1 === 'number') dur = k.t1 - t0;
+      else if (lane === 'voice' || lane === 'sub') dur = Math.max(0.8, label.split(/\s+/).length / 2.6); else dur = 0.9;
+      dur = Math.max(0.3, dur);
+      const show = Math.min(T, Math.max(dur, Math.min(label.length * 6.2 + 16, 128) / pxPerSec));   /* wide enough to read */
+      t0 = Math.max(0, Math.min(t0, T - show));
+      return {k, t0, dur: show, timed};
+    }).sort((a, b) => a.t0 - b.t0);
+    const ends = [];
+    for (const v of evs) { let r = ends.findIndex(e => e <= v.t0 + 1e-6); if (r < 0) { r = ends.length; ends.push(0); } ends[r] = v.t0 + v.dur; v.row = r; }
+    track.style.height = (Math.max(1, ends.length) * 26 + 8) + 'px';
+    track.querySelector('.lane-none').hidden = evs.length > 0;
+    keyed(layer, evs, v => String(v.k.idx), v => { const b = mk('button', 'ev ' + lane); b.type = 'button'; return b; }, (b, v) => {
+      b.dataset.ev = v.k.idx; b.dataset.ctl = 'ev:' + v.k.idx;
+      b.classList.toggle('untimed', !v.timed);
+      b.style.left = pct(v.t0); b.style.width = `max(34px, calc(${pct(v.dur)} - 2px))`; b.style.top = (4 + v.row * 26) + 'px';
+      const label = v.k.inner.trim(); if (b.textContent !== label) b.textContent = label;
+      b.title = `${S.text.slice(v.k.s, v.k.e)} · ${v.timed ? 'at ' + fmt1(v.k.t0) + ' s' : 'no time in the words'}`;
+      note('ev:' + v.k.idx, label + v.t0);
+    });
+  }
+  const aref = M.refs.filter(r => r.kind === 'Audio');
+  $('#audioRef').innerHTML = aref.map(r => `<div class="reftag" style="margin-top:10px"><b>${r.tag}</b>voice</div>`).join('');
+  $('#bracketList').innerHTML = M.warnings.length
+    ? M.warnings.map((w, i) => `<button type="button" class="iwarn" data-selwarn="${i}">${ic('warning')}<span><b>${esc(w.text)}</b> in ${esc(w.where)}. ${w.msg}</span></button>`).join('')
+    : `<div class="okline"><span class="rs-status-dot rs-on"></span>Brackets OK</div>`;
+  note('brackets', String(M.warnings.length));
+  el.warn.hidden = !M.warnings.length;
+  el.warn.innerHTML = M.warnings.map((w, i) => `<button type="button" class="warn-row" data-selwarn="${i}">${ic('warning')}<span><b>${esc(w.text)}</b> <span class="where">${esc(w.where)}</span><br>${w.msg}</span></button>`).join('');
+  for (const c of CREW) {
+    const box = $(`[data-cardwarn="${c.id}"]`);
+    const h = c.id === 'sound' ? '' : M.warnings.map((w, i) => w.crew === c.id ? `<button type="button" class="iwarn" data-selwarn="${i}">${ic('warning')}<span><b>${esc(w.text)}</b> ${w.msg}</span></button>` : '').join('');
+    if (box.dataset.h !== h) { box.innerHTML = h; box.dataset.h = h; }
+  }
+  renderPvs();
+}
+function renderLit() {
+  for (const c of $$('.crew')) c.classList.toggle('lit', c.dataset.crew === S.activeCrew);
+  for (const n of $$('[data-ctl].lit')) if (n.dataset.ctl !== S.activeCtl) n.classList.remove('lit');
+  if (S.activeCtl) for (const n of $$('[data-ctl]')) if (n.dataset.ctl === S.activeCtl && !n.classList.contains('crew')) n.classList.add('lit');
+}
+function sync() { S.model = parse(S.text); renderHL(); renderControls(); renderLit(); S.pulseOK = true; }
+/* ── caret in the prompt → light the crew card that owns it ── */
+function onCaret() {
+  if (document.activeElement !== el.ta) return;
+  const pos = el.ta.selectionStart, M = S.model;
+  let best = null;
+  for (const h of M.hot) if (pos >= h.s && pos <= h.e && (!best || h.e - h.s < best.e - best.s)) best = h;
+  let crew = null, ctl = null;
+  if (best) { crew = best.crew; ctl = best.ctl; }
+  else { const sec = secAt(M.secs, pos); if (sec) { crew = sec.crew; ctl = 'sec:' + sec.key; } }
+  if (crew === S.activeCrew && ctl === S.activeCtl) return;
+  const crewChanged = crew !== S.activeCrew;
+  S.activeCrew = crew; S.activeCtl = ctl;
+  if (crewChanged) { S.hoverCrew = null; S.hoverCtl = null; }
+  renderLit(); renderHL();
+  if (crewChanged) { const r = rectOfOffset(pos), box = el.scroll.getBoundingClientRect(); if (r && (r.bottom < box.top || r.top > box.bottom)) revealRange(pos); }
+  if (crew) scrollCrewInto(crew, ctl, crewChanged);
+}
+function scrollCrewInto(crew, ctl, crewChanged) {
+  const card = $('#crew-' + crew); if (!card) return;
+  const target = ctl ? $$('[data-ctl]').find(n => n.dataset.ctl === ctl && card.contains(n)) : null;
+  const mobile = matchMedia('(max-width: 900px)').matches;
+  const topOff = mobile ? el.pp.offsetHeight + 10 : el.top.getBoundingClientRect().bottom + 12;   /* on phones the prompt pane is stuck to the top */
+  const vh = window.innerHeight, cr = card.getBoundingClientRect();
+  let y = null;
+  if (crewChanged && (cr.top < topOff || cr.top > topOff + (vh - topOff) * 0.45)) y = cr.top - topOff;
+  if (target) {
+    const tr = target.getBoundingClientRect(), base = y == null ? 0 : y;
+    const needMin = tr.bottom - (vh - 24), needMax = tr.top - topOff - 8;   /* smallest scroll that shows it, largest that keeps its top */
+    if (base < needMin || base > needMax) y = Math.min(needMax, Math.max(needMin, base));
+  }
+  if (y != null && Math.abs(y) > 4) {
+    S.quietHover = performance.now() + 900;   /* cards sliding under a still mouse are not a hover */
+    window.scrollTo({top: window.scrollY + y, behavior: 'smooth'});
+  }
+}
+
+/* ── hovering a crew card → highlight its words (and bring them into view after a short dwell) ── */
+function setHover(crew, ctl) {
+  if (crew === S.hoverCrew && ctl === S.hoverCtl) return;
+  S.hoverCrew = crew; S.hoverCtl = ctl; renderHL();
+  clearTimeout(S.dwell);
+  if (crew) S.dwell = setTimeout(() => revealFor(crew, ctl), 450);
+}
+function revealFor(crew, ctl) {
+  const M = S.model; let s = null, e = null;
+  if (ctl && ctl.startsWith('sec:')) { const sec = M.by[ctl.slice(4)]; if (sec) { s = sec.start; e = Math.min(sec.end, sec.start + 220); } }
+  else if (ctl) { const h = M.hot.find(x => x.ctl === ctl); if (h) { s = h.s; e = h.e; } }
+  if (s == null) {
+    const sec = M.secs.find(x => x.crew === crew);
+    if (sec) { s = sec.start; e = Math.min(sec.end, sec.start + 220); }
+    else { const h = M.hot.find(x => x.crew === crew); if (h) { s = h.s; e = h.e; } }
+  }
+  if (s != null) revealRange(s, e);
+}
+
+/* ── Level 1 ↔ Level 2: insert or lift the REFERENCES block after SCENE ── */
+function setLevel(lv) {
+  const M = S.model, t = S.text, rf = M.by['REFERENCES'];
+  if (lv === 2 && !rf) {
+    const anchor = M.by['SCENE'] || M.by['GLOBAL STYLE'];
+    if (anchor) { const pos = anchor.end; return commit({text: t.slice(0, pos) + '\n\n' + S.refsStash + t.slice(pos), fr: [pos + 2, pos + 2 + S.refsStash.length]}, 'level'); }
+    return commit({text: S.refsStash + '\n\n' + t, fr: [0, S.refsStash.length]}, 'level');
+  }
+  if (lv === 1 && rf) {
+    S.refsStash = t.slice(rf.start, rf.end);
+    const i = M.secs.indexOf(rf), prev = M.secs[i - 1], next = M.secs[i + 1];
+    const a = prev ? prev.end : rf.start, b = prev ? rf.end : (next ? next.start : t.length);
+    commit({text: t.slice(0, a) + t.slice(b), fr: null}, 'level');
+    revealRange(Math.max(0, a - 1));
+  }
+}
+function chipClick(list, found, key, v, src) {
+  const hits = found[v] || [];
+  if (hits.length) return selectRange(hits[0].s, hits[0].e);
+  const item = list.find(x => x.v === v); if (item) W.chipAdd(key, item.add, src);
+}
+function pickOne(cur, v, write) { if (cur && cur.v === v) return selectRange(cur.s, cur.e); write(v); }   /* a lit tile finds its words */
+function copyLabel() { el.copy.innerHTML = ic('clipboard') + 'Copy prompt'; }
+
+function bindEvents() {
+  el.ta.addEventListener('input', () => {
+    pushHistory('text');
+    S.text = el.ta.value; S.src = 'text'; S.flash = null; S.session = null;
+    S.model = parse(S.text); renderHL();
+    clearTimeout(S.deb);
+    S.deb = setTimeout(() => { S.src = 'text'; renderControls(); renderLit(); onCaret(); }, 150);
+  });
+  let raf = 0;
+  const caretSoon = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(onCaret); };
+  document.addEventListener('selectionchange', () => { if (document.activeElement === el.ta) caretSoon(); });
+  el.ta.addEventListener('focus', caretSoon);
+  el.scroll.addEventListener('mousedown', e => { if (e.target === el.scroll) { e.preventDefault(); el.ta.focus(); } });
+  el.warn.addEventListener('click', e => { const b = e.target.closest('[data-selwarn]'); const w = b && S.model.warnings[+b.dataset.selwarn]; if (w) selectRange(w.s, w.e); });
+
+  el.levelSeg.addEventListener('click', e => { const b = e.target.closest('button[data-level]'); if (b) setLevel(+b.dataset.level); });
+  el.undo.addEventListener('click', () => {
+    const prev = S.hist.pop(); if (prev == null) return;
+    S.histSrc = null; S.text = prev; el.ta.value = prev; S.src = 'undo'; S.flash = null; S.session = null;
+    sync(); el.undo.disabled = !S.hist.length;
+  });
+  el.reset.addEventListener('click', () => {
+    if (S.text !== PROMPTS.a) pushHistory('reset');
+    S.histSrc = null;
+    Object.assign(S, {text: PROMPTS.a, refsStash: PROMPTS.refs, res: '480p', aspect: '16:9', sound: true, bitrate: 'standard', ghosts: [], src: 'reset', flash: null, session: null});
+    el.ta.value = S.text; sync(); el.scroll.scrollTop = 0;
+  });
+  el.copy.addEventListener('click', async () => {
+    let ok = false;
+    try { await navigator.clipboard.writeText(S.text); ok = true; }
+    catch (_) {
+      try { const a = el.ta.selectionStart, b = el.ta.selectionEnd; el.ta.focus(); el.ta.select(); ok = document.execCommand('copy'); el.ta.setSelectionRange(a, b); } catch (__) { ok = false; }
+    }
+    el.copy.innerHTML = ic(ok ? 'check' : 'warning') + (ok ? 'Copied' : 'Select all and copy');
+    clearTimeout(el.copy._t); el.copy._t = setTimeout(copyLabel, 1600);
+  });
+
+  const L = el.list;
+  L.addEventListener('click', e => {
+    const t = e.target, M = S.model; let b;
+    if ((b = t.closest('#aspectSeg .tile'))) return W.aspect(b.dataset.v);
+    if ((b = t.closest('#resSeg .tile'))) { S.res = b.dataset.v; S.src = 'res'; return renderControls(); }
+    if ((b = t.closest('#bitSeg button'))) { S.bitrate = b.dataset.v; S.src = 'bitrate'; return renderControls(); }
+    if (t.closest('#soundSw')) { S.sound = !S.sound; S.src = 'sound'; return renderControls(); }
+    if ((b = t.closest('#genreTiles .tile'))) return pickOne(M.genre, b.dataset.v, W.genre);
+    if ((b = t.closest('#stockTiles .tile'))) return pickOne(M.stock, b.dataset.v, W.stock);
+    if ((b = t.closest('#grainTiles .tile'))) return pickOne(M.grain, b.dataset.v, W.grain);
+    if ((b = t.closest('#colorTiles .tile'))) return pickOne(M.color, b.dataset.v, W.color);
+    if (t.closest('#readSw')) return W.readable(!M.readable);
+    if (t.closest('#lockSw')) return W.lockOn(!M.lock);
+    if ((b = t.closest('#lockStep button'))) { if (M.lock && M.lock.n >= 0) W.lockN(M.lock.n + +b.dataset.d); return; }
+    if ((b = t.closest('#todTiles .tile'))) return chipClick(TOD, M.tod, 'LIGHTING', b.dataset.v, 'tod');
+    if ((b = t.closest('#fxTiles .tile'))) return chipClick(FX, M.fx, 'PHYSICS', b.dataset.v, 'fx');
+    if (t.closest('#addShot')) return W.addShot();
+    if (t.closest('#syncCuts')) return W.syncCuts();
+    if (t.closest('#addLock')) return W.addLock();
+    if ((b = t.closest('.chk'))) {
+      if (b.dataset.lock != null) return W.lockToggle(+b.dataset.lock, false);
+      if (b.dataset.ghost != null) return W.lockToggle(null, true, +b.dataset.ghost);
+      return;
+    }
+    if ((b = t.closest('[data-selwarn]'))) { const w = M.warnings[+b.dataset.selwarn]; if (w) selectRange(w.s, w.e); return; }
+    if ((b = t.closest('.ev'))) { const k = M.events[+b.dataset.ev]; if (k) selectRange(k.s, k.e); return; }
+    if ((b = t.closest('.clip'))) { const x = M.timing.find(q => q.seg === +b.dataset.selclip); if (x) selectRange(x.cs, x.ce); return; }
+    if ((b = t.closest('[data-selref]'))) { const r = M.refs.find(q => q.id === b.dataset.selref); if (r) selectRange(r.s, r.ce); return; }
+    if ((b = t.closest('[data-selsec]'))) { const sec = M.by[b.dataset.selsec]; if (sec) selectRange(sec.start, sec.labelEnd); return; }
+    if ((b = t.closest('[data-selchar]'))) { const c = M.chars.find(q => q.name === b.dataset.selchar); if (c) selectRange(c.s, c.de); return; }
+    if ((b = t.closest('[data-selseg]'))) { const o = M.optics.find(q => q.seg === +b.dataset.selseg); if (o) selectRange(o.cs, o.ce); return; }
+    if ((b = t.closest('.crew-h'))) {
+      const crew = b.closest('.crew').dataset.crew;
+      S.activeCrew = crew; S.activeCtl = null; renderLit(); renderHL(); revealFor(crew, null);
+    }
+  });
+  L.addEventListener('input', e => {
+    const t = e.target;
+    if (t.id === 'len') return W.length(+t.value);
+    if (t.dataset.lens) return W.lens(+t.dataset.lens, +t.value);
+    if (t.dataset.time) { if (t.value === '') return; return W.time(+t.dataset.time, +t.dataset.which, parseFloat(t.value)); }
+    if (t.dataset.field) { autosize(t); return fieldInput(t); }
+  });
+  L.addEventListener('change', e => { const t = e.target; if (t.dataset.move) return W.move(+t.dataset.move, t.value); });
+  L.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('textarea.fld')) e.preventDefault(); });
+  L.addEventListener('focusout', e => { if (S.session && S.session.el === e.target) S.session = null; });
+  L.addEventListener('mouseover', e => {
+    const tile = e.target.closest('.pick .tile');
+    setPvHover(tile ? tile.closest('.pick').dataset.pick : null, tile ? tile.dataset.v : null);
+    if (performance.now() < (S.quietHover || 0)) return;
+    const card = e.target.closest('.crew'), c = e.target.closest('[data-ctl]');
+    setHover(card ? card.dataset.crew : null, c && !c.classList.contains('crew') ? c.dataset.ctl : null);
+  });
+  L.addEventListener('mouseleave', () => { setPvHover(null, null); setHover(null, null); });
+
+  const setTopH = () => el.app.style.setProperty('--top-h', el.top.offsetHeight + 'px');
+  if (window.ResizeObserver) new ResizeObserver(setTopH).observe(el.top);
+  let rz = 0;
+  window.addEventListener('resize', () => { setTopH(); clearTimeout(rz); rz = setTimeout(() => { if (S.model) renderControls(); }, 120); });
+  setTopH();
+}
+
+function init() {
+  document.addEventListener('load', onPic, true);   /* img load/error don't bubble: catch them on the way down */
+  document.addEventListener('error', onPic, true);
+  Object.assign(el, {app: $('#app'), top: $('#top'), ta: $('#ta'), hl: $('#hl'), scroll: $('#ppScroll'), pp: $('#pp'), warn: $('#ppWarn'),
+    list: $('#crewList'), levelSeg: $('#levelSeg'), count: $('#count'), undo: $('#undoBtn'), reset: $('#resetBtn'), copy: $('#copyBtn')});
+  $('#brandTitle').insertAdjacentHTML('afterbegin', ic('slate'));
+  el.undo.innerHTML = ic('reset', 'flip') + 'Undo';
+  el.reset.textContent = 'Reset';
+  copyLabel();
+  buildUI();
+  S.refsStash = PROMPTS.refs; S.text = PROMPTS.a; el.ta.value = S.text;
+  bindEvents();
+  sync();
+  window.CS = {get text() { return S.text; }, get model() { return S.model; }, PROMPTS, state: S, ASSETS, PIC};
+}
+init();
+})();
+</script>
+</body>
+</html>

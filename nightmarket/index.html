@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Danney Trieu — Night Market</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Special+Elite&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+  :root{
+    --black:#050505; --ink:#e8e2d3; --dim:#8f8a7e; --volt:#D4FF3D; --amber:#f2a93b; --red:#e0452b;
+    --paper:#efe8d8; --paper-ink:#1c1a17;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; --type:"Special Elite","Courier New",monospace; --marker:"Permanent Marker","Comic Sans MS",cursive;
+    --walker-x:30%;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--black);color:var(--ink);overflow:hidden;font-family:var(--type);overscroll-behavior:none}
+  #stage{position:fixed;inset:0;overflow:hidden;touch-action:none;--vh1:1vh;
+    background:radial-gradient(60% 45% at 50% 0%, #100e0a 0%, var(--black) 70%);}
+  #stage img{max-width:none;max-height:none}       /* the host viewer's img{max-width:100%} must never squash a piece */
+  body.framed{height:auto;overflow:visible}
+  body.framed #stage{position:relative;inset:auto;width:100%;aspect-ratio:16/9;min-height:360px}
+
+  /* the street is a row of stops; three copies so the wrap never shows an edge */
+  .strip{position:absolute;left:0;top:0;height:100%;display:flex;will-change:transform}
+  .copy{position:relative;height:100%;display:flex;flex:none;align-items:flex-end}
+  .slot{position:relative;flex:none;height:100%;display:flex;align-items:flex-end}
+  .slot.pad{width:calc(var(--vh1) * var(--w))}
+  .slot > img.piece{display:block;height:calc(var(--vh1) * var(--h));width:auto;margin-bottom:calc(var(--vh1) * 6);user-select:none;-webkit-user-drag:none}
+  .fg{position:absolute;left:0;top:-5%;height:100%;display:flex;align-items:flex-start;pointer-events:none;will-change:transform;opacity:.8}
+  .fg img{display:block;height:22%;width:auto}
+  .ground{position:absolute;left:0;right:0;bottom:0;height:16%;background:linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));pointer-events:none}
+  .vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(80% 90% at 50% 45%, rgba(0,0,0,0) 55%, rgba(0,0,0,.72) 100%)}
+
+  /* the walker: in colour, fixed on screen; one picture per job, crossfaded */
+  #walker{position:absolute;left:var(--walker-x);bottom:8.5%;height:44%;width:44%;transform-origin:0 100%;will-change:transform;pointer-events:none;filter:drop-shadow(0 6px 10px rgba(0,0,0,.7));z-index:3}
+  #walker img{position:absolute;left:0;bottom:0;height:100%;width:auto;opacity:0;transition:opacity .45s ease, transform .45s ease;transform:translateY(6px)}
+  #walker img.is-on{opacity:1;transform:translateY(0)}
+
+  /* extras: grey people who step out of a stall as he arrives and walk off once he has passed */
+  .extra{position:absolute;bottom:8.5%;height:calc(var(--vh1) * var(--h,34));opacity:0;transform:translateX(-46px);transition:opacity .6s ease, transform .8s ease;pointer-events:none;filter:grayscale(1) drop-shadow(0 6px 10px rgba(0,0,0,.7));z-index:2}
+  .extra img{display:block;height:100%;width:auto}
+  .extra.in{opacity:1;transform:translateX(0)}
+  .extra.gone{opacity:0;transform:translateX(130px)}
+  .extra.rise{transform:translateY(40px)}
+  .extra.rise.in{transform:translateY(0)}
+  .extra.rise.gone{opacity:1;transform:translateY(0)}
+
+  /* hanging signs (HIGGSFIELD · ICM) */
+  .sign{position:absolute;top:calc(var(--vh1) * 21);height:calc(var(--vh1) * var(--h,20));transform-origin:50% 0;animation:sway 6s ease-in-out infinite alternate;pointer-events:none}
+  .sign img{display:block;height:100%;width:auto}
+  @keyframes sway{from{transform:rotate(-1.2deg)}to{transform:rotate(1.2deg)}}
+
+  /* the studio light: beams from the two lamps, a floor pool, the marquee pulse */
+  .beam{position:absolute;width:calc(var(--vh1) * 34);height:calc(var(--vh1) * 80);transform-origin:50% 0;pointer-events:none;mix-blend-mode:screen;
+    background:linear-gradient(to bottom, rgba(255,235,180,.85) 0%, rgba(255,225,160,.35) 40%, rgba(255,215,140,0) 100%);
+    clip-path:polygon(46% 0,54% 0,100% 100%,0 100%);filter:blur(12px);animation:flicker 3.2s ease-in-out infinite}
+  .beam.volt{background:linear-gradient(to bottom, rgba(212,255,61,.8) 0%, rgba(212,255,61,.3) 40%, rgba(212,255,61,0) 100%);animation-duration:2.6s}
+  @keyframes flicker{0%,100%{opacity:.5}12%{opacity:.62}30%{opacity:.46}55%{opacity:.66}70%{opacity:.54}}
+  .pool{position:absolute;bottom:calc(var(--vh1) * 5);height:calc(var(--vh1) * 8);width:calc(var(--vh1) * 70);border-radius:50%;background:radial-gradient(closest-side, rgba(212,255,61,.45), rgba(255,220,150,.15) 60%, rgba(0,0,0,0));mix-blend-mode:screen;filter:blur(8px);pointer-events:none;animation:pulse 2.6s ease-in-out infinite}
+  .marquee{position:absolute;top:calc(var(--vh1) * 8);height:calc(var(--vh1) * 22);width:calc(var(--vh1) * 60);border-radius:50%;background:radial-gradient(closest-side, rgba(212,255,61,.55), rgba(212,255,61,0));mix-blend-mode:screen;filter:blur(18px);pointer-events:none;animation:pulse 2.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+  .sweep{animation:sweep 7s ease-in-out infinite alternate, flicker 3.2s ease-in-out infinite}
+  @keyframes sweep{from{rotate:-9deg}to{rotate:9deg}}
+
+  /* notes: pinned in the gap after each stop, so nothing ever stands on them */
+  .note{position:absolute;bottom:30%;width:min(calc(var(--vh1) * 36),340px);padding:12px 14px 11px;background:var(--paper);color:var(--paper-ink);z-index:1;
+    clip-path:polygon(1% 3%,12% 0,30% 2%,48% 0,66% 3%,84% 0,99% 2%,100% 20%,98% 42%,100% 63%,98% 84%,100% 97%,88% 100%,70% 98%,52% 100%,34% 98%,16% 100%,2% 98%,0 80%,2% 58%,0 36%,2% 16%);
+    box-shadow:0 12px 30px rgba(0,0,0,.6);transform:rotate(var(--tilt,-1.5deg));
+    filter:grayscale(1) contrast(.15) brightness(1.9);opacity:0;transition:filter 1.1s ease, opacity .6s ease}
+  .note.small{width:min(calc(var(--vh1) * 24),220px);bottom:34%;padding:9px 12px 8px}
+  .note.on{filter:none;opacity:1}
+  .note .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6b6558;margin:0 0 5px}
+  .note p{margin:0;font-size:clamp(12px,calc(var(--vh1) * 1.9),16px);line-height:1.4}
+  .note.small p{font-size:clamp(11px,calc(var(--vh1) * 1.6),14px)}
+  .note .learned{margin-top:9px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;gap:8px;color:#2b2823}
+  .note .learned i{width:10px;height:10px;border-radius:50%;background:var(--stone,var(--amber));box-shadow:0 0 10px 2px var(--stone,var(--amber))}
+  .note .tape{position:absolute;top:-9px;left:38%;width:64px;height:18px;background:rgba(255,255,255,.55);transform:rotate(-4deg)}
+  .note.dark{background:#141311;color:#b9b2a3}
+  .note.dark .eyebrow{color:#6b6558}
+
+  .chalk{position:absolute;top:32%;width:calc(var(--vh1) * 46);font-family:var(--marker);color:var(--ink);opacity:.92;text-shadow:0 0 12px rgba(255,255,255,.15);pointer-events:none}
+  .chalk h1{font-size:clamp(22px,calc(var(--vh1) * 5.2),46px);margin:0;letter-spacing:.01em;font-weight:400;line-height:1.05}
+  .chalk p{margin:10px 0 0;font-family:var(--type);font-size:clamp(11px,calc(var(--vh1) * 1.9),16px);line-height:1.4;color:var(--dim)}
+  .chalk .hint{margin-top:12px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--volt)}
+
+  .hud{position:absolute;left:18px;bottom:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);display:flex;gap:18px;align-items:center;z-index:5}
+  .hud b{color:var(--volt);font-weight:600}
+  .hud .bar{width:120px;height:2px;background:#2a2820;position:relative}
+  .hud .bar i{position:absolute;left:0;top:0;height:100%;width:0;background:var(--volt)}
+  .brand{position:absolute;right:18px;top:14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);z-index:5}
+  .brand b{color:var(--volt);font-weight:600}
+  body.embed .brand{display:none}
+  @media (prefers-reduced-motion: reduce){ .note,.extra,#walker img{transition:none} .beam,.pool,.marquee,.sign,.sweep{animation:none} }
+</style>
+</head>
+<body>
+<div id="stage" aria-label="Danney Trieu, a scroll-through portfolio: a night market where every stall is a job he had">
+  <div class="strip" id="strip"></div>
+  <div class="fg" id="fg"></div>
+  <div class="ground"></div>
+  <div id="walker"></div>
+  <div class="vignette"></div>
+  <div class="brand"><b>Danney Trieu</b> &middot; night market</div>
+  <div class="hud"><span>scroll &middot; keys &middot; drag</span><span class="bar"><i id="bar"></i></span><span id="where"><b>the entrance</b></span></div>
+</div>
+
+<script>
+(function(){
+  const A = 'assets/';
+  const LANTERNS = A + 'lanterns.png';
+  const OUTFITS = { front:A+'walker-front.png', tee:A+'walker-tee.png', hotel:A+'walker-hotel.png', owner:A+'walker-owner.png', design:A+'walker-design.png', code:A+'walker-code.png', reelix:A+'walker-reelix.png' };
+  const params = new URLSearchParams(location.search);
+  if (params.get('embed')) document.body.classList.add('embed');
+  if (params.get('framed') || (window.frameElement === null && window.top !== window)) document.body.classList.add('framed');
+  const startP = parseFloat(params.get('p')); const STILL = !!params.get('still');
+  if (STILL) document.head.insertAdjacentHTML('beforeend', '<style>.note,.extra,#walker img,#walker .glow{transition:none!important} .beam,.pool,.marquee,.sign,.sweep{animation:none!important}</style>');
+
+  // ── the street, stop by stop. Sizes are in % of the stage height; `space` is the black room after each stop. ──
+  const STOPS = [
+    { id:'entrance', name:'the entrance', chalk:true, space:58, outfit:'tee', restFace:'left' },
+    { id:'hotel',  name:'the hotel',   img:'stall-hotel.webp',  h:74, space:46, outfit:'hotel',
+      extra:{ src:'extra-guest.png',  h:36, at:0.96 },
+      note:{ eyebrow:'HOTEL · 2015–2018', text:'Guest relations manager. Helped open a hotel.', learned:'People', stone:'#f2a93b', tilt:-2 } },
+    { id:'spa',    name:'business one',   img:'stall-spa.webp',    h:74, space:40, outfit:'owner', extra:{ src:'extra-spa.png',   h:34 },
+      note:{ small:true, eyebrow:'BUSINESS ONE', text:'A spa.', tilt:1.5 } },
+    { id:'pho',    name:'business two',   img:'stall-pho.webp',    h:74, space:40, outfit:'owner', extra:{ src:'extra-pho.png',   h:34 },
+      note:{ small:true, eyebrow:'BUSINESS TWO', text:'A restaurant.', tilt:-1 } },
+    { id:'caphe',  name:'business three', img:'stall-caphe.webp',  h:74, space:40, outfit:'owner', extra:{ src:'extra-caphe.png', h:34 },
+      note:{ small:true, eyebrow:'BUSINESS THREE', text:'A coffee shop.', tilt:2 } },
+    { id:'gym',    name:'business four',  img:'stall-gym.webp',    h:74, space:40, outfit:'owner', extra:{ src:'extra-gym.png',   h:36 },
+      note:{ small:true, eyebrow:'BUSINESS FOUR', text:'Gyms.', tilt:-1.5 } },
+    { id:'nails',  name:'business five',  img:'stall-nails.webp',  h:74, space:40, outfit:'owner', extra:{ src:'extra-nails.png', h:34 },
+      note:{ small:true, eyebrow:'BUSINESS FIVE', text:'A nail-salon franchise.', tilt:1 } },
+    { id:'seo',    name:'business six',   img:'stall-seo.webp',    h:74, space:50, outfit:'owner', extra:{ src:'extra-seo.png',   h:35 },
+      note:{ eyebrow:'BUSINESS SIX · TO 2022', text:'An SEO agency. Then COVID closed all six.', learned:'How an owner thinks', stone:'#c9973f', tilt:-2 } },
+    { id:'design', name:'design',       img:'stall-design.webp', h:74, space:46, outfit:'design', extra:{ src:'extra-design.png', h:35 },
+      note:{ eyebrow:'DESIGN', text:'Graphic design. Then UI/UX. Then frontend, to build what I design.', learned:'Creativity', stone:'#e85cc0', tilt:1.5 } },
+    { id:'code',   name:'software',     img:'stall-code.webp',   h:74, space:52, outfit:'code', extra:{ src:'extra-code.png', h:35 },
+      note:{ eyebrow:'SOFTWARE · 2022–2025', text:'Developer, then project manager.', learned:'Systems', stone:'#86c8ea', tilt:-1 } },
+    { id:'dark',   name:'the dark stretch', img:'dark-stretch.webp', h:74, space:56, outfit:'tee',
+      note:{ dark:true, eyebrow:'2022–2025', text:'Four skills. No place to use them together. Years of feeling like a failure.', tilt:1.5 } },
+    { id:'reelix', name:'Reelix Studio', img:'reelix-studio.webp', h:84, space:64, outfit:'reelix', studio:true,
+      extra:{ src:'extra-crew.png', h:46, rise:true, stay:true, at:0.58 },
+      signs:[ { src:'sign-higgsfield.webp', h:21, at:-0.03 }, { src:'sign-icm.webp', h:21, at:0.99 } ],
+      note:{ eyebrow:'2026-04-14 · 11:14', text:'AI video. All four skills, one studio. Reelix.', learned:'Nothing was wasted', stone:'#D4FF3D', tilt:-1.5 } },
+    { id:'incubator', name:'the incubator', pad:true, space:52, outfit:'reelix', restFace:'front', noteOffset:54,
+      note:{ eyebrow:'HIGGSFIELD · ICM', text:'Built inside two communities. Every version of me here is an agent I built. Keep scrolling, it loops.', learned:'Share the map', stone:'#D4FF3D', tilt:2 } },
+  ];
+
+  const stage = document.getElementById('stage'), strip = document.getElementById('strip'), fg = document.getElementById('fg');
+  const walker = document.getElementById('walker'), bar = document.getElementById('bar'), where = document.getElementById('where');
+
+  const outfitEls = {};
+  Object.entries(OUTFITS).forEach(([k, src]) => { const im = new Image(); im.src = src; im.alt = 'Danney, ' + k; im.dataset.outfit = k; walker.appendChild(im); outfitEls[k] = im; });
+  let outfit = null;
+  function wear(k) { if (k === outfit || !outfitEls[k]) return; outfit = k; Object.values(outfitEls).forEach(im => im.classList.toggle('is-on', im.dataset.outfit === k)); }
+  wear('tee');
+
+  // build three copies of the street
+  const copies = [], items = [];   // items: {kind, el, stop, ci, slot}
+  for (let c = 0; c < 3; c++) {
+    const copy = document.createElement('div'); copy.className = 'copy';
+    STOPS.forEach(stop => {
+      const slot = document.createElement('div'); slot.className = 'slot' + ((stop.chalk || stop.pad) ? ' pad' : '');
+      if (stop.chalk || stop.pad) slot.style.setProperty('--w', stop.chalk ? 8 : 4);
+      if (stop.img) { const im = new Image(); im.className = 'piece'; im.src = A + stop.img; im.alt = stop.name; slot.style.setProperty('--h', stop.h); slot.appendChild(im); }
+      slot.style.marginRight = 'calc(var(--vh1) * ' + stop.space + ')';
+      copy.appendChild(slot);
+      const rec = { stop, ci: c - 1, slot };
+      if (stop.chalk) {
+        const el = document.createElement('div'); el.className = 'chalk';
+        el.innerHTML = '<h1>Nothing was wasted.</h1><p>Danney Trieu. Four careers. One studio.</p><p class="hint">scroll &rarr;</p>';
+        copy.appendChild(el); rec.chalk = el;
+      }
+      if (stop.note) {
+        const n = stop.note, el = document.createElement('div'); el.className = 'note' + (n.dark ? ' dark' : '') + (n.small ? ' small' : '');
+        el.style.setProperty('--tilt', n.tilt + 'deg'); if (n.stone) el.style.setProperty('--stone', n.stone);
+        el.innerHTML = '<span class="tape"></span><p class="eyebrow">' + n.eyebrow + '</p><p>' + n.text + '</p>' + (n.learned ? '<div class="learned"><i></i>What I learned: ' + n.learned + '</div>' : '');
+        copy.appendChild(el); rec.note = el;
+      }
+      if (stop.extra) {
+        const x = stop.extra, el = document.createElement('div'); el.className = 'extra' + (x.rise ? ' rise' : ''); el.style.setProperty('--h', x.h);
+        const im = new Image(); im.src = A + x.src; im.alt = ''; el.appendChild(im); copy.appendChild(el); rec.extra = el;
+      }
+      if (stop.signs) rec.signs = stop.signs.map(sg => { const el = document.createElement('div'); el.className = 'sign'; el.style.setProperty('--h', sg.h); const im = new Image(); im.src = A + sg.src; im.alt = ''; el.appendChild(im); copy.appendChild(el); return el; });
+      if (stop.studio) {
+        rec.lights = ['beam sweep', 'beam volt', 'pool', 'marquee'].map(cls => { const el = document.createElement('div'); el.className = cls; copy.appendChild(el); return el; });
+      }
+      items.push(rec);
+    });
+    strip.appendChild(copy); copies.push(copy);
+  }
+  for (let c = 0; c < 8; c++) { const im = new Image(); im.src = LANTERNS; im.alt = ''; fg.appendChild(im); }
+
+  // measure: every piece's real x inside its copy; then park notes, extras, signs and lights around it
+  let stripW = 0, H = 0;
+  function measure() {
+    H = stage.clientHeight; stage.style.setProperty('--vh1', (H / 100) + 'px');
+    stripW = copies[0].getBoundingClientRect().width;
+    const base = copies[0].getBoundingClientRect().left;
+    items.forEach(it => {
+      const r = it.slot.getBoundingClientRect(); const cbase = copies[it.ci + 1].getBoundingClientRect().left;
+      it.left = r.left - cbase; it.width = r.width; it.right = it.left + it.width;
+      const gap = it.stop.space * H / 100;
+      if (it.chalk) it.chalk.style.left = (it.left + 24) + 'px';
+      if (it.note)  it.note.style.left  = (it.stop.noteOffset != null ? it.left + it.stop.noteOffset * H / 100 : it.right + gap * 0.34) + 'px';
+      if (it.extra) it.extra.style.left = (it.left + it.width * (it.stop.extra.at != null ? it.stop.extra.at : 0.68)) + 'px';
+      if (it.signs) it.signs.forEach((el, i) => { el.style.left = (it.left + it.width * it.stop.signs[i].at) + 'px'; });
+      if (it.lights) {
+        const [sweep, volt, pool, marquee] = it.lights;
+        sweep.style.left = (it.left + it.width * 0.13 - H * 0.17) + 'px'; sweep.style.top = (H * 0.34) + 'px'; sweep.style.transform = 'rotate(-16deg)';
+        volt.style.left  = (it.left + it.width * 0.75 - H * 0.17) + 'px'; volt.style.top  = (H * 0.36) + 'px'; volt.style.transform = 'rotate(16deg)';
+        pool.style.left  = (it.left + it.width * 0.5 - H * 0.35) + 'px';
+        marquee.style.left = (it.left + it.width * 0.5 - H * 0.30) + 'px';
+      }
+    });
+  }
+
+  // ── the mechanic: virtual scroll → damped p → wrap both together; the wheel stays inside the stage ──
+  const WHEEL_K = 0.00020;
+  let targetP = 0, p = 0, vel = 0, lastTouch = null, dragging = false, lastX = null;
+  if (!isNaN(startP)) { p = targetP = Math.max(0, Math.min(0.999, startP)); }
+  stage.addEventListener('wheel', e => { e.preventDefault(); targetP += (Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX) * WHEEL_K; }, { passive: false });
+  stage.addEventListener('touchstart', e => { lastTouch = e.touches[0].clientX; }, { passive: true });
+  stage.addEventListener('touchmove', e => { e.preventDefault(); if (lastTouch !== null) { targetP += (lastTouch - e.touches[0].clientX) * WHEEL_K * 4; lastTouch = e.touches[0].clientX; } }, { passive: false });
+  stage.addEventListener('pointerdown', e => { if (e.pointerType === 'touch') return; dragging = true; lastX = e.clientX; });
+  addEventListener('pointermove', e => { if (!dragging) return; targetP += (lastX - e.clientX) * WHEEL_K * 4; lastX = e.clientX; });
+  addEventListener('pointerup', () => { dragging = false; });
+  addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)) { targetP += .025; e.preventDefault(); }
+    if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { targetP -= .025; e.preventDefault(); }
+    if (e.key === 'Home') { targetP = p = 0; }
+  });
+  const wrap1 = v => ((v % 1) + 1) % 1;
+  window.__worldSeek = v => { targetP = v; };
+  window.__worldJump = v => { targetP = p = v; };
+  window.__worldState = () => ({ p, targetP, stripW, chapter: current().stop.name, outfit });
+  window.__worldStops = () => items.filter(i => i.ci === 0).map(i => ({ id: i.stop.id, p: +(i.left / stripW).toFixed(4), pEnd: +(i.right / stripW).toFixed(4) }));
+
+  function current() {       // the stop the walker is in: the last one whose left edge (minus a little run-up) he has passed
+    const wx = wrap1(p) * stripW; let cur = items[0];
+    items.forEach(it => { if (it.ci === 0 && wx >= it.left - it.stop.space * H / 100 * 0.35) cur = it; });
+    return cur;
+  }
+
+  let lastWhere = '', t0 = performance.now(), lastMove = 0, facingLeft = true, atRest = true;
+  function frame(now) {
+    const dt = Math.min(.05, (now - t0) / 1000); t0 = now;
+    if (!stripW) measure();
+    const d = targetP - p; p += d * Math.min(1, dt * 6);
+    if (p >= 1 && targetP >= 1) { p -= 1; targetP -= 1; }
+    if (p < 0 && targetP < 0)   { p += 1; targetP += 1; }
+    vel = d;
+    const cp = wrap1(p);
+    const walkerPx = stage.clientWidth * 0.30;
+    const worldX = cp * stripW;
+    strip.style.transform = 'translate3d(' + (walkerPx - worldX - stripW) + 'px,0,0)';
+    const fgW = fg.firstElementChild ? fg.firstElementChild.getBoundingClientRect().width : 0;
+    const fgShift = fgW ? (((walkerPx - worldX * 1.12) % fgW) + fgW) % fgW - fgW * 2 : 0;
+    fg.style.transform = 'translate3d(' + fgShift + 'px,0,0)';
+
+    const speed = Math.max(-1, Math.min(1, vel * 40));
+    const cur0 = current();
+    // while walking he faces the way he's going; once he stops he settles into this stop's resting pose
+    // (right by default, left at the entrance, straight to camera at the last stop)
+    if (Math.abs(vel) > .0004) { lastMove = now; facingLeft = vel < 0; atRest = false; }
+    else if (now - lastMove > 450) { atRest = true; }
+    const rest = atRest ? (cur0.stop.restFace || 'right') : null;
+    const front = rest === 'front';
+    if (rest === 'left') facingLeft = true; else if (rest === 'right') facingLeft = false;
+    const left = facingLeft && !front;
+    walker.classList.toggle('left', left);
+    const bob = Math.sin(now / 90) * Math.min(1, Math.abs(speed)) * 2.2;
+    walker.style.transform = 'translateY(' + (-Math.abs(bob)) + 'px) rotate(' + (speed * 2.5) + 'deg)' + (left ? ' scaleX(-1)' : '');
+    const cur = cur0; wear(front ? 'front' : cur.stop.outfit);
+
+    const vw = stage.clientWidth;
+    items.forEach(it => {
+      const off = it.ci * stripW;
+      if (it.note) { const dist = off + it.right - worldX; it.note.classList.toggle('on', dist > -stripW * 0.04 && dist < vw * 0.7); }
+      if (it.extra) {
+        const dist = off + it.left + it.width * 0.6 - worldX;      // where the person stands
+        const edge = off + it.right - worldX;                        // the end of the stall: he has passed once this is behind him
+        const near = dist < vw * 0.6 && edge > -vw * 0.02;
+        const passed = edge <= -vw * 0.02 && edge > -stripW * 0.3;
+        const stay = it.stop.extra.stay;
+        it.extra.classList.toggle('in', !!(near || (stay && dist < vw * 0.7 && dist > -stripW * 0.3)));
+        it.extra.classList.toggle('gone', !!(passed && !stay));
+      }
+    });
+
+    bar.style.width = (cp * 100) + '%';
+    if (cur.stop.name !== lastWhere) { lastWhere = cur.stop.name; where.innerHTML = '<b>' + cur.stop.name + '</b>'; }
+    requestAnimationFrame(frame);
+  }
+  addEventListener('resize', () => { stripW = 0; });
+  Promise.all([...strip.querySelectorAll('img')].map(im => im.complete ? 1 : new Promise(r => { im.onload = im.onerror = r; }))).then(() => { stripW = 0; });
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
