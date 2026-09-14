@@ -1,7 +1,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vibe Film Sessions</title>
+<title>Prompt words · Vibe Film Sessions</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* page-local: the clock rail, the rung index and the two-up call cards. The skin owns the rest. */
@@ -479,59 +479,46 @@ ol.doc-steps li::before{
 
 <div class="doc-main">
 
-<section class="doc-sec" id="start">
+<section class="doc-sec" id="words">
 <style>
-  /* start here — the class front door. Classes prefixed .sh- and scoped to #start. */
-  #start .sh-links{display:grid;gap:14px;grid-template-columns:repeat(4,minmax(0,1fr));margin:24px 0 8px}
-  @media (max-width:1100px){#start .sh-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
-  @media (max-width:560px){#start .sh-links{grid-template-columns:minmax(0,1fr)}}
-  #start .sh-link{display:flex;flex-direction:column;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
-                  padding:18px 18px 15px;text-decoration:none;color:var(--ink);transition:border-color var(--rs-transition),box-shadow var(--rs-transition)}
-  #start .sh-link:hover{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
-  #start .sh-link .sh-n{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);font-weight:700}
-  #start .sh-link h3{margin:0;font-size:17px;letter-spacing:-.01em;display:flex;justify-content:space-between;gap:8px;align-items:baseline;color:var(--ink)}
-  #start .sh-link h3 .rs-ext{font-size:12px;color:var(--faint);font-weight:400}
-  #start .sh-link .sh-here{font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--volt);font-weight:700}
-  #start .sh-link p{margin:0;font-size:13.5px;line-height:1.5;color:var(--dim)}
-  #start .sh-link .sh-url{font-family:var(--rs-mono);font-size:10.5px;color:var(--faint);margin-top:auto;padding-top:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  /* prompt words — the AtomWords showcase (a Tools page). Classes prefixed .pw- and scoped to #words. */
+  #words .pw-grid{display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr));margin:26px 0 16px;max-width:820px}
+  @media (max-width:760px){#words .pw-grid{grid-template-columns:minmax(0,1fr);max-width:320px}}
+  #words .pw-card{background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);overflow:hidden;text-decoration:none;color:var(--ink);transition:border-color var(--rs-transition)}
+  #words .pw-card:hover{border-color:rgba(212,255,61,.42)}
+  #words .pw-card img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:var(--panel2)}
+  #words .pw-body{padding:12px 14px 14px}
+  #words .pw-cat{font-family:var(--rs-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--volt);margin:0 0 5px}
+  #words .pw-card b{display:block;font-size:15px;margin:0 0 4px;color:var(--ink)}
+  #words .pw-card span{display:block;font-size:12.5px;line-height:1.5;color:var(--dim)}
+  #words .pw-credit{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;font-size:13px;line-height:1.55;color:var(--dim);max-width:820px;margin:0}
+  #words .pw-credit p{margin:0;flex:1 1 380px}
+  #words .pw-credit .rs-btn-primary{flex:none;font-size:13px;padding:9px 16px}
 </style>
-  <p class="doc-eyebrow">Start here</p>
-  <h2>Start here</h2>
-  <p class="lede">Everything from the sessions so far. Nothing on this page needs an account or a credit to read.</p>
-
-<!-- sh:links -->
-  <div class="sh-links">
-    <a class="sh-link" href="https://drive.google.com/drive/folders/1TNk-42gZajrTWw-2tD3Fbn760UE-BeM_" target="_blank" rel="noopener">
-      <span class="sh-n">01</span>
-      <h3>The session recordings <span class="rs-ext" aria-hidden="true">&#8599;</span></h3>
-      <p>One Drive folder. Every session, trimmed and full. Open <b>START HERE.txt</b> for the list.</p>
-      <span class="sh-url">drive.google.com &rsaquo; Vibe Film Sessions</span>
+  <p class="doc-eyebrow">one keyword, one picture</p>
+  <h2>Prompt words</h2>
+  <p class="lede">A prompt is made of words that each do one visible thing. AtomWords is a free visual dictionary of those words: one keyword, one picture of what it does. Three from the film side; hundreds more at the source.</p>
+  <div class="pw-grid">
+    <a class="pw-card" href="https://atomwords.com/prompt/rack-focus" target="_blank" rel="noopener">
+      <img src="https://cdn.atomwords.com/cdn-cgi/image/width=640,height=640,fit=cover,format=auto,quality=80/https://cdn.atomwords.com/photos/rack-focus-6f35a388.jpg" alt="rack focus: a chess knight sharp in front, the king soft behind it" loading="lazy">
+      <div class="pw-body"><p class="pw-cat">Camera</p><b>rack focus</b><span>Focus slides from the thing in front to the thing behind it, on the same line.</span></div>
     </a>
-    <a class="sh-link" href="https://danneytrieu.github.io/vibe-film-sessions/">
-      <span class="sh-n">02 <span class="sh-here">you are here</span></span>
-      <h3>The lessons</h3>
-      <p>This site. Session 1, then Session 2, each with its assignment. The left panel is the table of contents.</p>
-      <span class="sh-url">danneytrieu.github.io/vibe-film-sessions</span>
+    <a class="pw-card" href="https://atomwords.com/prompt/backlit-steam" target="_blank" rel="noopener">
+      <img src="https://cdn.atomwords.com/cdn-cgi/image/width=640,height=640,fit=cover,format=auto,quality=80/https://cdn.atomwords.com/photos/backlit-steam-004b2891.jpg" alt="backlit steam: a bowl of ramen, the steam glowing against a dark room" loading="lazy">
+      <div class="pw-body"><p class="pw-cat">Lighting</p><b>backlit steam</b><span>A light behind the steam makes it glow against a dark background.</span></div>
     </a>
-    <a class="sh-link" href="https://www.youtube.com/@danneyteeaiart" target="_blank" rel="noopener">
-      <span class="sh-n">03</span>
-      <h3>The YouTube channel <span class="rs-ext" aria-hidden="true">&#8599;</span></h3>
-      <p>The episodes cut from these sessions, and Reelix Diary.</p>
-      <span class="sh-url">youtube.com/@danneyteeaiart</span>
-    </a>
-    <a class="sh-link" href="https://higgsfield.ai/?fpr=nguyen61" target="_blank" rel="noopener">
-      <span class="sh-n">04</span>
-      <h3>Higgsfield sign-up <span class="rs-ext" aria-hidden="true">&#8599;</span></h3>
-      <p>The tool the sessions generate on. This is my referral link: same price for you, a small credit to the sessions.</p>
-      <span class="sh-url">higgsfield.ai</span>
+    <a class="pw-card" href="https://atomwords.com/prompt/tunnel-framing" target="_blank" rel="noopener">
+      <img src="https://cdn.atomwords.com/cdn-cgi/image/width=640,height=640,fit=cover,format=auto,quality=80/https://cdn.atomwords.com/photos/tunnel-framing-3964f40e.jpg" alt="tunnel framing: a dark stone arch around a walker heading for the bright exit" loading="lazy">
+      <div class="pw-body"><p class="pw-cat">Composition</p><b>tunnel framing</b><span>A dark arch around the frame pushes the eye to the bright thing in the middle.</span></div>
     </a>
   </div>
-<!-- /sh:links -->
-
-
+  <div class="pw-credit">
+    <p>Pictures and words from AtomWords &mdash; free, every category from camera to material. Kevin Pauly put it in the chat during Session 1.</p>
+    <a class="rs-btn-primary" href="https://atomwords.com/dictionary" target="_blank" rel="noopener">Open the dictionary &#8599;</a>
+  </div>
 </section>
 
-<nav class="doc-pager"><span></span><span class="next"><a href="about.html">About me</a> &rarr;</span></nav>
+<nav class="doc-pager"><span class="prev">&larr; <a href="roadtool.html">The levels tool</a></span><span class="next"></span></nav>
 
 </div><!-- /doc-main -->
 
