@@ -1,0 +1,2089 @@
+{
+  "title": "The Door",
+  "summary": "An outbreak traps a father, his daughter and Danny, an exchange student, aboard a train to Busan. As the infected overrun the cars, Danny reaches the driver’s cab and gets the train moving while the others hold the doors. Their escape becomes a story of sacrifice: the men who protect the group take the wounds that will cost them their lives.",
+  "scenes": {
+    "1": "Boarding / the strangers",
+    "2": "First turn",
+    "3": "Sealing off",
+    "4": "The barricade fails — and the run to the front",
+    "5": "The strongman's stand",
+    "6": "Derailment",
+    "7": "The father's sacrifice",
+    "8": "The walk to the light"
+  },
+  "shots": [
+    {
+      "order": 1,
+      "id": "1.0",
+      "scene": 1,
+      "title": "First light of the platform",
+      "description": "static wide from ON THE PLATFORM, camera outside the train at eye level: a KTX carriage stopped along the right of frame with one door standing open, a line of Korean commuters waiting on the platform facing that open door, the terminal's tall glass wall and morning city light behind them. We are not inside the train — no carriage interior, no seats in the foreground",
+      "action": "commuters board in soft morning light",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_4277d989.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "Busan platform",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_1c84f921.webp"
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "id": "1.05",
+      "scene": 1,
+      "title": "The students spill on",
+      "description": "four Korean-American exchange students in their twenties spilling loudly through a train door, laughing, backpacks swinging, morning light behind them",
+      "action": "students spill on loud and laughing",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_a0e03303.webp",
+      "anchor": "session-3/storyboard/assets/hf_4277d989.webp",
+      "refs": [
+        {
+          "name": "Exchange students",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_fcea9658.webp"
+        },
+        {
+          "name": "Busan platform",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_1c84f921.webp"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "id": "1.275",
+      "scene": 1,
+      "title": "Half a beat behind them",
+      "description": "a 25-year-old Vietnamese-American man alone just inside a train door, backpack on one shoulder, lips moving silently as he rehearses a phrase, the group already gone ahead of him",
+      "action": "Danny drifts in a beat behind, mouthing a phrase",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_fe98a83f.webp",
+      "anchor": "session-3/storyboard/assets/hf_a0e03303.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Busan platform",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_1c84f921.webp"
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "id": "1.15",
+      "scene": 1,
+      "title": "The father and daughter board",
+      "description": "a tieless charcoal-suited man walking a smaller figure in a red cardigan onto the train, one hand resting on her shoulder, his eyes already somewhere else",
+      "action": "Seok-woo boards with Soo-an, eyes elsewhere",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_86365332.webp",
+      "anchor": "session-3/storyboard/assets/hf_fe98a83f.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Busan platform",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_1c84f921.webp"
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "id": "1.2",
+      "scene": 1,
+      "title": "The last one aboard",
+      "description": "past the students' shoulders on the platform as they laugh, far down the carriage a woman alone stepping up through the last door, a jacket held closed over one forearm, head down, not looking at anyone; she is small and soft in the depth of frame and nobody registers her",
+      "action": "she boards last, alone, hiding an arm",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_7f843a2d.webp",
+      "anchor": "session-3/storyboard/assets/hf_a0e03303.webp",
+      "refs": [
+        {
+          "name": "Exchange students",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_fcea9658.webp"
+        },
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Busan platform",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_1c84f921.webp"
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "id": "1.25",
+      "scene": 1,
+      "title": "Push in through the door frame",
+      "description": "shot through the open train-door frame, shallow focus on teal-green seats inside, blurred faces sliding past the frame edge",
+      "action": "faces slide past through the door frame",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_7e8de988.webp",
+      "anchor": "session-3/storyboard/assets/hf_4277d989.webp",
+      "refs": [
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "id": "1.3",
+      "scene": 1,
+      "title": "She answers him",
+      "description": "a young woman in her twenties in university-casual layers with a canvas backpack leaning back from a teal train seat toward a man standing in the aisle, grinning, correcting him; he is caught mid-sentence, embarrassed, morning light through the big side windows",
+      "action": "cut — she answers him",
+      "duration": "6.1s",
+      "image": "session-3/storyboard/assets/hf_e95ef156.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "id": "1.35",
+      "scene": 1,
+      "title": "The seat she saves",
+      "description": "a young woman's hand flat on the empty teal seat beside her, patting it twice without looking up, a man's blurred shoulder entering frame to take it, warm window light",
+      "action": "cut — the seat she saves",
+      "duration": "3.9s",
+      "image": "session-3/storyboard/assets/hf_0e876b74.webp",
+      "anchor": "session-3/storyboard/assets/hf_e95ef156.webp",
+      "refs": [
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "id": "1.375",
+      "scene": 1,
+      "title": "The man who takes the weight",
+      "description": "a burly broad-shouldered Korean man in a dark work shirt with the sleeves pushed up and both forearms wrapped in yellow tape, reaching past a smaller passenger to push a heavy case up onto the overhead rack for her, one-handed, then dropping into his own seat without waiting to be thanked; across the aisle a smaller figure in a red cardigan has stopped to watch him",
+      "action": "he lifts a stranger's case onto the rack and sits back down",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_856da815.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "id": "1.4",
+      "scene": 1,
+      "title": "Two rows back",
+      "description": "over the young woman's shoulder as she turns back to her seat, and soft in the background two rows behind her a passenger sitting very upright, both hands locked on the armrests, sweat at her hairline, jaw set, staring at nothing",
+      "action": "she is sweating and gripping the armrests",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_197c53a0.webp",
+      "anchor": "session-3/storyboard/assets/hf_0e876b74.webp",
+      "refs": [
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "id": "1.45",
+      "scene": 1,
+      "title": "Seated, the recital ask",
+      "description": "two-shot across a teal train seat, the red cardigan turned up toward the man in the aisle seat, bright window daylight",
+      "action": "she looks up at him, hopeful",
+      "duration": "5.2s",
+      "image": "session-3/storyboard/assets/hf_650716a3.webp",
+      "anchor": "session-3/storyboard/assets/hf_197c53a0.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "id": "1.5",
+      "scene": 1,
+      "title": "His answer, without looking",
+      "description": "CU on the aisle-seat man, phone low in his hands, eyes down on it, answering without lifting them; the red cardigan stays in her window seat just past his shoulder at the edge of frame, soft. He does not change seats. Cool window light",
+      "action": "he answers without looking up",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_c6c28f26.webp",
+      "anchor": "session-3/storyboard/assets/hf_650716a3.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "id": "1.55",
+      "scene": 1,
+      "title": "The call he takes",
+      "description": "a tieless charcoal-suited man rising from a teal train seat with a phone already at his ear, one hand raised in a wait-there gesture toward the seat he is leaving, moving away down the aisle with his back to it; the empty seat beside her stays in frame as he goes",
+      "action": "he takes a call and walks away from her",
+      "duration": "3.9s",
+      "image": "session-3/storyboard/assets/hf_9832c189.webp",
+      "anchor": "session-3/storyboard/assets/hf_212de81b.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 14,
+      "id": "1.6",
+      "scene": 1,
+      "title": "Her hand on the armrest",
+      "description": "tight insert on a hand gripping a teal armrest, knuckles bloodless, the veins under the skin running dark up the wrist, and at the cuff a dressing gone through, bright daylight across it",
+      "action": "the edge of a dressing shows at her cuff",
+      "duration": "1.3s",
+      "image": "session-3/storyboard/assets/hf_69fbbcc3.webp",
+      "anchor": "session-3/storyboard/assets/hf_9832c189.webp",
+      "refs": [
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 15,
+      "id": "13",
+      "scene": 2,
+      "title": "The car at speed, ordinary",
+      "description": "wide interior of a Korean KTX carriage at cruise, one-point straight down the centre aisle: rows of teal-green fabric seats with pale headrest covers either side, Korean commuters reading and dozing in them, overhead luggage racks, the wood-panelled end bulkhead and its door at the far end, bright daylight sliding across the ceiling and landscape streaking past the windows",
+      "action": "the ordinary carful, seconds before",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_17afd32f.webp",
+      "anchor": "session-3/storyboard/assets/hf_650716a3.webp",
+      "refs": [
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 16,
+      "id": "14",
+      "scene": 2,
+      "title": "The cough that will not stop",
+      "description": "a Korean woman in her early thirties gone rigid in a teal train seat, head tipped back against the headrest, chin lifted, both hands closed hard on the armrests with the tendons showing, one heel off the floor, damp hair stuck at her temple; three or four passengers in the rows around her have turned to look, one half standing; bright window daylight against hard cold ceiling fluorescents",
+      "action": "she doubles forward into a hard dry coughing fit she cannot stop, one hand groping for the armrest; the coughing turns wet and chokes off, and her whole body locks rigid against the seat back — a fine tremor starting in her hands and running up her arms",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_7bb73e33.webp",
+      "anchor": "session-3/storyboard/assets/hf_71a7b4bf.webp",
+      "refs": [
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 17,
+      "id": "15",
+      "scene": 2,
+      "title": "The eyes",
+      "description": "extreme CU on a Korean woman's eyes, the colour drained out of the irises to a flat pale grey-blue, unfocused and aimed at nothing past the lens, lashes wet, a sheen of sweat on the skin at the temple and the bridge of the nose, everything beyond her thrown soft, cold overhead light",
+      "action": "the colour drains out of her irises from the pupil outward until both eyes are a flat milky blue-white film, still open, still aimed at nothing",
+      "duration": "3s",
+      "image": "session-3/storyboard/assets/hf_19dd57ce.webp",
+      "anchor": "session-3/storyboard/assets/hf_7bb73e33.webp",
+      "refs": [
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 18,
+      "id": "15.5",
+      "scene": 2,
+      "title": "She loses the body and comes for him",
+      "description": "a Korean woman in her early thirties rising out of a teal train seat in one unbroken motion that is slightly too fast, weight already forward, head tipped over at an angle her neck should not hold, jaw slack, breathing hard through an open mouth, hands hanging loose and turned the wrong way at the wrists; the passengers on either side pull back into their seats",
+      "action": "the tremor takes her whole body and she loses control of it — she comes up out of the seat in one wrong unbroken motion, head tipped at an angle her neck should not hold, hangs there a beat finding her balance, then starts across the aisle toward the seated man on a lurching, uneven walk, one shoulder leading",
+      "duration": "6s",
+      "image": "session-3/storyboard/assets/hf_4fb7803b.webp",
+      "anchor": "session-3/storyboard/assets/hf_19dd57ce.webp",
+      "refs": [
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 19,
+      "id": "15.75",
+      "scene": 2,
+      "title": "She takes the man across the aisle",
+      "description": "a pale-eyed woman in her thirties come down onto a seated male passenger, both her hands gripping his shoulders, her open mouth clamped hard onto the side of his neck above the collar, her hair fallen forward across his jaw; his head wrenched back and away from her, eyes squeezed shut, mouth open, both his hands up and pushing at her shoulder and her forehead; dark red running from under her mouth down into his shirt collar",
+      "action": "she reaches him, takes him by both shoulders and drives her open mouth into the side of his neck above the collar",
+      "duration": "4s",
+      "image": "session-3/storyboard/assets/hf_158c8910.webp",
+      "anchor": "session-3/storyboard/assets/hf_4fb7803b.webp",
+      "refs": [
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 20,
+      "id": "15.875",
+      "scene": 2,
+      "title": "It registers on his face",
+      "description": "hard CU on the same seated man from the shot before, turning to the lens the instant she comes off him: eyes wide and fixed, mouth open on a sound we do not hear yet, the tendons standing in his throat, one hand clamped to the side of his collar with dark red between the fingers, cold ceiling light on damp skin",
+      "action": "his hand goes to his collar and comes away marked",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_1167e325.webp",
+      "anchor": "session-3/storyboard/assets/hf_158c8910.webp",
+      "refs": [
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 21,
+      "id": "16",
+      "scene": 2,
+      "title": "One-point down the aisle",
+      "description": "one-point perspective straight down a teal KTX aisle, seat-backs slicing the frame either side and overhead racks converging, the same woman from the seat coming at the camera at a flat run down the centre of it, arms loose and swinging wide, mouth open, hair off her face, pale-eyed, everything behind her smeared with speed under cold fluorescents",
+      "action": "she comes down the aisle at the camera at a flat run",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_f2cc994d.webp",
+      "anchor": "session-3/storyboard/assets/hf_19dd57ce.webp",
+      "refs": [
+        {
+          "name": "Patient zero",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a95d5383.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 22,
+      "id": "17",
+      "scene": 2,
+      "title": "The car erupts",
+      "description": "passengers scrambling over teal seat-backs away from camera, bags flying, an exchange student half-turned back shouting",
+      "action": "the passengers get up all at once and go the other way",
+      "duration": "4.8s",
+      "image": "session-3/storyboard/assets/hf_4560aadd.webp",
+      "anchor": "session-3/storyboard/assets/hf_97812f34.webp",
+      "refs": [
+        {
+          "name": "Exchange students",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_fcea9658.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 23,
+      "id": "17.5",
+      "scene": 2,
+      "title": "The only one standing up",
+      "description": "in a teal train aisle full of people getting up and pushing the other way, one burly broad-shouldered man with yellow-taped forearms rising out of his seat AGAINST the flow, turning to face down the carriage, blurred bodies streaming past him either side, cold fluorescent over daylight",
+      "action": "he stands up and turns toward the far end of the car",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_aecc264a.webp",
+      "anchor": "session-3/storyboard/assets/hf_4560aadd.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 24,
+      "id": "18",
+      "scene": 2,
+      "title": "Danny, the only one not moving",
+      "description": "locked wide straight down a teal train aisle: passengers surging past camera in motion blur, bags and coats streaking, and at the far end of the aisle one young man standing completely still against the glass vestibule door — sharp while everything around him is smeared, arms at his sides, watching. He is the only thing in focus and the only thing not moving",
+      "action": "the panic goes past him and he does not move",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_ad0ce8d3.webp",
+      "anchor": "session-3/storyboard/assets/hf_3ac1843e.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 25,
+      "id": "19",
+      "scene": 2,
+      "title": "The strongman moves",
+      "description": "a burly broad-shouldered man planting himself square in a train aisle, one arm swept back and low behind him, the red cardigan tucked in close behind his hip and half hidden by his body, motion blur past them both, cold light",
+      "action": "he plants himself in the aisle and puts her behind him",
+      "duration": "3.6s",
+      "image": "session-3/storyboard/assets/hf_c28bd6d8.webp",
+      "anchor": "session-3/storyboard/assets/hf_ad0ce8d3.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 26,
+      "id": "19.5",
+      "scene": 2,
+      "title": "The father, too far",
+      "description": "down a chaotic train aisle from the far end: a tieless charcoal-suited man shoving forward against a wall of bodies going the other way, phone gone, arm out toward something he cannot reach, faces streaming past between him and the lens",
+      "action": "he fights toward her and cannot get through",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_b7a650a1.webp",
+      "anchor": "session-3/storyboard/assets/hf_c34a3729.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 27,
+      "id": "20",
+      "scene": 2,
+      "title": "Torn away",
+      "description": "the red cardigan close behind a grown man's back, her face turned out past his arm to look down the aisle, mouth open, everything past her thrown out of focus",
+      "action": "she looks out past his arm, down the aisle",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_d92f4cd9.webp",
+      "anchor": "session-3/storyboard/assets/hf_b7a650a1.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 28,
+      "id": "21",
+      "scene": 3,
+      "title": "Survivors jam one car",
+      "description": "a teal-green train car packed with pressed-together survivors, bodies against seat-backs, breathing, deep shadow with one cold pool of light",
+      "action": "survivors jam into one car",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_05188030.webp",
+      "anchor": "session-3/storyboard/assets/hf_80a187ca.webp",
+      "refs": [
+        {
+          "name": "Exchange students",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_fcea9658.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 29,
+      "id": "22",
+      "scene": 3,
+      "title": "Danny in the crush",
+      "description": "packed shoulder to shoulder in near-darkness among pressed-together survivors, one young man wedged between them, eyes fixed on the wedged door ahead, breathing shallow, saying nothing while everyone around him whispers",
+      "action": "he says nothing, again",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_d73be803.webp",
+      "anchor": "session-3/storyboard/assets/hf_05188030.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 30,
+      "id": "22.5",
+      "scene": 3,
+      "title": "She finds him in the dark",
+      "description": "in the packed dark carriage, the young woman in the university layers wedged three bodies along from the young man in the navy coat, her head turned to find him, one small nod when she does; he does not nod back, one cold pool of light across the pressed-together faces between them",
+      "action": "she looks for him in the crush and finds him",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_e0f91e0c.webp",
+      "anchor": "session-3/storyboard/assets/hf_ec71fade.webp",
+      "refs": [
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 31,
+      "id": "23",
+      "scene": 3,
+      "title": "The door is wedged",
+      "description": "close on hands forcing a train door shut and wedging a metal latch, knuckles white, near-black teal",
+      "action": "hands wedge the door shut",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_febf8ed5.webp",
+      "anchor": "session-3/storyboard/assets/hf_ec71fade.webp",
+      "refs": [
+        {
+          "name": "The vestibule latch",
+          "kind": "prop",
+          "image": "session-3/storyboard/assets/hf_cd9c6204.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 32,
+      "id": "24",
+      "scene": 3,
+      "title": "The businessman, hissing",
+      "description": "a grey-haired Korean executive in a pinstripe suit crouched low against a train seat, hissing upward at the others, face half in shadow",
+      "action": "the businessman hisses them down",
+      "duration": "3.9s",
+      "image": "session-3/storyboard/assets/hf_67e09fb2.webp",
+      "anchor": "session-3/storyboard/assets/hf_febf8ed5.webp",
+      "refs": [
+        {
+          "name": "The businessman",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_d9a6c279.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 33,
+      "id": "25",
+      "scene": 3,
+      "title": "The strongman, low",
+      "description": "a burly Korean man crouched in a dark train aisle, one finger raised, speaking barely above a breath",
+      "action": "the strongman warns them quiet",
+      "duration": "4.6s",
+      "image": "session-3/storyboard/assets/hf_8878b36f.webp",
+      "anchor": "session-3/storyboard/assets/hf_67e09fb2.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 34,
+      "id": "26",
+      "scene": 3,
+      "title": "He almost speaks",
+      "description": "a young man's face in a dark train car opening his mouth to say something, drawing breath — and stopping, eyes cutting sideways to a grey-haired man out of focus in the foreground, jaw closing again, one cold pool of light across half his face",
+      "action": "he starts to speak and stops",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_f0f0ed6e.webp",
+      "anchor": "session-3/storyboard/assets/hf_735d81a0.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "The businessman",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_d9a6c279.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 35,
+      "id": "27",
+      "scene": 3,
+      "title": "The held wide",
+      "description": "static wide of a packed teal train car in near-darkness, survivors pressed together along the seats and standing in the aisle, nobody moving, a faint teal rim on every face — the young man in the navy coat among them against the far seat backs, the suited man and the red cardigan low in a seat mid-frame, held",
+      "action": "held silence — nobody moves",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_99ea08f6.webp",
+      "anchor": "session-3/storyboard/assets/hf_f0f0ed6e.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 36,
+      "id": "28",
+      "scene": 3,
+      "title": "Rack focus to the window",
+      "description": "rack focus from the survivors' faces in the dark carriage — the young man in the navy coat nearest the lens — through to the black train window behind them, where pale-eyed reflections layer over their own",
+      "action": "white-eyed reflections layer over their faces",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_2c1b1da4.webp",
+      "anchor": "session-3/storyboard/assets/hf_99ea08f6.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 37,
+      "id": "29",
+      "scene": 3,
+      "title": "The girl, whispering",
+      "description": "the red cardigan pressed against the suited man's chest in near-darkness, whispering, only her eyes catching light",
+      "action": "she whispers that she is scared",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_874f0542.webp",
+      "anchor": "session-3/storyboard/assets/hf_2c1b1da4.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 38,
+      "id": "30",
+      "scene": 3,
+      "title": "His answer, close",
+      "description": "CU, near-darkness: the tieless charcoal-suited man, lips parted an inch from the held figure's hair and stirring a few loose strands with each breathed word; one hand splayed flat across her back, the other cupped at the base of her skull pressing her cheek into his lapel, her weight slumped into his chest; his collar gone dark and wet where the stain has soaked through the cloth.",
+      "action": "lips moving against her hair, one hand flat on her back, one cradling her skull",
+      "duration": "4.2s",
+      "image": "session-3/storyboard/assets/hf_249cbf60.webp",
+      "anchor": "session-3/storyboard/assets/hf_2c1b1da4.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 39,
+      "id": "31",
+      "scene": 3,
+      "title": "The slam",
+      "description": "a body slamming hard against a black train window from outside, palms and face flattened on the glass, and inside the dark carriage the young man in the navy coat recoiling back from it into the seat behind him, other survivors pulling away either side of him",
+      "action": "something heavy hits the glass from the far side",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_4e140d9b.webp",
+      "anchor": "session-3/storyboard/assets/hf_249cbf60.webp",
+      "refs": [
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 40,
+      "id": "31.0625",
+      "scene": 4,
+      "title": "The car under siege",
+      "description": "wide straight down the length of the teal carriage — every seat empty and the whole car on its feet: survivors crushed standing into the aisle and wedged down into the gaps between the rows, shoulders turned in, heads dropped below the seat-back line, coats and hard cases stacked waist-high across the far connecting doorway. That end door is shut on a case jammed under its runner and it is walking a hand's width open and back again, hands and faces flattened along the glass in the gap",
+      "action": "nobody is seated — the car is standing and crushed away from the door while the wedge under it walks open and back",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_313e8930.webp",
+      "anchor": "session-3/storyboard/assets/hf_4e140d9b.webp",
+      "refs": [
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 41,
+      "id": "31.125",
+      "scene": 4,
+      "title": "The pane goes",
+      "description": "the sliding glass end door seen straight on from inside the carriage, the pane gone white all over with a spider of cracks out of one corner — and hard up against the far side of that glass, filling every part of it, faces and open hands and shoulders packed flat and sliding on the pane, so many that no floor and no ceiling shows behind them; the chromed lever still seated in its plate and the whole sheet bowed inward off its runner",
+      "action": "the crazed pane bows inward, packed solid on the far side",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_5583a7e3.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "The vestibule latch",
+          "kind": "prop",
+          "image": "session-3/storyboard/assets/hf_cd9c6204.webp"
+        },
+        {
+          "name": "Between-car vestibule",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_7a1d8883.webp"
+        }
+      ]
+    },
+    {
+      "order": 42,
+      "id": "31.1875",
+      "scene": 4,
+      "title": "The car goes",
+      "description": "one-point down the aisle of the teal carriage on a long lens, and the car is in motion: every person out of the seats and up on their feet, mid-stride, turned away from the lens with arms out for the seat-backs as they go, coats and bags left behind on the cushions, the aisle a solid column of moving backs — and at the top of frame, coming the other way through the connecting doorway, the front rank stumbling over each other's heels",
+      "action": "everyone is up and moving away; the two columns close on each other mid-car",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_48a746ad.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 43,
+      "id": "31.25",
+      "scene": 4,
+      "title": "The businessman",
+      "description": "floor-level down the aisle between two rows of teal seats: a grey-haired man in his fifties in a pinstripe suit flat on his back on the carpet with his burst briefcase and its papers spilled under him, and one figure lying full length on top of him chest to chest, its hands fisted in his lapels and its face down at his throat — both his own hands driven up flat under its jaw, his heels scrabbling the carpet for purchase, and a second pair of legs stepping over the two of them without stopping",
+      "action": "one of them is full length on top of him on the floor; he has both hands under its jaw",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_e91581ed.webp",
+      "anchor": "session-3/storyboard/assets/hf_4681f9ac.webp",
+      "refs": [
+        {
+          "name": "The businessman",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_d9a6c279.webp"
+        },
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 44,
+      "id": "31.3125",
+      "scene": 4,
+      "title": "He puts her behind him",
+      "description": "the tieless suited man turning side-on in the aisle with one hand flat on the back of the smaller figure in the red cardigan, walking her back between two teal seat-backs and folding her down out of the aisle behind him, his own eyes already up and forward past the lens, the hard ceiling light catching only the edge of his jaw",
+      "action": "he folds her down out of the aisle behind him and his eyes come up forward",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_1298609b.webp",
+      "anchor": "session-3/storyboard/assets/hf_e91581ed.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 45,
+      "id": "31.375",
+      "scene": 4,
+      "title": "The father tapes up",
+      "description": "the tieless suited man standing in the aisle in his charcoal jacket, right arm held out and the sleeve pushed back, winding a strip of yellow tape round his own knuckles and down over the wrist, his eyes not on his hands but forward down the car, teal seat-backs running away behind him",
+      "action": "he winds yellow tape round his knuckles without looking at them",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_6355abc3.webp",
+      "anchor": "session-3/storyboard/assets/hf_1298609b.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 46,
+      "id": "31.4375",
+      "scene": 4,
+      "title": "The train dies",
+      "description": "the length of the teal carriage at seat-back height as everything slows, the rows empty and figures braced standing in the aisle — the black windows down one side going from a smear to a still line of dark countryside, the overhead strips dropping out one bank at a time until only the low floor-level runners are lit, coats and a bag sliding forward along the empty aisle and coming to rest against a seat leg",
+      "action": "the windows stop smearing, the ceiling banks drop out, loose things slide forward and stop",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_5bc327ce.webp",
+      "anchor": "session-3/storyboard/assets/hf_6355abc3.webp",
+      "refs": [
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 47,
+      "id": "31.5",
+      "scene": 4,
+      "title": "Go forward",
+      "description": "the burly man in the dark work shirt in the near ground half-turned back over his shoulder, one taped arm thrown out straight past his own body and away down the length of the car, his mouth wide on a shout and the cords standing in his neck — and at the edge of frame the young man in the navy coat already turning that way, his shoulder dropping into the first step, the low floor runners throwing everything upward",
+      "action": "he throws one arm down the car toward the front and the young man is already turning",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_2087bec1.webp",
+      "anchor": "session-3/storyboard/assets/hf_5bc327ce.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 48,
+      "id": "31.5625",
+      "scene": 4,
+      "title": "The run to the front",
+      "description": "the young man in the navy coat running straight at the lens down the middle of a dark connecting corridor, both arms pumping and his coat flying open back off his shoulders, one hand skimming the wall for the turn, the low floor runners throwing light up under his chin and the corridor falling away behind him into black",
+      "action": "he runs the length of the cars toward the front",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_20919b68.webp",
+      "anchor": "session-3/storyboard/assets/hf_136057e6.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 49,
+      "id": "31.625",
+      "scene": 4,
+      "title": "The two of them",
+      "description": "the narrow aisle of the teal carriage head-on from the far end: the burly man in the dark work shirt filling the passage nearest the lens with both taped forearms up, and the tieless suited man tight in beside him with one shoulder wedged against the seat-backs and his taped knuckles raised at his own jaw — two men in a passage only wide enough for one, lit from below off the floor runners, the length of the car black behind them",
+      "action": "the two of them wedge the passage shoulder to shoulder",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_bb6b9c47.webp",
+      "anchor": "session-3/storyboard/assets/hf_20919b68.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 50,
+      "id": "31.6875",
+      "scene": 4,
+      "title": "The strongman takes it",
+      "description": "the burly man from behind and slightly above, one taped forearm still braced across a figure's chest and his own head wrenched hard away to the far side, while a second face is in close at the join of his neck and shoulder with its open mouth clamped down on the dark work shirt there — his free hand already coming up flat into that one's temple, dark spreading out through the cloth from under its jaw",
+      "action": "one gets in at the join of his neck and shoulder; he brings his free hand up flat into its temple",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_d0b54ed7.webp",
+      "anchor": "session-3/storyboard/assets/hf_7576eff5.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 51,
+      "id": "31.75",
+      "scene": 4,
+      "title": "The console",
+      "description": "the young man in the navy coat alone in the driver's cab, both hands spread on the console under the forward glass, head down over a row of unmarked switches, one short lever half pulled and set back — then his right fist closed round the tall master handle at the console's edge, the long empty track running out ahead into the dark past the windscreen",
+      "action": "he tries one lever, sets it back, reads the console, and takes the master handle",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_4e71448f.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Ktx Cab",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_93cb576e.webp"
+        }
+      ]
+    },
+    {
+      "order": 52,
+      "id": "31.8125",
+      "scene": 4,
+      "title": "The father takes it",
+      "description": "the tieless suited man with his taped left forearm driven in crossways under a figure's chin, its open mouth closed hard on the bare arm just above the tape, his own face turned away and his teeth set, his right hand flat under its jaw and levering its head back off him — dark running down the inside of that sleeve toward the elbow",
+      "action": "it closes on his left forearm above the tape; his right hand levers its head back off him",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_92cf4ed5.webp",
+      "anchor": "session-3/storyboard/assets/hf_45fe9065.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 53,
+      "id": "31.875",
+      "scene": 4,
+      "title": "The train takes",
+      "description": "over the young man's shoulder in the driver's cab as the view through the forward glass starts to move — the two rails running out ahead going from still to sliding, the reach of the headlamp opening up along them, his knuckles pale on the master handle and his shoulders coming down off his ears",
+      "action": "the rails ahead go from still to sliding",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_655cd048.webp",
+      "anchor": "session-3/storyboard/assets/hf_4e71448f.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Ktx Cab",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_93cb576e.webp"
+        }
+      ]
+    },
+    {
+      "order": 54,
+      "id": "31.9375",
+      "scene": 4,
+      "title": "What is left of the car",
+      "description": "high wide down the length of the teal carriage from ceiling height: most of the rows empty, coats and bags and single shoes scattered the length of the aisle floor, a few shapes still moving between seats at the far end, and in the near third two figures backing toward the connecting doorway with a smaller figure in a red cardigan and a young woman ahead of them — and along the whole side of the car the black windows sliding again",
+      "action": "the emptied car, moving again, and the two of them backing toward the connecting door",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_2e4ef134.webp",
+      "anchor": "session-3/storyboard/assets/hf_92cf4ed5.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 55,
+      "id": "46",
+      "scene": 5,
+      "title": "The corridor",
+      "description": "low-angle looming shot craning up at the broad-shouldered man wedged in the narrow train corridor — boots set wide across the aisle, knees bent, weight dropped low over them, shoulders squared flat to the lens and chin tucked down toward the camera, bare arms hanging out from his sides where both forearms are slicked dark and wet, the stain running unbroken to fingertips that drip onto the floor, his bulk filling the frame",
+      "action": "he sets his boots wide and drops his weight, dark-slicked arms hanging, blocking the aisle",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_470a1f79.webp",
+      "anchor": "session-3/storyboard/assets/hf_2e4ef134.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 56,
+      "id": "47",
+      "scene": 5,
+      "title": "The order",
+      "description": "a burly Korean man half-turned back over his shoulder toward a suited man behind him, shouting, corridor dark beyond",
+      "action": "he orders them to the front car",
+      "duration": "4.3s",
+      "image": "session-3/storyboard/assets/hf_7015952b.webp",
+      "anchor": "session-3/storyboard/assets/hf_98013f09.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 57,
+      "id": "48",
+      "scene": 5,
+      "title": "The refusal",
+      "description": "CU of the tieless charcoal-suited man, a dark stain spreading through the cloth at his collar, mouth open mid-word and jaw pushed forward, one hand rising open toward someone off-frame while his heels stay planted and his weight braces back against the pull — held in low warm-cool light",
+      "action": "hand rising open, heels planted, weight braced back against the off-frame pull",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_374d486f.webp",
+      "anchor": "session-3/storyboard/assets/hf_56742879.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 58,
+      "id": "48.5",
+      "scene": 5,
+      "title": "Danny takes the front",
+      "description": "the young man in the navy coat first through a dark connecting door, hauling it back on its runner and holding it open with his body as the others come through past him — the young woman, the suited man carrying the red cardigan — his eyes going back down the corridor behind them",
+      "action": "he holds the connecting door while the others get through",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_15f2149f.webp",
+      "anchor": "session-3/storyboard/assets/hf_374d486f.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 59,
+      "id": "49",
+      "scene": 5,
+      "title": "Take her",
+      "description": "a burly man not looking back, eyes forward down a dark corridor, speaking over his shoulder, the red cardigan blurred behind him",
+      "action": "he refuses without turning",
+      "duration": "4s",
+      "image": "session-3/storyboard/assets/hf_3cd77517.webp",
+      "anchor": "session-3/storyboard/assets/hf_15f2149f.webp",
+      "refs": [
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 60,
+      "id": "50",
+      "scene": 5,
+      "title": "They pour in",
+      "description": "Infected jam into the narrow train corridor shoulder to shoulder, the front rank stumbling over each other's heels, hands scrabbling along both walls, lurching toward a lone broad-shouldered man wedged across the passage — feet planted wide, one shoulder driven forward, both palms flat against opposite walls — their irises drained to a flat pale grey-blue and unfocused; the corridor near-black but for one cold pool of light.",
+      "action": "infected jam through the gap over each other's heels, hands scrabbling the walls toward him",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_f538418b.webp",
+      "anchor": "session-3/storyboard/assets/hf_b1285f81.webp",
+      "refs": [
+        {
+          "name": "The infected",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_90d445bc.webp"
+        },
+        {
+          "name": "Tae-il",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_5adb01e1.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 61,
+      "id": "51",
+      "scene": 5,
+      "title": "Camera retreats as he goes under",
+      "description": "receding shot down a dark train corridor: deep at the far end a knot of figures converges on the lone man — hands clamp his arms and collar, bodies press shoulder to shoulder and drive him down, their backs sealing the gap until nothing of him shows, only packed bodies where he stood; in the foreground three people hurry away from camera, the young woman in the university layers twisting her head back over her shoulder toward the far vestibule before a hand at her arm pulls her on",
+      "action": "hands clamp the man and the bodies press shut over him as the others keep walking",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_667e8393.webp",
+      "anchor": "session-3/storyboard/assets/hf_f538418b.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Passenger car",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_31f67eee.webp"
+        }
+      ]
+    },
+    {
+      "order": 62,
+      "id": "51.5",
+      "scene": 6,
+      "title": "The line is blocked",
+      "description": "through the forward glass of the driver's cab, the tunnel mouth opening ahead onto dusk-lit open country — and lying side-on across both rails just beyond it, the flank of a toppled train, carriages folded off the line at an angle with one end lifted clear of the ballast, fire working along the underside and lighting the smoke standing over it; close, and closing fast, the young man in the navy coat a dark shape against the glass in the near ground",
+      "action": "the headlamp finds a toppled train lying side-on across both rails",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_1dc67eb2.webp",
+      "anchor": "session-3/storyboard/assets/hf_655cd048.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Ktx Cab",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_93cb576e.webp"
+        }
+      ]
+    },
+    {
+      "order": 63,
+      "id": "51.75",
+      "scene": 6,
+      "title": "Everything he has on the brake",
+      "description": "the young man in the navy coat side-on in the driver's cab, both hands closed round the tall master handle and pulling it all the way back into his hip, shoulders up round his ears, one boot braced flat against the console base and his whole weight hanging off the lever, his face turned to the forward glass and lit orange by what is coming",
+      "action": "he pulls the master handle back with his whole weight, one boot braced on the console",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_42eb20fe.webp",
+      "anchor": "session-3/storyboard/assets/hf_1dc67eb2.webp",
+      "refs": [
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Ktx Cab",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_93cb576e.webp"
+        }
+      ]
+    },
+    {
+      "order": 64,
+      "id": "52",
+      "scene": 6,
+      "title": "Overhead, the wreck",
+      "description": "high vulnerable overhead of a jackknifed high-speed train off its line in open countryside, tilted teal carriages, steel dust haze and firelight halation at dusk",
+      "action": "the KTX jackknifes off the line",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_d1046bf2.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "Derailed wreck",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_5b3995a5.webp"
+        }
+      ]
+    },
+    {
+      "order": 65,
+      "id": "53",
+      "scene": 6,
+      "title": "Survivors crawl out, and she counts",
+      "description": "survivors dragging themselves out of a toppled carriage into teal-steel dust, the young woman in the torn university layers up first, turning on the spot scanning the bodies coming out — and stopping when the young man in the navy coat comes over the sill after her, dust-grey and holding his ribs",
+      "action": "forearms haul limp bodies over the carriage sill",
+      "duration": "4.1s",
+      "image": "session-3/storyboard/assets/hf_0d02cbff.webp",
+      "anchor": "session-3/storyboard/assets/hf_d1046bf2.webp",
+      "refs": [
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Derailed wreck",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_5b3995a5.webp"
+        }
+      ]
+    },
+    {
+      "order": 66,
+      "id": "54",
+      "scene": 6,
+      "title": "He finds her",
+      "description": "a tieless suited man dropping to both knees in the drifting smoke, weight pitched forward, dark wet staining spread across his white collar and smeared down one cheek, both hands cupped over the cheeks of the small child in the red cardigan, thumbs pressed along her jaw, her face tilted up into his, firelight catching the edge of them",
+      "action": "the suited man drops to his knees and cups the red-cardigan child's face in the smoke",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_3bab86c7.webp",
+      "anchor": "session-3/storyboard/assets/hf_0d02cbff.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Derailed wreck",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_5b3995a5.webp"
+        }
+      ]
+    },
+    {
+      "order": 67,
+      "id": "55",
+      "scene": 6,
+      "title": "She coughs",
+      "description": "CU of a soot-marked red cardigan, its wearer coughing and shaking her head, dust in her hair, warm dusk light",
+      "action": "she coughs and says she is okay",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_20c89ac2.webp",
+      "anchor": "session-3/storyboard/assets/hf_3bab86c7.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Derailed wreck",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_5b3995a5.webp"
+        }
+      ]
+    },
+    {
+      "order": 68,
+      "id": "56",
+      "scene": 7,
+      "title": "The tunnel mouth",
+      "description": "two-shot at a concrete tunnel mouth in firelight halation, the suited man down on one knee at the red cardigan's eye level, one hand braced on his thigh and his head tilted down to hers, a dark stain spread across his shirtfront and low on one lapel, the cloth wet and clinging where it meets his collar, near-black beyond them",
+      "action": "the suited man kneels to the red cardigan's eye level, shirtfront dark and wet",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_c719f287.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 69,
+      "id": "57",
+      "scene": 7,
+      "title": "The wound he hides",
+      "description": "CU of fingers dragging the cuff down the forearm, the cloth darkening wet as it crosses a curved arc of torn punctures still beading dark, his other hand pressed flat and still on his knee, firelight raking across the wet skin",
+      "action": "fingers drag the cuff down over the punctured forearm",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_cb48a173.webp",
+      "anchor": "session-3/storyboard/assets/hf_c719f287.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 70,
+      "id": "58",
+      "scene": 7,
+      "title": "Look at me",
+      "description": "CU: the left side of the man's jaw and collar dark and wet where the stain has spread through the cloth, both his hands cupping the sides of the face in front of him — fingers spread flat over her cheeks, thumbs pressing up under her chin — drawing her head slowly around, her chin lifting, until her face rotates to meet his; firelight haloing the two of them from behind",
+      "action": "he draws her face around to meet his",
+      "duration": "3.6s",
+      "image": "session-3/storyboard/assets/hf_68f40a25.webp",
+      "anchor": "session-3/storyboard/assets/hf_cb48a173.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 71,
+      "id": "59",
+      "scene": 7,
+      "title": "The instruction",
+      "description": "the same CU two-shot held, the man speaking level and calm, the smaller face listening, warm firelight, near-black beyond",
+      "action": "he gives her the counting instruction",
+      "duration": "5.9s",
+      "image": "session-3/storyboard/assets/hf_d1cee313.webp",
+      "anchor": "session-3/storyboard/assets/hf_68f40a25.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 72,
+      "id": "60",
+      "scene": 7,
+      "title": "She asks",
+      "description": "CU of the red cardigan reaching for a man already standing out of frame, her hand closing on nothing",
+      "action": "she reaches for him",
+      "duration": "5s",
+      "image": "session-3/storyboard/assets/hf_3970ddc9.webp",
+      "anchor": "session-3/storyboard/assets/hf_d1cee313.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 73,
+      "id": "61",
+      "scene": 7,
+      "title": "The lie",
+      "description": "over the shoulder of the smaller figure in the red cardigan walking away from us into the tunnel, soft and dark in the near ground filling the left of frame — and past her, sharp, the suited man half-turned back toward the firelight with one hand up and open waving her on, mouth open on a word aimed at her back, his rear foot already lifted and set down behind him, a dark stain spread wet across his side; the black of the tunnel behind him swallowing the edge of his shoulder",
+      "action": "he waves her on and takes his first step back into the dark",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_a61651f8.webp",
+      "anchor": "session-3/storyboard/assets/hf_3970ddc9.webp",
+      "refs": [
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 74,
+      "id": "62",
+      "scene": 7,
+      "title": "And the one who knows what it costs",
+      "description": "the frame holding on her face as a figure recedes backward out of focus into black behind her, firelight dying, held silence — and past her shoulder, soft, the young man in the navy coat watching the dark take him, recognising it",
+      "action": "he walks backward into the dark",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_46f3acf6.webp",
+      "anchor": "session-3/storyboard/assets/hf_a61651f8.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Seok-woo",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_a2198f62.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 75,
+      "id": "63",
+      "scene": 8,
+      "title": "Long lens down the tunnel",
+      "description": "long lens straight down a dark concrete tunnel toward a blown-out daylight mouth, three silhouettes walking up toward it — a smaller one between two taller — everything else near-black",
+      "action": "the two walk toward the light",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_19cf892e.webp",
+      "anchor": "session-3/storyboard/assets/hf_46f3acf6.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 76,
+      "id": "63.5",
+      "scene": 8,
+      "title": "Their hands find each other",
+      "description": "waist-level from behind and low in the tunnel, three pairs of legs walking away up the concrete toward the blown-out daylight — in the middle the red cardigan, her arms lifting out to both sides; on her left a young woman in torn university layers with a canvas backpack, her hand closing down over the small one; on her right the young man in the navy coat, his hand closing over the other — fingers folding through fingers, all three sets of knuckles filthy, nobody breaking step. No uniforms, no helmets, no weapons anywhere in frame — only these three",
+      "action": "her arms go out and a hand closes over each of hers without anyone breaking step",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_9f05d6f6.webp",
+      "anchor": null,
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 77,
+      "id": "64",
+      "scene": 8,
+      "title": "The rifles",
+      "description": "backlit silhouettes of soldiers at a tunnel mouth sighting down raised rifles into the dark, hard daylight blowing out behind them",
+      "action": "guards sight down their rifles",
+      "duration": "5.3s",
+      "image": "session-3/storyboard/assets/hf_8ee3ac1a.webp",
+      "anchor": "session-3/storyboard/assets/hf_d0728320.webp",
+      "refs": [
+        {
+          "name": "Safe-zone guards",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_738dc22d.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 78,
+      "id": "65",
+      "scene": 8,
+      "title": "She calls out",
+      "description": "a young woman plants herself between the blinding daylight and the small figure in the red cardigan behind her, both arms flung wide with palms turned out, mouth open mid-shout, head twisted into the glare, dust hanging in the shaft of light",
+      "action": "arms flung wide, she blocks the light from the small one in the red cardigan behind her",
+      "duration": "5.3s",
+      "image": "session-3/storyboard/assets/hf_6d598bba.webp",
+      "anchor": "session-3/storyboard/assets/hf_8ee3ac1a.webp",
+      "refs": [
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 79,
+      "id": "66",
+      "scene": 8,
+      "title": "The counting carries",
+      "description": "CU of a filthy red cardigan, its wearer walking steadily forward, lips moving, counting, daylight rising on her face, an adult hand closed around each of hers",
+      "action": "her counting carries up the tunnel",
+      "duration": "6.3s",
+      "image": "session-3/storyboard/assets/hf_a520b670.webp",
+      "anchor": "session-3/storyboard/assets/hf_6d598bba.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 80,
+      "id": "67",
+      "scene": 8,
+      "title": "They hear it",
+      "description": "soldiers at a tunnel mouth lowering their rifles, one turning his head to listen, hard daylight, dust",
+      "action": "the guards hold their fire",
+      "duration": "5.3s",
+      "image": "session-3/storyboard/assets/hf_1b67e8ec.webp",
+      "anchor": "session-3/storyboard/assets/hf_a520b670.webp",
+      "refs": [
+        {
+          "name": "Safe-zone guards",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_738dc22d.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    },
+    {
+      "order": 81,
+      "id": "68",
+      "scene": 8,
+      "title": "The three of them, out into the light",
+      "description": "three figures walking out of a tunnel mouth into blown-out daylight, seen from behind: the red cardigan in the middle, a young woman in torn university layers on her left and the young man in the navy coat on her right, a hand still closed around each of hers and their three arms hanging linked as they go — and far back in the dark behind them a doorway standing shut. No uniforms, no helmets, no weapons, nobody else in the frame. Held to fade",
+      "action": "they walk out into daylight",
+      "duration": "3.1s",
+      "image": "session-3/storyboard/assets/hf_ab65280e.webp",
+      "anchor": "session-3/storyboard/assets/hf_1b67e8ec.webp",
+      "refs": [
+        {
+          "name": "Soo-an",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_cc0c2beb.webp"
+        },
+        {
+          "name": "The caught friend",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_79c85f33.webp"
+        },
+        {
+          "name": "Danny",
+          "kind": "character",
+          "image": "session-3/storyboard/assets/hf_f3076e8f.webp"
+        },
+        {
+          "name": "Tunnel to the light",
+          "kind": "location",
+          "image": "session-3/storyboard/assets/hf_fe651760.webp"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,553 @@
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>From shot list to storyboard · Vibe Film Sessions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* page-local: the clock rail, the rung index and the two-up call cards. The skin owns the rest. */
+  .clock{font-family:var(--mono, ui-monospace, monospace);font-size:12px;letter-spacing:.06em;
+    color:var(--volt);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .rung{font-family:var(--mono, ui-monospace, monospace);color:var(--volt);font-weight:700;
+    text-align:center;width:38px;font-variant-numeric:tabular-nums}
+  .runrow td:first-child{font-family:var(--mono, ui-monospace, monospace);color:var(--faint);
+    text-align:center;width:34px}
+  .calls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 4px}
+  @media(max-width:760px){.calls{grid-template-columns:1fr}}
+  .lede{font-size:15px;line-height:1.7}
+  /* page-local: LEFT RAIL — sessions → lessons (Danney, 2026-09-02: "on the left column; sessions, lessons; first one is intro") */
+  body > .doc-wrap{max-width:none;--rail-w:222px}   /* full width: the rail pins left, the content takes the rest */
+  .doc-main{min-width:0}
+  @media(min-width:980px){
+    body > .doc-wrap{display:grid;grid-template-columns:var(--rail-w) minmax(0,1320px);gap:36px;justify-content:start;align-items:start;padding-left:22px;padding-right:32px}
+    .doc-main{max-width:1320px}
+    /* slim: a strip of lesson numbers; one click opens it back out */
+    body > .doc-wrap.rail-slim{grid-template-columns:58px minmax(0,1320px)}
+    .rail-slim .doc-rail{padding-right:0;overflow:visible}
+    .rail-slim .doc-rail-top{justify-content:center;margin-bottom:10px;padding-top:36px}
+    .rail-slim .doc-rail-toggle{top:44px;right:auto;left:50%;transform:translateX(-50%)}
+    .rail-slim .doc-rail-k,.rail-slim .doc-rail-fold,.rail-slim .doc-rail-when,.rail-slim .doc-rail-chev,.rail-slim .doc-rail-handle{display:none}
+    .rail-slim .doc-rail-g{border-bottom:0;padding:0;margin:0 0 10px;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .rail-slim .doc-rail-s{margin:0 0 2px;padding:0;font-size:0;display:block;width:34px;min-width:34px}   /* the skin's *{min-width:0} let the chip shrink to 2px inside a flex header */
+    .rail-slim .doc-rail-s .n,.rail-slim .doc-rail-s > span:not(.short){display:none}
+    .rail-slim .doc-rail-s .short{font-size:10px;flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:22px;border:1px solid var(--line2);border-radius:6px;color:var(--dim);letter-spacing:.06em}
+    .rail-slim .doc-rail-g.is-on .doc-rail-s .short{color:var(--volt);border-color:var(--volt)}
+    .rail-slim .doc-rail-g a{display:none}
+    .rail-slim .doc-rail-g[data-group="s1"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+    .rail-slim .doc-rail-g[data-group="s1"] > a > :not(.n){display:none}
+    .rail-slim .doc-rail-g[data-group="s1"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+    .rail-slim .doc-rail-g[data-group="s1"] > a.is-on{background:var(--panel2)} .rail-slim .doc-rail-g[data-group="s1"] > a.is-on .n{color:var(--volt)}
+    /* nested Backstage: its own chip sits under Session 1's numbers, and the Studio launcher stays reachable */
+    .rail-slim .doc-rail-sub{margin:6px 0 0;padding:0;border:0}
+    .rail-slim .doc-rail-g .doc-rail-studio{display:flex}
+    .doc-rail-toggle{position:absolute;top:46px;right:6px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);background:var(--panel2);color:var(--dim);
+      font:700 13px/1 var(--rs-mono);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;box-shadow:var(--rs-shadow)}
+    .doc-rail-toggle:hover{color:var(--volt);border-color:var(--volt)}
+    .doc-rail{position:sticky;top:0;max-height:100vh;overflow:auto;padding:46px 8px 40px 0;scrollbar-width:thin}
+    .doc-rail-handle{position:absolute;top:0;right:-30px;width:16px;height:100%;cursor:col-resize;z-index:2}
+    .doc-rail-handle::after{content:"";position:absolute;left:7px;top:46px;bottom:40px;width:2px;background:var(--line);border-radius:2px;transition:background .15s}
+    .doc-rail-handle:hover::after,.doc-rail-handle.is-drag::after{background:var(--volt)}
+      color:var(--volt);background:var(--panel2);border:1px solid var(--line);border-left:0;border-radius:0 999px 999px 0;padding:7px 12px 7px 10px;cursor:pointer}
+    body.is-dragging{cursor:col-resize;user-select:none}
+  }
+  .doc-rail-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 14px}
+  .doc-rail-top .doc-rail-k{margin:0}
+.doc-rail-k{display:flex;align-items:center;gap:9px}
+.doc-rail-mark{width:21px;height:21px;color:var(--volt);flex:none}
+.doc-rail-solo{text-decoration:none;border:0;margin:0 0 16px;align-items:center}
+/* the live app launcher — the same row as every other tool, tinted so it reads as "opens elsewhere" */
+.doc-rail a.doc-rail-studio{color:var(--volt);background:rgba(212,255,61,.09);border-left-color:var(--volt)}
+.doc-rail a.doc-rail-studio .n{color:var(--volt)}
+.doc-rail a.doc-rail-studio:hover{color:var(--volt);background:rgba(212,255,61,.20)}
+.doc-rail a.doc-rail-studio .rs-ext{margin-left:auto;font-size:11px;opacity:.75}
+.rail-slim .doc-rail-studio{justify-content:center;width:34px;min-width:34px;height:22px;padding:0;font-size:0;
+  margin:2px 0 0;border-radius:6px;border:1px solid var(--volt);border-left-width:1px}
+.rail-slim .doc-rail-studio .short{display:flex;font-size:11px;line-height:20px;min-width:0}
+.rail-slim .doc-rail-studio .rs-ext{display:none}
+.doc-rail-solo:hover{color:var(--ink)}
+.doc-rail-solo.is-on{color:var(--volt)}
+.rail-slim .doc-rail-solo.is-on .short{color:var(--volt);border-color:var(--volt)}
+
+/* ── "Give one away" — the session-1 send-off. Visual, not prose. ───────── */
+.ga-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 30px}
+.ga-steps > div{background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:22px 20px 20px;position:relative;overflow:hidden}
+.ga-steps b{position:absolute;top:14px;right:18px;font-family:var(--rs-mono);font-size:11px;color:var(--faint);letter-spacing:.1em}
+.ga-steps i[data-icon]{color:var(--volt);font-size:26px;display:block;margin-bottom:14px}
+.ga-steps h4{margin:0 0 5px;font-size:19px;letter-spacing:-.01em}
+.ga-steps p{margin:0;color:var(--dim);font-size:14px;line-height:1.45}
+
+.ga-subject{background:linear-gradient(180deg,rgba(212,255,61,.07),rgba(212,255,61,.02));
+  border:1px solid rgba(212,255,61,.32);border-radius:var(--rs-radius-lg);padding:28px 30px;margin:0 0 30px}
+.ga-subject .k{margin:0 0 10px;font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--volt)}
+.ga-subject h3{margin:0 0 8px;font-size:34px;line-height:1.1;letter-spacing:-.02em}
+.ga-subject p{margin:0;color:var(--dim);font-size:15px}
+
+.ga-crit{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 38px}
+.ga-crit > div{display:flex;align-items:center;gap:12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:var(--rs-radius);padding:15px 17px}
+.ga-crit i[data-icon]{color:var(--volt);font-size:21px;flex:none}
+.ga-crit b{display:block;font-size:15px;letter-spacing:-.01em}
+.ga-crit span{display:block;color:var(--faint);font-size:12.5px;margin-top:2px}
+
+.ga-shots{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0 30px}
+.ga-shot{border:1px solid var(--line);border-radius:var(--rs-radius-lg);overflow:hidden;background:#0b0c08}
+.ga-shot .cap{display:flex;align-items:baseline;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);
+  background:var(--panel2)}
+.ga-shot .cap b{font-family:var(--rs-mono);font-size:11px;color:var(--volt);letter-spacing:.1em}
+.ga-shot .cap span{font-size:14px;color:var(--ink)}
+.ga-ui{padding:20px;min-height:270px;display:flex;align-items:flex-start;justify-content:center}
+
+/* the little Higgsfield panels, drawn to match the real thing */
+.hf{width:100%;max-width:330px;font-size:12.5px}
+.hf-menu{background:#1b1c18;border:1px solid #34372c;border-radius:9px;padding:5px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.hf-menu p{display:flex;align-items:center;justify-content:space-between;margin:0;padding:8px 11px;
+  border-radius:6px;color:#c9cdb8}
+.hf-menu p.on{background:rgba(212,255,61,.14);color:var(--volt);font-weight:600}
+.hf-menu p.del{color:#e07f86}
+.hf-sub{margin-left:26px;margin-top:-30px}
+.hf-tabs{display:flex;gap:5px;margin-bottom:12px}
+.hf-tabs span{padding:6px 13px;border-radius:7px;color:var(--faint);font-size:11.5px}
+.hf-tabs span.on{background:#23261c;color:var(--ink)}
+.hf-card{background:#16180f;border:1px solid #2a2e20;border-radius:9px;padding:12px 13px;margin-bottom:11px}
+.hf-card .h{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.hf-card .h b{font-family:var(--rs-mono);font-size:10px;letter-spacing:.18em;color:var(--faint)}
+.hf-card .h em{font-style:normal;font-size:10.5px;border:1px solid #3a4030;border-radius:5px;padding:3px 8px;color:var(--ink)}
+.hf-card .h em.on{border-color:var(--volt);color:var(--volt);background:rgba(212,255,61,.1);font-weight:600}
+.hf-card .body{color:#9aa085;font-size:11.5px;line-height:1.5}
+.hf-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11.5px}
+.hf-row s{text-decoration:none;color:var(--faint)} .hf-row u{text-decoration:none;color:var(--ink)}
+.ga-point{display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--volt);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.08em}
+
+.ga-gate{display:flex;align-items:center;gap:16px;background:rgba(224,127,134,.08);
+  border:1px solid rgba(224,127,134,.4);border-left-width:3px;border-radius:var(--rs-radius);padding:20px 24px}
+.ga-gate i[data-icon]{color:#e07f86;font-size:26px;flex:none}
+.ga-gate b{display:block;font-size:18px;letter-spacing:-.01em;margin-bottom:3px}
+.ga-gate span{color:var(--dim);font-size:14px}
+@media (max-width:900px){.ga-steps,.ga-crit,.ga-shots{grid-template-columns:1fr}}
+
+  .doc-rail-btn{font-family:var(--rs-mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);background:transparent;
+    border:1px solid var(--line);border-radius:999px;padding:3px 8px;cursor:pointer;line-height:1.4}
+  .doc-rail-btn:hover{color:var(--ink);border-color:var(--line2)}
+  .doc-rail-handle,.doc-rail-toggle{display:none}
+  @media(min-width:980px){.doc-rail-handle{display:block} .doc-rail-toggle{display:flex}}
+  .doc-rail-s{cursor:pointer;user-select:none}
+  .doc-rail-s .short{display:none}
+  .doc-rail-s .doc-rail-chev{font-family:var(--rs-mono);color:var(--faint);font-size:10px;transition:transform .15s;flex:none;margin-right:2px}
+  .doc-rail-g.is-closed .doc-rail-chev{transform:rotate(-90deg)}
+  .doc-rail-g.is-closed a,.doc-rail-g.is-closed .doc-rail-g{display:none}
+  .doc-rail-g.is-closed{padding-bottom:8px}
+  .doc-rail-k{font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 14px}
+  .doc-rail-g{margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+  .doc-rail-g:last-child{border-bottom:0}
+  /* Backstage nested under its session — indented, hairline instead of a bottom rule */
+  .doc-rail-sub{margin:10px 0 0 10px;padding:0 0 0 10px;border-bottom:0;border-left:1px solid var(--line)}
+  .doc-rail-sub > .doc-rail-s{font-size:10px;color:var(--faint);margin:0 0 4px}
+  .doc-rail-sub > a{font-size:12.5px;padding-top:3px;padding-bottom:3px}
+  .doc-rail-g.is-on .doc-rail-sub:not(.is-on) > .doc-rail-s{color:var(--faint)}
+  .doc-rail-s{font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--dim);font-weight:700;margin:0 0 6px;display:flex;gap:8px;align-items:baseline}
+  .doc-rail-s .n{color:var(--volt)}
+  .doc-rail-when{margin-left:auto;font-weight:400;color:var(--faint);letter-spacing:.06em;text-transform:none;font-size:10.5px}
+  .doc-rail a{display:flex;gap:9px;align-items:baseline;font-size:13px;line-height:1.35;color:var(--dim);padding:4px 8px 4px 10px;
+    border:0;border-left:2px solid transparent;border-radius:0 6px 6px 0;text-decoration:none}
+  .doc-rail a .n{font-family:var(--rs-mono);font-size:10.5px;color:var(--faint);min-width:14px;flex:none}
+  .doc-rail-g[data-group="tools"] a .n{font-size:9px;line-height:1.9}
+  .doc-rail a:hover{color:var(--ink);background:var(--panel2)}
+  .doc-rail a.is-star{color:var(--ink)}
+  .doc-rail a.is-on{color:var(--volt);border-left-color:var(--volt);background:var(--panel2);font-weight:600}
+  .doc-rail a.is-on .n{color:var(--volt)}
+  .doc-rail-g.is-on .doc-rail-s{color:var(--ink)}
+  .doc-rail-g.is-soon a{color:var(--faint)}
+  @media(max-width:979px){
+    .doc-rail{border:1px solid var(--line);border-radius:var(--rs-radius-lg);padding:16px 18px 6px;margin:26px 0 0;background:var(--card)}
+    .doc-rail-g{padding:0 0 8px;margin:0 0 10px}
+  }
+  .doc-session{margin:64px 0 -28px;padding:11px 16px;border:1px solid rgba(212,255,61,.32);border-radius:var(--rs-radius);background:var(--panel2);
+    font-family:var(--rs-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .doc-session .n{color:var(--volt);font-weight:700}
+  .doc-session-when{margin-left:auto;color:var(--faint);letter-spacing:.06em;text-transform:none}
+  .doc-session.is-back{border-color:var(--line);color:var(--dim)}
+  .doc-session.is-soon{border-style:dashed;border-color:var(--line2);color:var(--dim)}
+  /* course pages: no top bar — the left panel carries the identity */
+  .doc-main > .doc-sec:first-of-type{margin-top:46px}   /* line up with the rail brand */
+  .doc-sec > .doc-eyebrow{margin:0 0 6px}   /* not :first-child — a <script> can precede it */
+  .doc-sec > h2:first-of-type{margin-top:0}
+  /* the inlined tools need air before whatever follows them */
+  .roadinline,.doc-sec > #foundations,.doc-sec .canvas{margin-bottom:38px}
+  .doc-sec .doc-tscroll{margin-top:30px}
+  .doc-pager{display:flex;justify-content:space-between;gap:16px;margin:56px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:14px}
+  .doc-pager a{border:0} .doc-pager .prev,.doc-pager .next{color:var(--dim)}
+</style>
+<style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
+/* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
+   Source of truth for the tokens: tools/studio/studio-theme.css + tools/studio/SKIN.md
+   (the skin Danney locked 2026-07-21). This file mirrors those tokens exactly and
+   adds document-scale typography on top, because a plan is read at 15px and a room
+   is used at 14px.
+
+   DO NOT hand-edit a page's <style data-reelix-skin> block. Edit THIS file, then:
+       python3 tools/visual-explainer/apply_skin.py <page.html>
+
+   THE ACCENT CONTRACT (inherited, non-negotiable):
+     --volt  #D4FF3D  identity  → eyebrows, section rules, links, key stats, primary CTA
+     --good  #7fc8a0  semantic  → ready / synced / success ONLY
+     --amber #e8b06a  semantic  → attention / warning ONLY
+   If a heading or a primary action is any colour other than volt, it is wrong.
+   ──────────────────────────────────────────────────────────────────────────────── */
+
+:root{
+  /* surfaces — verbatim from studio-theme.css */
+  --bg:#0c0d0a; --bg2:#101208;
+  --panel:#14160f; --panel2:#1b1e15;
+  --card:#14160f; --card2:#1b1e15;
+  --line:#2a2e20; --line2:#3a4030;
+  --ink:#e9ebda; --dim:#8b9079; --mut:#8b9079; --faint:#5c6150;
+
+  /* brand / semantic */
+  --volt:#D4FF3D; --amber:#e8b06a; --good:#7fc8a0;
+  --heavy:#e0b24f; --check:#e07f86; --brass:#c9973f;
+  --pink:#e85cc0; --lav:#b8a6f0;
+
+  /* room accents */
+  --refkit:#e8b06a; --worldkit:#9fe06a; --cutkit:#d89fe0;
+  --canvaskit:#86c8ea; --dnakit:#e85cc0;
+
+  /* typography */
+  --rs-font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --rs-mono:ui-monospace,"SF Mono","Menlo","Monaco","Consolas",monospace;
+
+  /* geometry */
+  --rs-radius-sm:6px; --rs-radius:10px; --rs-radius-lg:14px; --rs-radius-xl:18px;
+  --rs-shadow:0 4px 18px rgba(0,0,0,.45); --rs-shadow-lg:0 8px 34px rgba(0,0,0,.55);
+  --rs-transition:.15s ease;
+
+  /* primary CTA gradient */
+  --cta-a:#3a4d10; --cta-b:#26330a; --cta-line:#4f6b16; --cta-ink:#eaffc0;
+
+  /* spacing */
+  --rs-space-xs:4px; --rs-space-sm:8px; --rs-space-md:12px;
+  --rs-space-lg:16px; --rs-space-xl:22px; --rs-space-2xl:30px;
+
+  /* doc-only */
+  --doc-maxw:1080px;
+}
+
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 560px at 50% -12%, var(--bg2) 0%, var(--bg) 60%) fixed;
+  color:var(--ink);
+  font-family:var(--rs-font);
+  font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.doc-wrap{max-width:var(--doc-maxw);margin:0 auto;padding:0 26px 110px}
+
+/* ── links ───────────────────────────────────────────────────────────────── */
+a{color:var(--volt);text-decoration:none;border-bottom:1px solid rgba(212,255,61,.28)}
+a:hover{border-bottom-color:var(--volt)}
+
+/* ── masthead ────────────────────────────────────────────────────────────── */
+.doc-mast{padding:46px 0 20px;border-bottom:1px solid var(--line)}
+.doc-kicker{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 16px;
+}
+.doc-mast h1{
+  font-size:clamp(32px,5.6vw,54px);font-weight:800;line-height:1.03;
+  letter-spacing:-.028em;margin:0;color:var(--ink);
+}
+.doc-mast h1 em{font-style:normal;color:var(--volt)}
+.doc-dek{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:70ch;line-height:1.58}
+.doc-byline{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);
+}
+.doc-byline b{color:var(--dim);font-weight:600}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+.doc-sec{margin:58px 0 0;scroll-margin-top:20px}
+.doc-eyebrow{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 10px;
+}
+.doc-sec h2{
+  font-size:clamp(22px,3.2vw,30px);font-weight:700;letter-spacing:-.018em;
+  line-height:1.14;margin:0;color:var(--ink);
+}
+.doc-rule{height:2px;width:56px;background:var(--volt);margin:14px 0 24px;border-radius:2px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.005em;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;max-width:74ch;color:var(--ink)}
+p.lead,.rs-lead{color:var(--dim);max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+strong{font-weight:700;color:var(--ink)}
+em{color:var(--dim);font-style:italic}
+.muted,.rs-muted{color:var(--dim)}
+.faint,.rs-faint{color:var(--faint)}
+.mono,.rs-mono{font-family:var(--rs-mono);font-size:12.5px}
+
+/* ── callout / verdict panel ─────────────────────────────────────────────── */
+.doc-callout{
+  background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--volt);border-radius:var(--rs-radius);
+  padding:20px 22px;margin:0 0 24px;
+}
+.doc-callout.attn{border-left-color:var(--amber)}
+.doc-callout.ok{border-left-color:var(--good)}
+.doc-callout.bad{border-left-color:var(--check)}
+.doc-callout > :last-child{margin-bottom:0}
+
+/* ── quote ───────────────────────────────────────────────────────────────── */
+blockquote,.doc-quote{
+  margin:20px 0;padding:2px 0 2px 20px;border-left:2px solid var(--volt);
+  font-size:17px;line-height:1.5;color:var(--ink);max-width:66ch;
+}
+blockquote cite,.doc-quote cite{
+  display:block;font-family:var(--rs-mono);font-style:normal;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:10px;
+}
+
+/* ── figure / ascii diagram ──────────────────────────────────────────────── */
+pre.doc-fig,pre.rs-code-block{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs-radius);
+  padding:20px;overflow-x:auto;font-family:var(--rs-mono);font-size:12.5px;
+  line-height:1.55;color:var(--ink);margin:0 0 10px;
+}
+.doc-figcap{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 16px}
+code,.rs-code{
+  font-family:var(--rs-mono);background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:1px 6px;font-size:12px;color:var(--brass);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────────── */
+.doc-tscroll{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  background:var(--card);
+}
+table,.rs-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th,.rs-table th{
+  text-align:left;background:var(--panel2);color:var(--dim);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line2);white-space:nowrap;
+}
+td,.rs-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--card2)}
+
+/* ── chips / tags / pills ────────────────────────────────────────────────── */
+.rs-tag,.doc-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  border-radius:999px;padding:3px 9px;white-space:nowrap;
+  border:1px solid currentColor;line-height:1.4;
+}
+.doc-tag.volt{color:var(--volt)}
+.doc-tag.ok{color:var(--good)}
+.doc-tag.attn{color:var(--amber)}
+.doc-tag.bad{color:var(--check)}
+.doc-tag.dim{color:var(--faint)}
+.rs-status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.rs-status-dot.rs-on{background:var(--good)}
+.rs-status-dot.rs-attn{background:var(--amber)}
+.rs-status-dot.rs-bad{background:var(--check)}
+
+/* ── cards ───────────────────────────────────────────────────────────────── */
+.doc-cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:6px}
+.rs-card,.doc-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:var(--rs-space-xl);position:relative;
+  transition:border-color var(--rs-transition),box-shadow var(--rs-transition);
+}
+.rs-card:hover,.doc-card:hover{border-color:var(--line2)}
+.doc-card.is-primary{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
+.doc-card .doc-card-flag{
+  position:absolute;top:-9px;right:16px;background:var(--volt);color:#0c0d0a;
+  font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;
+}
+.doc-card .doc-card-idx{
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);
+  font-weight:700;display:block;margin-bottom:6px;
+}
+.doc-card h3{margin:0 0 3px;font-size:18px;letter-spacing:-.01em}
+.doc-card .doc-card-sub{color:var(--dim);font-size:14px;margin:0 0 14px;font-style:italic}
+.doc-card p{font-size:14px;margin:0 0 11px}
+.doc-card .doc-card-meta{
+  border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+  font-size:13px;color:var(--dim);
+}
+.doc-card .doc-card-meta div{margin:0 0 6px}
+.doc-card .doc-card-meta b{
+  font-family:var(--rs-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:inline-block;min-width:76px;font-weight:600;
+}
+
+/* ── numbered build list ─────────────────────────────────────────────────── */
+ol.doc-steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:74ch}
+ol.doc-steps li{counter-increment:s;position:relative;padding:0 0 16px 44px;margin:0}
+ol.doc-steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--rs-mono);font-size:12px;font-weight:700;color:var(--volt);
+  width:26px;height:26px;line-height:24px;text-align:center;
+  border:1px solid var(--line2);border-radius:999px;background:var(--panel2);
+}
+
+/* ── primary CTA (the canonical olive gradient) ──────────────────────────── */
+.btn-primary,.rs-btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(180deg,var(--cta-a),var(--cta-b));
+  border:1px solid var(--cta-line);color:var(--cta-ink);font-weight:700;
+  letter-spacing:.03em;border-radius:var(--rs-radius);padding:10px 20px;
+  font:inherit;cursor:pointer;text-decoration:none;
+  transition:filter var(--rs-transition);
+}
+.btn-primary:hover,.rs-btn-primary:hover{filter:brightness(1.12)}
+
+/* ── open questions ──────────────────────────────────────────────────────── */
+.doc-open{
+  background:var(--panel);border:1px dashed var(--line2);
+  border-radius:var(--rs-radius-lg);padding:20px 24px;
+}
+.doc-open > :last-child{margin-bottom:0}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.doc-foot{
+  margin-top:72px;border-top:1px solid var(--line);padding-top:16px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);line-height:1.7;
+}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  .doc-wrap{padding:0 18px 80px}
+  .doc-card{padding:var(--rs-space-lg)}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .doc-card,.doc-callout,.doc-tscroll,pre.doc-fig{border-color:#ccc;background:#fff}
+  a{color:#111}
+}
+</style>
+<style data-s2-rail>
+  .rail-slim .doc-rail-g[data-group="s2"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s2"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s2"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s2"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s2"] > a.is-on .n{color:var(--volt)}
+  /* rail tidy — Danney 2026-09-11: no number in front of a lesson while the rail is open (the slim rail still shows
+     them, it has nothing else); Tools keeps its ▸ ◦ glyphs; a group heading never wraps onto a second line */
+  .doc-rail-g:not([data-group="tools"]) > a > .n{display:none}
+  .rail-slim .doc-rail-g[data-group] > a > .n{display:inline}
+  .doc-rail-s{white-space:nowrap}
+  /* 2026-09-21 — "Session 2 · Prompt &amp; Reference" (his name) is the longest heading; at the old 1.1px tracking the
+     topic squeezed the "Session 2" label until they overlapped. Tighter tracking keeps every heading on one line. */
+  .doc-rail-g[data-group] > .doc-rail-s{letter-spacing:.35px}
+  .doc-rail-s > .n{flex-shrink:0}
+</style>
+<style data-s3-rail>
+  .rail-slim .doc-rail-g[data-group="s3"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s3"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on .n{color:var(--volt)}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+<aside class="doc-rail" aria-label="Sessions and lessons">
+  <div class="doc-rail-top">
+    <p class="doc-rail-k"><svg class="doc-rail-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="7"><circle cx="64" cy="64" r="60"/><circle cx="64" cy="64" r="22"/><circle cx="64" cy="24" r="11.5"/><circle cx="104" cy="64" r="11.5"/><circle cx="64" cy="104" r="11.5"/><circle cx="24" cy="64" r="11.5"/></g><path d="M56.5 52.2 L56.5 75.8 L78 64 Z" fill="currentColor"/></svg>Reelix Explainer</p>
+  </div>
+
+  <a href="index.html" class="doc-rail-solo is-star"><span class="short">S0</span><span class="n">&#9654;</span> Start here</a>
+  <div class="doc-rail-g" data-group="s1">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S1</span><span class="n">Session 1</span> Intro <span class="doc-rail-when">Sat Sep 5</span></p>
+    <a href="about.html" class="is-star"><span class="n">0</span> About me</a>
+    <a href="film.html" class="is-star"><span class="n">1</span> How filming works</a>
+    <a href="ladder.html" class="is-star"><span class="n">2</span> The levels</a>
+    <a href="foundations.html" class="is-star"><span class="n">3</span> How the AI part works</a>
+    <a href="assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
+    </div>
+  <!-- s2-rail --><div class="doc-rail-g" data-group="s2">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S2</span><span class="n">Session 2</span> Prompt &amp; Reference</p>
+    <a href="s2-crew.html" class="is-star"><span class="n">1</span> Meet the crew</a>
+    <a href="s2-story.html" class="is-star"><span class="n">2</span> Fifteen seconds</a>
+    <a href="s2-proof.html" class="is-star"><span class="n">3</span> Words vs pictures</a>
+    <a href="s2-assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
+    </div><!-- /s2-rail -->
+
+  <!-- s3-rail --><div class="doc-rail-g" data-group="s3">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S3</span><span class="n">Session 3</span> Storyboard</p>
+    <a href="s3-board.html"><span class="n">01</span> From shot list to storyboard</a>
+    </div><!-- /s3-rail -->
+
+  <div class="doc-rail-g" data-group="tools">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">T</span><span>Tools</span></p>
+    <a href="stage.html"><span class="n">&#9702;</span> Cut-out stage</a>
+    <a href="roadtool.html"><span class="n">&#9702;</span> The levels tool</a>
+    <a href="words.html"><span class="n">&#9702;</span> Prompt words</a>
+  </div>
+
+  <div class="doc-rail-handle" title="drag to resize · double-click to reset"></div>
+  <button type="button" class="doc-rail-toggle" title="collapse the outline ( [ )">&#8249;</button>
+</aside>
+
+<div class="doc-main">
+
+<section class="doc-sec" id="s3-board">
+<h2 class="s3-page-title">From shot list to storyboard</h2>
+<style>#s3-board .s3-presenter{max-width:1220px;margin:20px auto;padding:0 20px}#s3-board .s3-shell{padding:48px 0 0;overflow:hidden}#s3-board .intro{padding:28px 32px;border-bottom:1px solid var(--line)}#s3-board .intro h1{font-size:32px;line-height:1.15;margin:10px 0 14px;letter-spacing:-.035em}#s3-board .eyebrow{font:11px monospace;letter-spacing:.1em;color:var(--volt);text-transform:uppercase}#s3-board .story{max-width:900px;font-size:15px;line-height:1.7;color:var(--dim);margin:0}#s3-board .meta{font:11px monospace;color:var(--dim);margin-top:18px;display:flex;gap:22px}#s3-board .toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:20px 32px;border-bottom:1px solid var(--line)}#s3-board .toolbar h2{font-size:18px;margin:0 0 4px}#s3-board .helper{font-size:12px;color:var(--dim)}#s3-board .switch{display:flex;background:var(--panel);border:1px solid var(--line);padding:4px;border-radius:9px;flex-shrink:0}#s3-board .switch button{border:0;background:transparent;padding:10px 20px;color:var(--dim);font:600 13px inherit;cursor:pointer;border-radius:6px}#s3-board .switch button[aria-pressed=true]{background:var(--volt);color:#11150b}#s3-board .content{height:620px;overflow:auto;padding:24px 32px;scrollbar-color:var(--line2) var(--bg)}#s3-board .scene{margin-bottom:32px}#s3-board .scene-title{display:flex;align-items:baseline;gap:12px;margin:0 0 16px;font-size:16px}#s3-board .scene-title span{font:11px monospace;color:var(--volt)}#s3-board .scene-title small{margin-left:auto;color:var(--dim);font:11px monospace}#s3-board .list{width:100%;border-collapse:collapse;table-layout:fixed}#s3-board .list th{font:10px monospace;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-align:left;padding:9px 12px}#s3-board .list th:first-child{width:60px}#s3-board .list th:last-child{width:85px}#s3-board .list td{padding:15px 12px;border-top:1px solid var(--line);vertical-align:middle}#s3-board .list td:first-child{font:12px monospace;color:var(--dim)}#s3-board .list td:last-child{font:11px monospace;color:var(--dim);text-align:right}#s3-board .list tr[data-index]{cursor:pointer}#s3-board .list tr[data-index]:hover{background:var(--panel)}#s3-board .row-title{font-size:14px;color:var(--ink)}#s3-board .row-action{font-size:12px;line-height:1.5;color:var(--dim);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#s3-board .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}#s3-board .card{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--panel);padding:0;text-align:left;color:var(--ink);cursor:pointer}#s3-board .card:hover{border-color:var(--volt)}#s3-board .card img{width:100%;aspect-ratio:2.39/1;object-fit:contain;background:#050605;display:block}#s3-board .card-copy{padding:13px 14px}#s3-board .card-label{display:flex;justify-content:space-between;font:10px monospace;color:var(--dim);margin-bottom:7px}#s3-board .card-title{font-size:13px;line-height:1.4;height:37px;display:flex;align-items:start}#s3-board .bottom{padding:14px 32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;color:var(--dim);font-size:11px}#s3-board .content.revealing .card{animation:appear .3s both;animation-delay:calc(var(--i)*35ms)}@keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}#s3-board dialog{padding:0;border:1px solid var(--line2);border-radius:14px;background:var(--bg);color:var(--ink);width:min(1060px,92vw);max-height:90vh}#s3-board dialog::backdrop{background:#000c}#s3-board .detail-head{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}#s3-board .detail-head h2{font-size:18px;margin:0}#s3-board .close{background:var(--panel);border:1px solid var(--line);padding:8px 12px;border-radius:6px;color:var(--ink);cursor:pointer}#s3-board .detail-body{padding:24px;display:grid;grid-template-columns:1.6fr 1fr;gap:24px}#s3-board .frame{width:100%;aspect-ratio:2.39/1;object-fit:contain;background:#050605;border-radius:8px}#s3-board .detail-body p{font-size:13px;line-height:1.7;color:var(--dim)}#s3-board .detail-body h3{font-size:13px;margin:0 0 12px}#s3-board .refs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#s3-board .ref{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:10px;color:var(--dim);text-align:left;cursor:pointer}#s3-board .ref img{width:100%;height:110px;object-fit:contain;background:#080907}#s3-board .ref small{display:block;font-size:10px;margin-top:7px}#s3-board .prior{margin-top:24px}#s3-board .prior img{width:100%;aspect-ratio:2.39/1;object-fit:contain}#s3-board .detail-nav{display:flex;gap:8px;margin-top:18px}#s3-board .detail-nav button{border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);padding:8px 14px;cursor:pointer}#s3-board .detail-nav button:disabled{opacity:.4}#s3-board .zoomed{width:100%;max-height:70vh;object-fit:contain}#s3-board .hidden{display:none}@media(max-width:720px){#s3-board .s3-presenter{padding:0 10px}#s3-board .intro,#s3-board .toolbar,#s3-board .content{padding:20px}#s3-board .toolbar{flex-direction:column;align-items:start;gap:12px}#s3-board .grid{grid-template-columns:repeat(2,minmax(0,1fr))}#s3-board .content{height:640px}#s3-board .detail-body{grid-template-columns:1fr}#s3-board .meta{gap:12px;flex-wrap:wrap}#s3-board .bottom{gap:10px;padding:14px 20px}#s3-board .list th:first-child{width:36px}#s3-board .list th:last-child{width:48px}#s3-board .list td,#s3-board .list th{padding-left:5px;padding-right:5px}#s3-board .switch button{padding:10px 16px}#s3-board .intro h1{font-size:26px}}#s3-board .s3-presenter{max-width:1240px;margin:26px auto;padding:0 28px}#s3-board .s3-shell{border-radius:16px}#s3-board .intro{padding:42px 38px 34px}#s3-board .story-heading{display:flex;justify-content:space-between;gap:24px;align-items:center}#s3-board .intro h1{font-size:58px;letter-spacing:-.055em;margin:18px 0 22px}#s3-board .intro h1 span{display:block;font-size:15px;color:var(--dim);font-weight:400;letter-spacing:0;margin-top:12px}#s3-board .chapter-mark{font:14px monospace;color:var(--faint)}#s3-board .story{max-width:870px;font-size:16px;line-height:1.8}#s3-board .meta{font-size:12px;text-transform:none;gap:28px;margin-top:26px}#s3-board .meta b{font-size:17px;color:var(--ink);margin-right:5px}#s3-board .toolbar{padding:24px 38px;background:var(--bg)}#s3-board .toolbar h2{font-size:20px}#s3-board .switch button{font-size:12px;padding:10px 16px}#s3-board .scene-nav{display:flex;gap:8px;overflow:auto;padding:16px 38px;background:var(--panel);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:3;scrollbar-width:thin}#s3-board .scene-nav button{flex:0 0 auto;background:transparent;border:1px solid var(--line);border-radius:6px;padding:8px 12px;font:11px monospace;color:var(--dim);cursor:pointer;white-space:nowrap}#s3-board .scene-nav button.active{color:var(--volt);border-color:var(--volt)}#s3-board .scene-nav button:hover{color:var(--ink)}#s3-board .content{height:auto;overflow:visible;padding:34px 38px}#s3-board .scene{margin-bottom:48px;scroll-margin-top:80px}#s3-board .scene-title{font-size:23px;letter-spacing:-.025em;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--line)}#s3-board .scene-title span{letter-spacing:.08em}#s3-board .grid{gap:22px}#s3-board .card{border-radius:8px;background:transparent}#s3-board .card-copy{padding:15px 16px 18px}#s3-board .card-title{font-size:14px;height:40px;line-height:1.5}#s3-board .card-label{margin-bottom:10px;font-size:10px}#s3-board .paired{display:grid;gap:0}#s3-board .pair{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;border-bottom:1px solid var(--line);padding:24px 0;align-items:center;cursor:pointer}#s3-board .pair:hover .pair-title{color:var(--volt)}#s3-board .pair img{width:100%;aspect-ratio:2.39/1;object-fit:contain;border-radius:8px;background:#050605}#s3-board .pair-label{font:10px monospace;color:var(--dim);margin-bottom:12px}#s3-board .pair-title{font-size:21px;line-height:1.3;margin:0 0 12px;letter-spacing:-.02em}#s3-board .pair-action{font-size:13px;line-height:1.75;color:var(--dim);margin:0}#s3-board .pair-caption{display:flex;justify-content:space-between;font:10px monospace;color:var(--dim);margin-top:12px}#s3-board .inspect-hint{color:var(--volt)}#s3-board .list td{padding:20px 12px}#s3-board .row-title{font-size:15px}#s3-board .row-action{font-size:13px;margin-top:6px}#s3-board .bottom{padding:20px 38px}#s3-board .lesson-note{margin:0 38px 32px;border-left:2px solid var(--volt);padding:0 16px;color:var(--dim);font-size:13px;line-height:1.7}#s3-board .lesson-note b{color:var(--ink);font-weight:500}@media(max-width:720px){#s3-board .s3-presenter{padding:0 10px}#s3-board .intro,#s3-board .toolbar,#s3-board .content{padding:24px 20px}#s3-board .intro h1{font-size:42px}#s3-board .chapter-mark{display:none}#s3-board .scene-nav{padding:14px 20px}#s3-board .pair{grid-template-columns:1fr;gap:18px}#s3-board .scene-title{font-size:19px;flex-wrap:wrap}#s3-board .scene-title small{font-size:10px}#s3-board .grid{gap:12px}#s3-board .card-copy{padding:11px}#s3-board .card-title{font-size:12px;height:42px}#s3-board .meta{gap:14px;font-size:10px}#s3-board .meta b{font-size:14px}#s3-board .switch button{padding:10px 12px}#s3-board .lesson-note{margin:0 20px 26px}#s3-board .bottom{padding:20px}}
+
+#s3-board{padding:0;--panel:var(--card,#14160f);--panel2:#1b1e15;--line2:#3a4030;--faint:#5c6150}#s3-board .s3-presenter{max-width:none;margin:0;padding:0}#s3-board .s3-shell{padding:0;border:0;overflow:visible}#s3-board .s3-page-title{display:none}#s3-board .scene-nav{top:0}#s3-board button{font-family:inherit}#s3-board .switch button{font-weight:600}#s3-board button:focus-visible,#s3-board [role=button]:focus-visible{outline:2px solid var(--volt);outline-offset:3px}#s3-board dialog h2,#s3-board .toolbar h2{color:var(--ink);letter-spacing:normal}#s3-board .list{min-width:0}#s3-board .list th,#s3-board .list td{white-space:normal}#s3-board .row-title{overflow-wrap:anywhere}</style>
+<div class="s3-presenter"><div class="s3-shell"><div class="intro"><div class="eyebrow">Session 3 / Train to Busan example</div><div class="story-heading"><h1>The Door<span>A Train to Busan reimagining</span></h1><span class="chapter-mark">01 — 08</span></div><p class="story"></p><div class="meta"><span><b>81</b> shots</span><span><b>8</b> scenes</span><span>Original Reelix frames</span></div></div><div class="toolbar"><div><h2 id="view-title">The shot list</h2><div class="helper" id="view-help">The story broken into shots. Click a row to inspect it.</div></div><div class="switch" aria-label="Presentation view"><button data-mode="list" aria-pressed="true">Shot list</button><button data-mode="board" aria-pressed="false">Storyboard</button><button data-mode="compare" aria-pressed="false">Script + frame</button></div></div><nav class="scene-nav" aria-label="Jump to a scene"></nav><div class="content" tabindex="0" aria-label="Full shot sequence"></div><p class="lesson-note"><b>The prompt describes the shot. The references hold the world together.</b><br>Open a frame to see its recorded ingredients. A new place needs a new location reference; character and style rules can carry forward.</p><div class="bottom"><span>Full sequence · original shot order</span><span>Click any shot to see its frame and references</span></div></div></div><dialog id="detail"></dialog><dialog id="zoom"></dialog>
+<script>(()=>{const root=document.querySelector("#s3-board");if(!root)return;
+
+let data,mode='list',selected=0;const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function render(){const content=root.querySelector('.content');content.innerHTML=Object.entries(data.scenes).map(([n,title])=>{const shots=data.shots.filter(s=>String(s.scene)===n);return `<div class="scene" data-scene="${n}"><h3 class="scene-title"><span>SCENE ${n.padStart(2,'0')}</span>${esc(title)}<small>${shots.length} shots</small></h3>${mode==='list'?`<table class="list"><thead><tr><th>No.</th><th>Shot / action</th><th>Length</th></tr></thead><tbody>${shots.map(s=>`<tr data-index="${s.order-1}" tabindex="0" role="button" aria-label="Inspect shot ${s.id}"><td>${String(s.order).padStart(2,'0')}</td><td><div class="row-title">${esc(s.title)}</div><div class="row-action">${esc(s.action||s.description)}</div></td><td>${esc(s.duration)}</td></tr>`).join('')}</tbody></table>` : mode==='compare' ? `<div class="paired">${shots.map(s=>`<div class="pair" data-index="${s.order-1}" tabindex="0" role="button" aria-label="Inspect shot ${s.id}"><div><div class="pair-label">${String(s.order).padStart(2,'0')} · SHOT ${s.id} · ${esc(s.duration)}</div><h4 class="pair-title">${esc(s.title)}</h4><p class="pair-action">${esc(s.description)}</p></div><div><img src="${s.image}" alt="Saved frame for shot ${s.id}" loading="lazy"><div class="pair-caption"><span>Saved storyboard frame</span><span class="inspect-hint">Inspect references ↗</span></div></div></div>`).join('')}</div>` : `<div class="grid">${shots.map((s,i)=>`<button class="card" data-index="${s.order-1}" style="--i:${Math.min(i,8)}"><img src="${s.image}" alt="Shot ${s.id}: ${esc(s.title)}" loading="lazy"><div class="card-copy"><div class="card-label"><span>${String(s.order).padStart(2,'0')} · SHOT ${s.id}</span><span>${esc(s.duration)}</span></div><div class="card-title">${esc(s.title)}</div></div></button>`).join('')}</div>`}</div>`}).join('');content.querySelectorAll('[data-index]').forEach(e=>{e.onclick=()=>inspect(+e.dataset.index);e.onkeydown=x=>{if(x.key==='Enter'||x.key===' '){x.preventDefault();inspect(+e.dataset.index)}}});}
+function inspect(index){selected=index;const s=data.shots[index],d=root.querySelector('#detail');d.innerHTML=`<div class="detail-head"><h2>Shot ${s.id} · ${esc(s.title)}</h2><button class="close" data-close>Close</button></div><div class="detail-body"><div><img class="frame" src="${s.image}" alt="Saved storyboard frame"><p>${esc(s.description)}</p><div class="detail-nav"><button data-prev ${index===0?'disabled':''}>← Previous</button><button data-next ${index===data.shots.length-1?'disabled':''}>Next →</button></div></div><aside><h3>References for this shot</h3><div class="refs">${s.refs.map(r=>`<button class="ref" data-image="${r.image}" data-name="${esc(r.name)}"><img src="${r.image}" alt="${esc(r.name)}"><small>${esc(r.kind)} · ${esc(r.name)}</small></button>`).join('')||'<p>No element reference recorded.</p>'}</div><div class="prior"><h3>Prior-frame anchor</h3>${s.anchor?`<button class="ref" data-image="${s.anchor}" data-name="Recorded prior-frame anchor"><img src="${s.anchor}" alt="Recorded anchor"><small>Saved visual context from an earlier frame</small></button>`:'<p>No prior-frame anchor recorded. This shot uses its own element references.</p>'}</div></aside></div>`;d.querySelector('[data-close]').onclick=()=>d.close();d.querySelector('[data-prev]').onclick=()=>inspect(index-1);d.querySelector('[data-next]').onclick=()=>inspect(index+1);d.querySelectorAll('[data-image]').forEach(e=>e.onclick=()=>{const z=root.querySelector('#zoom');z.innerHTML=`<div class="detail-head"><h2>${esc(e.dataset.name)}</h2><button class="close">Close</button></div><img class="zoomed" src="${e.dataset.image}" alt="${esc(e.dataset.name)}">`;z.querySelector('button').onclick=()=>z.close();z.showModal()});if(!d.open)d.showModal();}
+root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{if(mode===b.dataset.mode)return;const c=root.querySelector('.content'),sections=[...c.querySelectorAll('.scene')];const belowIntro=c.getBoundingClientRect().top<0;const nearest=sections.find(e=>e.getBoundingClientRect().bottom>75)?.dataset.scene;mode=b.dataset.mode;root.querySelectorAll('[data-mode]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.mode===mode));root.querySelector('#view-title').textContent=mode==='list'?'The shot list':mode==='compare'?'From words to frames':'The storyboard';root.querySelector('#view-help').textContent=mode==='list'?'Every shot, in story order. Choose one to inspect.':mode==='compare'?'The written shot beside the actual saved picture.':'Every saved frame, grouped by scene. Open one to see its references.';render();const target=c.querySelector(`[data-scene="${nearest||1}"]`);if(belowIntro&&target)target.scrollIntoView({block:'start'});c.classList.toggle('revealing',mode==='board')});fetch('session-3/storyboard/full-board.json').then(r=>r.json()).then(d=>{data=d;root.querySelector('.story').textContent=d.summary;root.querySelector('.scene-nav').innerHTML=Object.entries(data.scenes).map(([n,t])=>`<button data-jump="${n}" class="${n==='1'?'active':''}">${n.padStart(2,'0')} · ${esc(({'1':'Boarding','2':'First turn','3':'Sealing off','4':'Restart','5':'Last stand','6':'Derailment','7':'Sacrifice','8':'Into the light'})[n]||t)}</button>`).join('');root.querySelectorAll('[data-jump]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-jump]').forEach(x=>x.classList.toggle('active',x===b));root.querySelector(`[data-scene="${b.dataset.jump}"]`).scrollIntoView({behavior:'smooth',block:'start'})});render();if(location.hash==='#compare')root.querySelector('[data-mode="compare"]').click();if(location.hash==='#board')root.querySelector('[data-mode="board"]').click()});
+
+})();</script>
+</section>
+
+<nav class="doc-pager"><span class="prev">&larr; <a href="s2-assignment.html">Assignment</a></span><span class="next"><a href="stage.html">The cut-out stage</a> &rarr;</span></nav>
+
+</div><!-- /doc-main -->
+
+</div><!-- /doc-wrap -->
+
+<script>
+(function(){
+  var rail=document.querySelector('.doc-rail'), wrap=document.querySelector('body > .doc-wrap'); if(!rail||!wrap) return;
+  var here=(location.pathname.split('/').pop()||'index.html');
+  var links=[].slice.call(rail.querySelectorAll('a[href]')), groups=[].slice.call(rail.querySelectorAll('.doc-rail-g'));
+  // Backstage nests inside its session, so walk EVERY ancestor group, not just the innermost
+  links.forEach(function(a){ var on=(a.getAttribute('href')===here); a.classList.toggle('is-on',on);
+    if(on){ for(var g=a.closest('.doc-rail-g'); g; g=g.parentElement && g.parentElement.closest('.doc-rail-g')){ g.classList.add('is-on'); g.classList.remove('is-closed'); } } });
+  var KEY='vfs.rail';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+  function save(p){ try{ var s=load(); for(var k in p) s[k]=p[k]; localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+  var st=load();
+  groups.forEach(function(g){ var id=g.getAttribute('data-group'), head=g.querySelector('.doc-rail-s');
+    if(st.closed && st.closed[id] && !g.classList.contains('is-on')) g.classList.add('is-closed');
+    head.addEventListener('click', function(){ if(wrap.classList.contains('rail-slim')){ g.classList.remove('is-closed'); setSlim(false); return; } g.classList.toggle('is-closed'); var c=(load().closed)||{}; c[id]=g.classList.contains('is-closed'); save({closed:c}); }); });  var toggle=rail.querySelector('.doc-rail-toggle');
+  function setSlim(on){ wrap.classList.toggle('rail-slim', !!on); if(toggle){ toggle.innerHTML = on ? '&#8250;' : '&#8249;'; toggle.title = on ? 'open the outline ( [ )' : 'collapse the outline ( [ )'; } save({slim:!!on}); }
+  if(toggle) toggle.addEventListener('click', function(){ setSlim(!wrap.classList.contains('rail-slim')); });
+  document.addEventListener('keydown', function(e){ if(e.key==='[' && !/input|textarea|select/i.test((e.target&&e.target.tagName)||'')) setSlim(!wrap.classList.contains('rail-slim')); });
+  if(st.slim) setSlim(true);
+  var MIN=160, MAX=440; function setW(px){ px=Math.max(MIN, Math.min(MAX, Math.round(px))); wrap.style.setProperty('--rail-w', px+'px'); return px; }
+  if(st.w) setW(st.w);
+  var handle=rail.querySelector('.doc-rail-handle');
+  if(handle){ var dragging=false;
+    handle.addEventListener('pointerdown', function(e){ dragging=true; handle.classList.add('is-drag'); document.body.classList.add('is-dragging'); try{ handle.setPointerCapture(e.pointerId); }catch(err){} e.preventDefault(); });
+    handle.addEventListener('pointermove', function(e){ if(!dragging) return; setW(e.clientX - rail.getBoundingClientRect().left); });
+    function end(){ if(!dragging) return; dragging=false; handle.classList.remove('is-drag'); document.body.classList.remove('is-dragging'); save({w:parseInt(getComputedStyle(wrap).getPropertyValue('--rail-w'))||222}); }
+    handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+    handle.addEventListener('dblclick', function(){ wrap.style.removeProperty('--rail-w'); save({w:null}); }); }
+  // lesson frames: same origin here, load them straight away
+  [].forEach.call(document.querySelectorAll('iframe[data-src]'), function(f){ f.src=f.getAttribute('data-src'); });
+})();
+</script>
+</body>
+</html>

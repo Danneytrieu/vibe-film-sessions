@@ -439,6 +439,17 @@ ol.doc-steps li::before{
   .doc-rail-g:not([data-group="tools"]) > a > .n{display:none}
   .rail-slim .doc-rail-g[data-group] > a > .n{display:inline}
   .doc-rail-s{white-space:nowrap}
+  /* 2026-09-21 — "Session 2 · Prompt &amp; Reference" (his name) is the longest heading; at the old 1.1px tracking the
+     topic squeezed the "Session 2" label until they overlapped. Tighter tracking keeps every heading on one line. */
+  .doc-rail-g[data-group] > .doc-rail-s{letter-spacing:.35px}
+  .doc-rail-s > .n{flex-shrink:0}
+</style>
+<style data-s3-rail>
+  .rail-slim .doc-rail-g[data-group="s3"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s3"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on .n{color:var(--volt)}
 </style>
 </head>
 <body>
@@ -458,13 +469,18 @@ ol.doc-steps li::before{
     <a href="foundations.html" class="is-star"><span class="n">3</span> How the AI part works</a>
     <a href="assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
     </div>
-  <div class="doc-rail-g" data-group="s2">
-    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S2</span><span class="n">Session 2</span> Prompting</p>
+  <!-- s2-rail --><div class="doc-rail-g" data-group="s2">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S2</span><span class="n">Session 2</span> Prompt &amp; Reference</p>
     <a href="s2-crew.html" class="is-star"><span class="n">1</span> Meet the crew</a>
     <a href="s2-story.html" class="is-star"><span class="n">2</span> Fifteen seconds</a>
     <a href="s2-proof.html" class="is-star"><span class="n">3</span> Words vs pictures</a>
     <a href="s2-assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
-  </div>
+    </div><!-- /s2-rail -->
+
+  <!-- s3-rail --><div class="doc-rail-g" data-group="s3">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S3</span><span class="n">Session 3</span> Storyboard</p>
+    <a href="s3-board.html"><span class="n">01</span> From shot list to storyboard</a>
+    </div><!-- /s3-rail -->
 
   <div class="doc-rail-g" data-group="tools">
     <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">T</span><span>Tools</span></p>
