@@ -1,0 +1,652 @@
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>From reference to ad · Vibe Film Sessions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* page-local: the clock rail, the rung index and the two-up call cards. The skin owns the rest. */
+  .clock{font-family:var(--mono, ui-monospace, monospace);font-size:12px;letter-spacing:.06em;
+    color:var(--volt);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .rung{font-family:var(--mono, ui-monospace, monospace);color:var(--volt);font-weight:700;
+    text-align:center;width:38px;font-variant-numeric:tabular-nums}
+  .runrow td:first-child{font-family:var(--mono, ui-monospace, monospace);color:var(--faint);
+    text-align:center;width:34px}
+  .calls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 4px}
+  @media(max-width:760px){.calls{grid-template-columns:1fr}}
+  .lede{font-size:15px;line-height:1.7}
+  /* page-local: LEFT RAIL — sessions → lessons (Danney, 2026-09-02: "on the left column; sessions, lessons; first one is intro") */
+  body > .doc-wrap{max-width:none;--rail-w:222px}   /* full width: the rail pins left, the content takes the rest */
+  .doc-main{min-width:0}
+  @media(min-width:980px){
+    body > .doc-wrap{display:grid;grid-template-columns:var(--rail-w) minmax(0,1320px);gap:36px;justify-content:start;align-items:start;padding-left:22px;padding-right:32px}
+    .doc-main{max-width:1320px}
+    /* slim: a strip of lesson numbers; one click opens it back out */
+    body > .doc-wrap.rail-slim{grid-template-columns:58px minmax(0,1320px)}
+    .rail-slim .doc-rail{padding-right:0;overflow:visible}
+    .rail-slim .doc-rail-top{justify-content:center;margin-bottom:10px;padding-top:36px}
+    .rail-slim .doc-rail-toggle{top:44px;right:auto;left:50%;transform:translateX(-50%)}
+    .rail-slim .doc-rail-k,.rail-slim .doc-rail-fold,.rail-slim .doc-rail-when,.rail-slim .doc-rail-chev,.rail-slim .doc-rail-handle{display:none}
+    .rail-slim .doc-rail-g{border-bottom:0;padding:0;margin:0 0 10px;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .rail-slim .doc-rail-s{margin:0 0 2px;padding:0;font-size:0;display:block;width:34px;min-width:34px}   /* the skin's *{min-width:0} let the chip shrink to 2px inside a flex header */
+    .rail-slim .doc-rail-s .n,.rail-slim .doc-rail-s > span:not(.short){display:none}
+    .rail-slim .doc-rail-s .short{font-size:10px;flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:22px;border:1px solid var(--line2);border-radius:6px;color:var(--dim);letter-spacing:.06em}
+    .rail-slim .doc-rail-g.is-on .doc-rail-s .short{color:var(--volt);border-color:var(--volt)}
+    .rail-slim .doc-rail-g a{display:none}
+    .rail-slim .doc-rail-g[data-group="s1"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+    .rail-slim .doc-rail-g[data-group="s1"] > a > :not(.n){display:none}
+    .rail-slim .doc-rail-g[data-group="s1"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+    .rail-slim .doc-rail-g[data-group="s1"] > a.is-on{background:var(--panel2)} .rail-slim .doc-rail-g[data-group="s1"] > a.is-on .n{color:var(--volt)}
+    /* nested Backstage: its own chip sits under Session 1's numbers, and the Studio launcher stays reachable */
+    .rail-slim .doc-rail-sub{margin:6px 0 0;padding:0;border:0}
+    .rail-slim .doc-rail-g .doc-rail-studio{display:flex}
+    .doc-rail-toggle{position:absolute;top:46px;right:6px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);background:var(--panel2);color:var(--dim);
+      font:700 13px/1 var(--rs-mono);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;box-shadow:var(--rs-shadow)}
+    .doc-rail-toggle:hover{color:var(--volt);border-color:var(--volt)}
+    .doc-rail{position:sticky;top:0;max-height:100vh;overflow:auto;padding:46px 8px 40px 0;scrollbar-width:thin}
+    .doc-rail-handle{position:absolute;top:0;right:-30px;width:16px;height:100%;cursor:col-resize;z-index:2}
+    .doc-rail-handle::after{content:"";position:absolute;left:7px;top:46px;bottom:40px;width:2px;background:var(--line);border-radius:2px;transition:background .15s}
+    .doc-rail-handle:hover::after,.doc-rail-handle.is-drag::after{background:var(--volt)}
+      color:var(--volt);background:var(--panel2);border:1px solid var(--line);border-left:0;border-radius:0 999px 999px 0;padding:7px 12px 7px 10px;cursor:pointer}
+    body.is-dragging{cursor:col-resize;user-select:none}
+  }
+  .doc-rail-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 14px}
+  .doc-rail-top .doc-rail-k{margin:0}
+.doc-rail-k{display:flex;align-items:center;gap:9px}
+.doc-rail-mark{width:21px;height:21px;color:var(--volt);flex:none}
+.doc-rail-solo{text-decoration:none;border:0;margin:0 0 16px;align-items:center}
+/* the live app launcher — the same row as every other tool, tinted so it reads as "opens elsewhere" */
+.doc-rail a.doc-rail-studio{color:var(--volt);background:rgba(212,255,61,.09);border-left-color:var(--volt)}
+.doc-rail a.doc-rail-studio .n{color:var(--volt)}
+.doc-rail a.doc-rail-studio:hover{color:var(--volt);background:rgba(212,255,61,.20)}
+.doc-rail a.doc-rail-studio .rs-ext{margin-left:auto;font-size:11px;opacity:.75}
+.rail-slim .doc-rail-studio{justify-content:center;width:34px;min-width:34px;height:22px;padding:0;font-size:0;
+  margin:2px 0 0;border-radius:6px;border:1px solid var(--volt);border-left-width:1px}
+.rail-slim .doc-rail-studio .short{display:flex;font-size:11px;line-height:20px;min-width:0}
+.rail-slim .doc-rail-studio .rs-ext{display:none}
+.doc-rail-solo:hover{color:var(--ink)}
+.doc-rail-solo.is-on{color:var(--volt)}
+.rail-slim .doc-rail-solo.is-on .short{color:var(--volt);border-color:var(--volt)}
+
+/* ── "Give one away" — the session-1 send-off. Visual, not prose. ───────── */
+.ga-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 30px}
+.ga-steps > div{background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:22px 20px 20px;position:relative;overflow:hidden}
+.ga-steps b{position:absolute;top:14px;right:18px;font-family:var(--rs-mono);font-size:11px;color:var(--faint);letter-spacing:.1em}
+.ga-steps i[data-icon]{color:var(--volt);font-size:26px;display:block;margin-bottom:14px}
+.ga-steps h4{margin:0 0 5px;font-size:19px;letter-spacing:-.01em}
+.ga-steps p{margin:0;color:var(--dim);font-size:14px;line-height:1.45}
+
+.ga-subject{background:linear-gradient(180deg,rgba(212,255,61,.07),rgba(212,255,61,.02));
+  border:1px solid rgba(212,255,61,.32);border-radius:var(--rs-radius-lg);padding:28px 30px;margin:0 0 30px}
+.ga-subject .k{margin:0 0 10px;font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--volt)}
+.ga-subject h3{margin:0 0 8px;font-size:34px;line-height:1.1;letter-spacing:-.02em}
+.ga-subject p{margin:0;color:var(--dim);font-size:15px}
+
+.ga-crit{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 38px}
+.ga-crit > div{display:flex;align-items:center;gap:12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:var(--rs-radius);padding:15px 17px}
+.ga-crit i[data-icon]{color:var(--volt);font-size:21px;flex:none}
+.ga-crit b{display:block;font-size:15px;letter-spacing:-.01em}
+.ga-crit span{display:block;color:var(--faint);font-size:12.5px;margin-top:2px}
+
+.ga-shots{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0 30px}
+.ga-shot{border:1px solid var(--line);border-radius:var(--rs-radius-lg);overflow:hidden;background:#0b0c08}
+.ga-shot .cap{display:flex;align-items:baseline;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);
+  background:var(--panel2)}
+.ga-shot .cap b{font-family:var(--rs-mono);font-size:11px;color:var(--volt);letter-spacing:.1em}
+.ga-shot .cap span{font-size:14px;color:var(--ink)}
+.ga-ui{padding:20px;min-height:270px;display:flex;align-items:flex-start;justify-content:center}
+
+/* the little Higgsfield panels, drawn to match the real thing */
+.hf{width:100%;max-width:330px;font-size:12.5px}
+.hf-menu{background:#1b1c18;border:1px solid #34372c;border-radius:9px;padding:5px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.hf-menu p{display:flex;align-items:center;justify-content:space-between;margin:0;padding:8px 11px;
+  border-radius:6px;color:#c9cdb8}
+.hf-menu p.on{background:rgba(212,255,61,.14);color:var(--volt);font-weight:600}
+.hf-menu p.del{color:#e07f86}
+.hf-sub{margin-left:26px;margin-top:-30px}
+.hf-tabs{display:flex;gap:5px;margin-bottom:12px}
+.hf-tabs span{padding:6px 13px;border-radius:7px;color:var(--faint);font-size:11.5px}
+.hf-tabs span.on{background:#23261c;color:var(--ink)}
+.hf-card{background:#16180f;border:1px solid #2a2e20;border-radius:9px;padding:12px 13px;margin-bottom:11px}
+.hf-card .h{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.hf-card .h b{font-family:var(--rs-mono);font-size:10px;letter-spacing:.18em;color:var(--faint)}
+.hf-card .h em{font-style:normal;font-size:10.5px;border:1px solid #3a4030;border-radius:5px;padding:3px 8px;color:var(--ink)}
+.hf-card .h em.on{border-color:var(--volt);color:var(--volt);background:rgba(212,255,61,.1);font-weight:600}
+.hf-card .body{color:#9aa085;font-size:11.5px;line-height:1.5}
+.hf-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11.5px}
+.hf-row s{text-decoration:none;color:var(--faint)} .hf-row u{text-decoration:none;color:var(--ink)}
+.ga-point{display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--volt);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.08em}
+
+.ga-gate{display:flex;align-items:center;gap:16px;background:rgba(224,127,134,.08);
+  border:1px solid rgba(224,127,134,.4);border-left-width:3px;border-radius:var(--rs-radius);padding:20px 24px}
+.ga-gate i[data-icon]{color:#e07f86;font-size:26px;flex:none}
+.ga-gate b{display:block;font-size:18px;letter-spacing:-.01em;margin-bottom:3px}
+.ga-gate span{color:var(--dim);font-size:14px}
+@media (max-width:900px){.ga-steps,.ga-crit,.ga-shots{grid-template-columns:1fr}}
+
+  .doc-rail-btn{font-family:var(--rs-mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);background:transparent;
+    border:1px solid var(--line);border-radius:999px;padding:3px 8px;cursor:pointer;line-height:1.4}
+  .doc-rail-btn:hover{color:var(--ink);border-color:var(--line2)}
+  .doc-rail-handle,.doc-rail-toggle{display:none}
+  @media(min-width:980px){.doc-rail-handle{display:block} .doc-rail-toggle{display:flex}}
+  .doc-rail-s{cursor:pointer;user-select:none}
+  .doc-rail-s .short{display:none}
+  .doc-rail-s .doc-rail-chev{font-family:var(--rs-mono);color:var(--faint);font-size:10px;transition:transform .15s;flex:none;margin-right:2px}
+  .doc-rail-g.is-closed .doc-rail-chev{transform:rotate(-90deg)}
+  .doc-rail-g.is-closed a,.doc-rail-g.is-closed .doc-rail-g{display:none}
+  .doc-rail-g.is-closed{padding-bottom:8px}
+  .doc-rail-k{font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 14px}
+  .doc-rail-g{margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+  .doc-rail-g:last-child{border-bottom:0}
+  /* Backstage nested under its session — indented, hairline instead of a bottom rule */
+  .doc-rail-sub{margin:10px 0 0 10px;padding:0 0 0 10px;border-bottom:0;border-left:1px solid var(--line)}
+  .doc-rail-sub > .doc-rail-s{font-size:10px;color:var(--faint);margin:0 0 4px}
+  .doc-rail-sub > a{font-size:12.5px;padding-top:3px;padding-bottom:3px}
+  .doc-rail-g.is-on .doc-rail-sub:not(.is-on) > .doc-rail-s{color:var(--faint)}
+  .doc-rail-s{font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--dim);font-weight:700;margin:0 0 6px;display:flex;gap:8px;align-items:baseline}
+  .doc-rail-s .n{color:var(--volt)}
+  .doc-rail-when{margin-left:auto;font-weight:400;color:var(--faint);letter-spacing:.06em;text-transform:none;font-size:10.5px}
+  .doc-rail a{display:flex;gap:9px;align-items:baseline;font-size:13px;line-height:1.35;color:var(--dim);padding:4px 8px 4px 10px;
+    border:0;border-left:2px solid transparent;border-radius:0 6px 6px 0;text-decoration:none}
+  .doc-rail a .n{font-family:var(--rs-mono);font-size:10.5px;color:var(--faint);min-width:14px;flex:none}
+  .doc-rail-g[data-group="tools"] a .n{font-size:9px;line-height:1.9}
+  .doc-rail a:hover{color:var(--ink);background:var(--panel2)}
+  .doc-rail a.is-star{color:var(--ink)}
+  .doc-rail a.is-on{color:var(--volt);border-left-color:var(--volt);background:var(--panel2);font-weight:600}
+  .doc-rail a.is-on .n{color:var(--volt)}
+  .doc-rail-g.is-on .doc-rail-s{color:var(--ink)}
+  .doc-rail-g.is-soon a{color:var(--faint)}
+  @media(max-width:979px){
+    .doc-rail{border:1px solid var(--line);border-radius:var(--rs-radius-lg);padding:16px 18px 6px;margin:26px 0 0;background:var(--card)}
+    .doc-rail-g{padding:0 0 8px;margin:0 0 10px}
+  }
+  .doc-session{margin:64px 0 -28px;padding:11px 16px;border:1px solid rgba(212,255,61,.32);border-radius:var(--rs-radius);background:var(--panel2);
+    font-family:var(--rs-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .doc-session .n{color:var(--volt);font-weight:700}
+  .doc-session-when{margin-left:auto;color:var(--faint);letter-spacing:.06em;text-transform:none}
+  .doc-session.is-back{border-color:var(--line);color:var(--dim)}
+  .doc-session.is-soon{border-style:dashed;border-color:var(--line2);color:var(--dim)}
+  /* course pages: no top bar — the left panel carries the identity */
+  .doc-main > .doc-sec:first-of-type{margin-top:46px}   /* line up with the rail brand */
+  .doc-sec > .doc-eyebrow{margin:0 0 6px}   /* not :first-child — a <script> can precede it */
+  .doc-sec > h2:first-of-type{margin-top:0}
+  /* the inlined tools need air before whatever follows them */
+  .roadinline,.doc-sec > #foundations,.doc-sec .canvas{margin-bottom:38px}
+  .doc-sec .doc-tscroll{margin-top:30px}
+  .doc-pager{display:flex;justify-content:space-between;gap:16px;margin:56px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:14px}
+  .doc-pager a{border:0} .doc-pager .prev,.doc-pager .next{color:var(--dim)}
+</style>
+<style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
+/* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
+   Source of truth for the tokens: tools/studio/studio-theme.css + tools/studio/SKIN.md
+   (the skin Danney locked 2026-07-21). This file mirrors those tokens exactly and
+   adds document-scale typography on top, because a plan is read at 15px and a room
+   is used at 14px.
+
+   DO NOT hand-edit a page's <style data-reelix-skin> block. Edit THIS file, then:
+       python3 tools/visual-explainer/apply_skin.py <page.html>
+
+   THE ACCENT CONTRACT (inherited, non-negotiable):
+     --volt  #D4FF3D  identity  → eyebrows, section rules, links, key stats, primary CTA
+     --good  #7fc8a0  semantic  → ready / synced / success ONLY
+     --amber #e8b06a  semantic  → attention / warning ONLY
+   If a heading or a primary action is any colour other than volt, it is wrong.
+   ──────────────────────────────────────────────────────────────────────────────── */
+
+:root{
+  /* surfaces — verbatim from studio-theme.css */
+  --bg:#0c0d0a; --bg2:#101208;
+  --panel:#14160f; --panel2:#1b1e15;
+  --card:#14160f; --card2:#1b1e15;
+  --line:#2a2e20; --line2:#3a4030;
+  --ink:#e9ebda; --dim:#8b9079; --mut:#8b9079; --faint:#5c6150;
+
+  /* brand / semantic */
+  --volt:#D4FF3D; --amber:#e8b06a; --good:#7fc8a0;
+  --heavy:#e0b24f; --check:#e07f86; --brass:#c9973f;
+  --pink:#e85cc0; --lav:#b8a6f0;
+
+  /* room accents */
+  --refkit:#e8b06a; --worldkit:#9fe06a; --cutkit:#d89fe0;
+  --canvaskit:#86c8ea; --dnakit:#e85cc0;
+
+  /* typography */
+  --rs-font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --rs-mono:ui-monospace,"SF Mono","Menlo","Monaco","Consolas",monospace;
+
+  /* geometry */
+  --rs-radius-sm:6px; --rs-radius:10px; --rs-radius-lg:14px; --rs-radius-xl:18px;
+  --rs-shadow:0 4px 18px rgba(0,0,0,.45); --rs-shadow-lg:0 8px 34px rgba(0,0,0,.55);
+  --rs-transition:.15s ease;
+
+  /* primary CTA gradient */
+  --cta-a:#3a4d10; --cta-b:#26330a; --cta-line:#4f6b16; --cta-ink:#eaffc0;
+
+  /* spacing */
+  --rs-space-xs:4px; --rs-space-sm:8px; --rs-space-md:12px;
+  --rs-space-lg:16px; --rs-space-xl:22px; --rs-space-2xl:30px;
+
+  /* doc-only */
+  --doc-maxw:1080px;
+}
+
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 560px at 50% -12%, var(--bg2) 0%, var(--bg) 60%) fixed;
+  color:var(--ink);
+  font-family:var(--rs-font);
+  font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.doc-wrap{max-width:var(--doc-maxw);margin:0 auto;padding:0 26px 110px}
+
+/* ── links ───────────────────────────────────────────────────────────────── */
+a{color:var(--volt);text-decoration:none;border-bottom:1px solid rgba(212,255,61,.28)}
+a:hover{border-bottom-color:var(--volt)}
+
+/* ── masthead ────────────────────────────────────────────────────────────── */
+.doc-mast{padding:46px 0 20px;border-bottom:1px solid var(--line)}
+.doc-kicker{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 16px;
+}
+.doc-mast h1{
+  font-size:clamp(32px,5.6vw,54px);font-weight:800;line-height:1.03;
+  letter-spacing:-.028em;margin:0;color:var(--ink);
+}
+.doc-mast h1 em{font-style:normal;color:var(--volt)}
+.doc-dek{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:70ch;line-height:1.58}
+.doc-byline{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);
+}
+.doc-byline b{color:var(--dim);font-weight:600}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+.doc-sec{margin:58px 0 0;scroll-margin-top:20px}
+.doc-eyebrow{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 10px;
+}
+.doc-sec h2{
+  font-size:clamp(22px,3.2vw,30px);font-weight:700;letter-spacing:-.018em;
+  line-height:1.14;margin:0;color:var(--ink);
+}
+.doc-rule{height:2px;width:56px;background:var(--volt);margin:14px 0 24px;border-radius:2px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.005em;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;max-width:74ch;color:var(--ink)}
+p.lead,.rs-lead{color:var(--dim);max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+strong{font-weight:700;color:var(--ink)}
+em{color:var(--dim);font-style:italic}
+.muted,.rs-muted{color:var(--dim)}
+.faint,.rs-faint{color:var(--faint)}
+.mono,.rs-mono{font-family:var(--rs-mono);font-size:12.5px}
+
+/* ── callout / verdict panel ─────────────────────────────────────────────── */
+.doc-callout{
+  background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--volt);border-radius:var(--rs-radius);
+  padding:20px 22px;margin:0 0 24px;
+}
+.doc-callout.attn{border-left-color:var(--amber)}
+.doc-callout.ok{border-left-color:var(--good)}
+.doc-callout.bad{border-left-color:var(--check)}
+.doc-callout > :last-child{margin-bottom:0}
+
+/* ── quote ───────────────────────────────────────────────────────────────── */
+blockquote,.doc-quote{
+  margin:20px 0;padding:2px 0 2px 20px;border-left:2px solid var(--volt);
+  font-size:17px;line-height:1.5;color:var(--ink);max-width:66ch;
+}
+blockquote cite,.doc-quote cite{
+  display:block;font-family:var(--rs-mono);font-style:normal;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:10px;
+}
+
+/* ── figure / ascii diagram ──────────────────────────────────────────────── */
+pre.doc-fig,pre.rs-code-block{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs-radius);
+  padding:20px;overflow-x:auto;font-family:var(--rs-mono);font-size:12.5px;
+  line-height:1.55;color:var(--ink);margin:0 0 10px;
+}
+.doc-figcap{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 16px}
+code,.rs-code{
+  font-family:var(--rs-mono);background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:1px 6px;font-size:12px;color:var(--brass);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────────── */
+.doc-tscroll{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  background:var(--card);
+}
+table,.rs-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th,.rs-table th{
+  text-align:left;background:var(--panel2);color:var(--dim);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line2);white-space:nowrap;
+}
+td,.rs-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--card2)}
+
+/* ── chips / tags / pills ────────────────────────────────────────────────── */
+.rs-tag,.doc-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  border-radius:999px;padding:3px 9px;white-space:nowrap;
+  border:1px solid currentColor;line-height:1.4;
+}
+.doc-tag.volt{color:var(--volt)}
+.doc-tag.ok{color:var(--good)}
+.doc-tag.attn{color:var(--amber)}
+.doc-tag.bad{color:var(--check)}
+.doc-tag.dim{color:var(--faint)}
+.rs-status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.rs-status-dot.rs-on{background:var(--good)}
+.rs-status-dot.rs-attn{background:var(--amber)}
+.rs-status-dot.rs-bad{background:var(--check)}
+
+/* ── cards ───────────────────────────────────────────────────────────────── */
+.doc-cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:6px}
+.rs-card,.doc-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:var(--rs-space-xl);position:relative;
+  transition:border-color var(--rs-transition),box-shadow var(--rs-transition);
+}
+.rs-card:hover,.doc-card:hover{border-color:var(--line2)}
+.doc-card.is-primary{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
+.doc-card .doc-card-flag{
+  position:absolute;top:-9px;right:16px;background:var(--volt);color:#0c0d0a;
+  font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;
+}
+.doc-card .doc-card-idx{
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);
+  font-weight:700;display:block;margin-bottom:6px;
+}
+.doc-card h3{margin:0 0 3px;font-size:18px;letter-spacing:-.01em}
+.doc-card .doc-card-sub{color:var(--dim);font-size:14px;margin:0 0 14px;font-style:italic}
+.doc-card p{font-size:14px;margin:0 0 11px}
+.doc-card .doc-card-meta{
+  border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+  font-size:13px;color:var(--dim);
+}
+.doc-card .doc-card-meta div{margin:0 0 6px}
+.doc-card .doc-card-meta b{
+  font-family:var(--rs-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:inline-block;min-width:76px;font-weight:600;
+}
+
+/* ── numbered build list ─────────────────────────────────────────────────── */
+ol.doc-steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:74ch}
+ol.doc-steps li{counter-increment:s;position:relative;padding:0 0 16px 44px;margin:0}
+ol.doc-steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--rs-mono);font-size:12px;font-weight:700;color:var(--volt);
+  width:26px;height:26px;line-height:24px;text-align:center;
+  border:1px solid var(--line2);border-radius:999px;background:var(--panel2);
+}
+
+/* ── primary CTA (the canonical olive gradient) ──────────────────────────── */
+.btn-primary,.rs-btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(180deg,var(--cta-a),var(--cta-b));
+  border:1px solid var(--cta-line);color:var(--cta-ink);font-weight:700;
+  letter-spacing:.03em;border-radius:var(--rs-radius);padding:10px 20px;
+  font:inherit;cursor:pointer;text-decoration:none;
+  transition:filter var(--rs-transition);
+}
+.btn-primary:hover,.rs-btn-primary:hover{filter:brightness(1.12)}
+
+/* ── open questions ──────────────────────────────────────────────────────── */
+.doc-open{
+  background:var(--panel);border:1px dashed var(--line2);
+  border-radius:var(--rs-radius-lg);padding:20px 24px;
+}
+.doc-open > :last-child{margin-bottom:0}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.doc-foot{
+  margin-top:72px;border-top:1px solid var(--line);padding-top:16px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);line-height:1.7;
+}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  .doc-wrap{padding:0 18px 80px}
+  .doc-card{padding:var(--rs-space-lg)}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .doc-card,.doc-callout,.doc-tscroll,pre.doc-fig{border-color:#ccc;background:#fff}
+  a{color:#111}
+}
+</style>
+<style data-s2-rail>
+  .rail-slim .doc-rail-g[data-group="s2"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s2"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s2"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s2"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s2"] > a.is-on .n{color:var(--volt)}
+  /* rail tidy — Danney 2026-09-11: no number in front of a lesson while the rail is open (the slim rail still shows
+     them, it has nothing else); Tools keeps its ▸ ◦ glyphs; a group heading never wraps onto a second line */
+  .doc-rail-g:not([data-group="tools"]) > a > .n{display:none}
+  .rail-slim .doc-rail-g[data-group] > a > .n{display:inline}
+  .doc-rail-s{white-space:nowrap}
+  /* 2026-09-21 — "Session 2 · Prompt &amp; Reference" (his name) is the longest heading; at the old 1.1px tracking the
+     topic squeezed the "Session 2" label until they overlapped. Tighter tracking keeps every heading on one line. */
+  .doc-rail-g[data-group] > .doc-rail-s{letter-spacing:.35px}
+  .doc-rail-s > .n{flex-shrink:0}
+</style>
+<style data-s3-rail>
+  .rail-slim .doc-rail-g[data-group="s3"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s3"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on .n{color:var(--volt)}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+<aside class="doc-rail" aria-label="Sessions and lessons">
+  <div class="doc-rail-top">
+    <p class="doc-rail-k"><svg class="doc-rail-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="7"><circle cx="64" cy="64" r="60"/><circle cx="64" cy="64" r="22"/><circle cx="64" cy="24" r="11.5"/><circle cx="104" cy="64" r="11.5"/><circle cx="64" cy="104" r="11.5"/><circle cx="24" cy="64" r="11.5"/></g><path d="M56.5 52.2 L56.5 75.8 L78 64 Z" fill="currentColor"/></svg>Reelix Explainer</p>
+  </div>
+
+  <a href="index.html" class="doc-rail-solo is-star"><span class="short">S0</span><span class="n">&#9654;</span> Start here</a>
+  <div class="doc-rail-g" data-group="s1">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S1</span><span class="n">Session 1</span> Intro <span class="doc-rail-when">Sat Sep 5</span></p>
+    <a href="about.html" class="is-star"><span class="n">0</span> About me</a>
+    <a href="film.html" class="is-star"><span class="n">1</span> How filming works</a>
+    <a href="ladder.html" class="is-star"><span class="n">2</span> The levels</a>
+    <a href="foundations.html" class="is-star"><span class="n">3</span> How the AI part works</a>
+    <a href="assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
+    </div>
+  <!-- s2-rail --><div class="doc-rail-g" data-group="s2">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S2</span><span class="n">Session 2</span> Prompt &amp; Reference</p>
+    <a href="s2-crew.html" class="is-star"><span class="n">1</span> Meet the crew</a>
+    <a href="s2-story.html" class="is-star"><span class="n">2</span> Fifteen seconds</a>
+    <a href="s2-proof.html" class="is-star"><span class="n">3</span> Words vs pictures</a>
+    <a href="s2-assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
+    </div><!-- /s2-rail -->
+
+  <!-- s3-rail --><div class="doc-rail-g" data-group="s3">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S3</span><span class="n">Session 3</span> Storyboard</p>
+    <a href="s3-board.html"><span class="n">01</span> From shot list to storyboard</a>
+    </div><!-- /s3-rail -->
+
+  <div class="doc-rail-g" data-group="case">
+  <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">AD</span><span class="n">Case study</span> Reference to ad</p>
+  <a href="reelix-ad.html"><span class="n">01</span> The Reelix ad</a>
+</div>
+<div class="doc-rail-g" data-group="tools">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">T</span><span>Tools</span></p>
+    <a href="stage.html"><span class="n">&#9702;</span> Cut-out stage</a>
+    <a href="roadtool.html"><span class="n">&#9702;</span> The levels tool</a>
+    <a href="words.html"><span class="n">&#9702;</span> Prompt words</a>
+  </div>
+
+  <div class="doc-rail-handle" title="drag to resize · double-click to reset"></div>
+  <button type="button" class="doc-rail-toggle" title="collapse the outline ( [ )">&#8249;</button>
+</aside>
+
+<div class="doc-main">
+
+<section class="doc-sec" id="reelix-ad">
+<style>
+#reelix-ad{--ra-card:#171a12;--ra-line:#353a2d;max-width:1120px}
+#reelix-ad .ra-hero{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin:30px 0 48px}
+#reelix-ad .ra-k{color:var(--volt);font:700 11px var(--rs-mono,monospace);letter-spacing:.15em;text-transform:uppercase}
+#reelix-ad .ra-hero h3{font-size:clamp(38px,4vw,60px);letter-spacing:-.055em;line-height:1.02;margin:14px 0 18px;max-width:11ch}
+#reelix-ad .ra-hero h3 em{font-style:normal;color:var(--volt)}
+#reelix-ad .ra-dek{color:var(--dim);font-size:17px;line-height:1.65;max-width:53ch}
+#reelix-ad .ra-hero img{display:block;width:100%;border-radius:13px;border:1px solid var(--ra-line);box-shadow:0 20px 52px #0008}
+#reelix-ad .ra-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:23px}
+#reelix-ad .ra-btn{display:inline-block;background:var(--volt);color:#10130a;text-decoration:none;padding:11px 16px;border-radius:8px;font-weight:800;font-size:13px}
+#reelix-ad .ra-actions a:not(.ra-btn){color:var(--volt);font-size:13px;text-decoration:none}
+#reelix-ad .ra-head{margin:65px 0 23px}#reelix-ad .ra-head .ra-k{display:block;margin-bottom:8px}
+#reelix-ad .ra-head h3{font-size:29px;letter-spacing:-.035em;margin:0 0 8px}
+#reelix-ad .ra-head p{color:var(--dim);max-width:68ch;margin:0}
+#reelix-ad .ra-video{aspect-ratio:16/9;background:#090b08;border:1px solid var(--ra-line);border-radius:12px;overflow:hidden}
+#reelix-ad .ra-video iframe{width:100%;height:100%;border:0}
+#reelix-ad .ra-premiere{height:100%;position:relative;display:grid;place-items:center;text-align:center;overflow:hidden}
+#reelix-ad .ra-premiere img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(6px) brightness(.35);transform:scale(1.04)}
+#reelix-ad .ra-premiere strong{position:relative;font-size:clamp(20px,3vw,38px);letter-spacing:-.035em}
+#reelix-ad .ra-caption{font:12px var(--rs-mono,monospace);color:var(--dim);margin:11px 0}#reelix-ad .ra-caption a{color:var(--volt)}
+#reelix-ad .ra-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+#reelix-ad .ra-flow div{padding:17px;border:1px solid var(--ra-line);background:var(--ra-card);border-radius:9px;min-height:135px}
+#reelix-ad .ra-flow b{display:block;color:var(--volt);font:700 12px var(--rs-mono,monospace);margin-bottom:20px}
+#reelix-ad .ra-flow strong{display:block;font-size:15px;line-height:1.15}#reelix-ad .ra-flow span{display:block;font-size:11px;color:var(--dim);margin-top:8px}
+#reelix-ad .ra-roles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+#reelix-ad .ra-roles figure{margin:0;background:var(--ra-card);border:1px solid var(--ra-line);border-radius:9px;overflow:hidden}
+#reelix-ad .ra-roles img{width:100%;height:165px;object-fit:cover;display:block}
+#reelix-ad .ra-roles figcaption{padding:12px 13px;font-size:13px;line-height:1.3}
+#reelix-ad .ra-roles figcaption b{color:var(--volt);font:700 10px var(--rs-mono,monospace);letter-spacing:.1em;display:block;margin-bottom:5px}
+#reelix-ad .ra-direct{margin-top:22px;display:grid;grid-template-columns:1fr auto 1.6fr;gap:13px;align-items:center}
+#reelix-ad .ra-direct>div{border:1px solid var(--ra-line);background:var(--ra-card);border-radius:9px;padding:18px;min-height:107px}
+#reelix-ad .ra-direct span{color:var(--volt);font:700 10px var(--rs-mono,monospace);letter-spacing:.1em}
+#reelix-ad .ra-direct p{margin:8px 0 0;font-size:15px;line-height:1.45}#reelix-ad .ra-direct>i{font-size:23px;color:var(--volt);font-style:normal}
+#reelix-ad .ra-prompt{background:var(--ra-card);border:1px solid var(--ra-line);border-radius:9px;margin:9px 0;overflow:hidden}
+#reelix-ad .ra-prompt summary{display:flex;align-items:center;gap:14px;cursor:pointer;padding:15px 18px;list-style:none;font-weight:700;font-size:15px}
+#reelix-ad .ra-prompt summary::-webkit-details-marker{display:none}#reelix-ad .ra-prompt summary span{font:700 11px var(--rs-mono,monospace);color:var(--volt)}
+#reelix-ad .ra-prompt summary b{margin-left:auto;color:var(--dim);font-size:20px}#reelix-ad .ra-prompt[open] summary b{transform:rotate(45deg)}
+#reelix-ad .ra-prompt-body{border-top:1px solid var(--ra-line);padding:17px}#reelix-ad .ra-prompt-body p{color:var(--dim);font-size:12px}
+#reelix-ad .ra-prompt pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:380px;overflow:auto;background:#0e110b;border:1px solid var(--ra-line);border-radius:7px;padding:15px;font:12px/1.65 var(--rs-mono,monospace);color:#dce4cf}
+#reelix-ad .ra-copy{background:transparent;border:1px solid var(--ra-line);border-radius:6px;color:var(--volt);padding:8px 10px;cursor:pointer;font-size:12px}
+#reelix-ad .ra-pack{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:22px 0;padding:22px;background:#202b11;border:1px solid #46582d;border-radius:10px}
+#reelix-ad .ra-pack strong{display:block;font-size:18px}#reelix-ad .ra-pack p{color:var(--dim);font-size:13px;margin:4px 0 0}
+#reelix-ad .ra-credit{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;list-style:none;padding:0}
+#reelix-ad .ra-credit li{font-size:13px;color:var(--dim)}#reelix-ad .ra-credit a{color:var(--volt)}
+#reelix-ad .ra-takeaway{border-left:2px solid var(--volt);padding-left:18px;margin:35px 0;color:var(--dim)}
+@media(max-width:900px){#reelix-ad .ra-flow{grid-template-columns:repeat(3,1fr)}#reelix-ad .ra-roles{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){#reelix-ad .ra-hero{grid-template-columns:1fr}#reelix-ad .ra-flow{grid-template-columns:repeat(2,1fr)}#reelix-ad .ra-direct{grid-template-columns:1fr}#reelix-ad .ra-direct>i{transform:rotate(90deg);text-align:center}#reelix-ad .ra-pack{display:block}#reelix-ad .ra-pack .ra-btn{margin-top:14px}#reelix-ad .ra-credit{grid-template-columns:1fr}}
+</style>
+<p class="doc-eyebrow">Reelix Explainer · Case study</p>
+<h2>From reference to ad</h2>
+<div class="doc-rule"></div>
+<div class="ra-hero"><div><span class="ra-k">The Reelix headphone film</span><h3>The prompt <em>wasn’t enough.</em></h3><p class="ra-dek">I borrowed the camera energy, texture and historical-modern humor of a reference reel. Then I directed a different story: a giant headphone ad starring my Egyptian counterpart.</p><div class="ra-actions"><a class="ra-btn" href="#ra-film">Watch the film ↓</a><a href="#ra-prompts">See the real prompts ↓</a></div></div><img src="reelix-ad/assets/hero.jpg" alt="Danney directing his Egyptian character for the fictional Reelix headphone ad"></div>
+<div class="ra-head" id="ra-film"><span class="ra-k">01 / WATCH</span><h3>Film first. Decisions after.</h3><p>The 36-second ad opens the 6:36 explainer. Watch for the giant prop, the world’s background activity and the moment the headphones change the music.</p></div>
+<div class="ra-video" id="ra-video"><div class="ra-premiere"><img src="reelix-ad/assets/hero.jpg" alt=""><strong>Film premieres Friday at 9 AM Denver time</strong></div></div><p class="ra-caption"><a href="https://youtu.be/Ori5IKVOT_Y">Open on YouTube ↗</a></p>
+<div class="ra-head"><span class="ra-k">02 / UNDER THE HOOD</span><h3>Five choices behind the result.</h3><p>This is why a single prompt could not carry the film.</p></div>
+<div class="ra-flow"><div><b>01</b><strong>Read the DNA</strong><span>Camera · pace · texture</span></div><div><b>02</b><strong>Change the story</strong><span>Egypt · giant headphones</span></div><div><b>03</b><strong>Lock the assets</strong><span>Who · where · what</span></div><div><b>04</b><strong>Direct the motion</strong><span>Action · camera · joins</span></div><div><b>05</b><strong>Edit the feeling</strong><span>Sound · grain · brand</span></div></div>
+<div class="ra-head"><span class="ra-k">03 / TRY IT</span><h3>Give every reference a job.</h3><p>The face controls identity; the costume controls clothing; the location master controls geography; the prop sheet controls physical design and scale. Pick a card, then open the related prompt below.</p></div>
+<div class="ra-roles"><figure><img src="reelix-ad/assets/character.jpg" loading="lazy" alt="Approved Egyptian Danney character sheet"><figcaption><b>CHARACTER</b>Keep his face and costume.</figcaption></figure><figure><img src="reelix-ad/assets/location.jpg" loading="lazy" alt="Egyptian construction courtyard location master"><figcaption><b>LOCATION</b>Keep the route and light.</figcaption></figure><figure><img src="reelix-ad/assets/headphones.jpg" loading="lazy" alt="Oversized Reelix headphone prop"><figcaption><b>PROP</b>Keep the giant scale.</figcaption></figure><figure><img src="reelix-ad/assets/board.jpg" loading="lazy" alt="Approved longboard prop"><figcaption><b>PROP</b>Keep the same board.</figcaption></figure></div>
+<div class="ra-direct"><div><span>DANNEY SAYS</span><p>“The headphones look too small.”</p></div><i aria-hidden="true">→</i><div><span>THE VIDEO MODEL NEEDS</span><p>Keep the approved scene and design. Make the near earcup larger than the whole gripping hand, while the hand and body stay natural size.</p></div></div>
+<p class="ra-takeaway"><strong>The test:</strong> Can you point to the image that already has the right answer, and name exactly what should change? Keep everything else locked.</p>
+<div class="ra-head" id="ra-prompts"><span class="ra-k">04 / SAVED PROMPTS</span><h3>Open the production record.</h3><p>These are the actual saved prompts, including scale correction and a camera join. The numbered references were attachments in our generation jobs; substitute your own approved images.</p></div>
+<details class="ra-prompt"><summary><span>01</span>Location master<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>Saved production prompt. Replace numbered job references with your own approved images.</p><pre>PURPOSE: One single photorealistic LOCATION MASTER image for Danney&#x27;s ancient Egyptian morning comedy. Landscape16:9, one uninterrupted WIDE SHOT from a THREE-QUARTER CORNER camera position. No collage, grid, split screen, panels or alternate views.
+REFERENCE MAP: Reference1 is actual DNA5.5s: weathered Egyptian walls and contemporary service window integrated naturally. Reference2 is DNA7.5s: ancient kitchen materials and practical warm sunlight/shadow. Reference3 is DNA9.0s: sandy market architecture, fabric awnings and everyday modern commerce. Copy their photographic texture, materials, light and historical-modern coexistence. Ignore source people, horses, chariot, food action and exact original composition.
+LOCATION: A royal Egyptian sandstone courtyard opening directly onto an ancient-modern market street, with its cafe/kitchen in the rear wall. About60percent ancient and40percent modern in FEEL: Egyptian columns, two weathered royal statues, carved aged stone and plaster, timber lintels, linen awnings, clay vessels and a monumental sundial mixed with visibly functional modern retail infrastructure. An OPEN stainless cafe service hatch with counter, dark glass shop opening, plain blank menu/display panel, exposed utility conduit and a modern faucet in the stone washbasin. Make these modern features readable rather than tiny decoration. No futuristic city or pristine shopping mall. Warm sandy world, ordinary modern conveniences.
+MASTER CAMERA: Camera at human eye height in the SOUTH-EAST street/entrance corner, looking diagonally NORTH-WEST into the courtyard. About24mm photographic perspective with natural architecture and no fisheye. Show foreground street and a clear diagonal longboard route through south gateway, both adjacent wall planes and enough courtyard floor to establish scale. Same image includes royal columns/statues framing entry, north cafe doorway and service counter at rear, east stone washbasin on nearer/right side, west monumental sundial farther/left. Kitchen implied through open doorway/hatch; do not invent a separate interior viewpoint in this image.
+GROUND AND GEOGRAPHY: Courtyard about14mwide by10mdeep; market street EAST-WEST immediately SOUTH. NORTH wall: doorway WEST of service hatch, connected cafe/kitchen behind. EAST basin, WEST sundial and stone ledge. Statues flank SOUTH gate. Entry street and courtyard floor are continuous and LEVEL: no entry steps, stair, raised sill or obstructing curb across the longboard path. Weathered paving/dust retains authentic texture. Preserve usable open rolling space; no hero props yet.
+LIGHT AND LOOK: Actual DNA&#x27;s warm dusty sunlight, sandy ochre/cream/earth colours, slightly muted contrast, candid grainy photographed film feel, imperfect worn surfaces. Consistent morning sun fromSOUTHEAST, naturally shaded recesses. Avoid glossyHDR, oversharpenedCGI or sterile resort lighting.
+TEXT: No words, labels, brand names or watermark; any modern menu/display panel stays blank.
+ACCEPTANCE: ONE SINGLE wide3/4corner view; royalcourtyard+marketstreet clearlyconnected; readable ancient-modernmix; level longboardroute; nocharacters/animals/vehicles/longboard/toothbrush/espresso machine/watch. Once THIS master is approved, other camera perspectives may be generated from it only for locations reused in2+approvedshots.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details>
+<details class="ra-prompt"><summary><span>02</span>Character identity and costume<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>Saved production prompt. Replace numbered job references with your own approved images.</p><pre>PURPOSE: One photorealistic 16:9 film character reference sheet of Danney dressed as the royal Egyptian character in reference image 2. Exactly three equal panels in a single horizontal row with thin dividers.
+REFERENCE MAP:
+IMAGE 1 is Danney&#x27;s ORIGINAL face grid and the sole facial identity authority. Preserve the exact person&#x27;s face shape, natural eyes/eyelids/eye spacing, brows, nose, lips, jawline, skin tone and age. Original face overrides the source actor&#x27;s face.
+IMAGE 2 is an ACTUAL selected DNA frame at 6.0 seconds. Copy its WARDROBE only: striped Egyptian headcloth, broad gold collar, white draped linen/pleated wrap garment and restrained gold accents. Ignore its actor&#x27;s identity, chariot, reins, cup, horses, pose and background. Do not recreate this frame&#x27;s scene or import a second person.
+SUBJECT AND WARDROBE: Same Danney in all three panels, natural lean adult build, calm deadpan closed-mouth expression, naturally open eyes, realistic skin pores and tonal variation. Dark-and-light striped nemes-style cloth over crown and draping down either side of neck/upper shoulders, worn gold trim; entire face unobscured. Broad gold collar as in DNA, white draped linen at shoulders and a pleated white linen wrap kilt to around knee level, understated matching gold accents on upper arms/waist. Plain brown leather strap sandals. Tactile woven cloth, natural folds and lightly worn metal like a real photographed costume. Keep wrists accessible for later watch and prop handling. No extra fantasy armour, mask or giant crown. Hands empty. Exactly same face/headgear/collar/linen/gold accents/sandals across panels.
+COMPOSITION:
+LEFT: FRONT CLOSE-UP. Head and shoulders, face directly toward camera, full headcloth silhouette and head visible with margin. Eyes exactly as original identity reference, natural open lids, no broad laughing grin.
+CENTRE: LEFT-FACING MEDIUM. Whole head down to upper thighs. Standing upright. Head, chest, shoulders and hips rotate about 40 degrees toward the IMAGE&#x27;S OUTER LEFT EDGE. Nose points LEFT; right cheek visible; right shoulder nearer camera. Gaze left, full headcloth visible.
+RIGHT: RIGHT-FACING FULL BODY. Entire head down through both sandal soles and margin below feet. Head, chest, shoulders, hips and feet rotate about 40 degrees toward the IMAGE&#x27;S OUTER RIGHT EDGE. Nose points RIGHT; left cheek visible; left shoulder nearer camera. Gaze right. Middle and right views physically face OPPOSITE directions, away from the shared divider. Never repeat their orientation or mechanically mirror facial asymmetries.
+ENVIRONMENT: Neutral mid-grey seamless studio across all panels, broad soft even neutral light, gentle grounded shadows. Grey background follows approved sheet layout rather than reference image 2&#x27;s location.
+LOOK: Realistic clean photography and natural undistorted anatomy; no beauty smoothing, plastic skin or illustration. Preserve costume texture from DNA but keep neutral identity-sheet white balance; scenes receive warm dusty grain later.
+TEXT: No text, labels, logos or watermark.
+ACCEPTANCE: Original Danney face and eyes recognizable; actual DNA costume retained; three equal panels; front close-up/LEFT medium/RIGHT full body; complete heads and feet; opposing head AND torso views; consistent costume; hands empty. No longboard or oversized props in this identity sheet.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details>
+<details class="ra-prompt"><summary><span>03</span>Giant headphone correction<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>Saved production prompt. Replace numbered job references with your own approved images.</p><pre>Revise H01 into a photorealistic vertical Royal Commute storyboard still. Keep the Egyptian setting, ivory linen, gold cuff, natural hand anatomy, matte black headphone design, authentic Reelix logo and fine-grain richer-ad treatment of image 1. Correct the PHYSICAL size of the headphones relative to the hand and torso.
+
+Reference roles:
+1 = previous H01 composition and environment only; its headphone size is rejected.
+2 = accepted giant pre-placement storyboard. THIS is the physical size authority: headphones are conspicuously oversized relative to the man, before being worn.
+3 = headphone prop sheet: construction, black materials, earcup cushions, headband and hinges only. It does not establish human scale.
+4 = authentic Reelix mark and exact VOLT #D4FF3D.
+5 = approved royal character sheet: outfit and body proportions.
+6 = approved Egyptian temple location master.
+7 = actual commercial opening frame: carried-headphone framing, shallow focus and product presentation only; its normal-sized headphones do not establish our scale.
+8 = Egyptian film DNA: fine grain, dusty muted color and soft contrast.
+
+Make the headset much larger than the rejected version. The near earcup is clearly larger than the entire gripping hand: target roughly two-and-a-half hand lengths in height, matching the giant visual gag of reference 2. The headband is a large thick arch, its total breadth comparable to the man&#x27;s shoulder span. This is an intentionally huge fictional prop, with the exact same construction and relative component proportions as image 3, enlarged uniformly. A small hand grips the centre of its upper headband; both earcups hang naturally below, visibly heavy. Do not merely zoom the camera into normal-sized headphones.
+
+Keep a tight waist-level product view with the right hand, gold cuff, robe and enough torso visible to judge the physical scale. Pull the camera back only enough to fit the entire near earcup comfortably; head and face remain above the crop. Use the ordinary carried pose, with the near earcup angled outward so the logo is visible upright. Preserve a natural-sized hand and body. The background remains blurred Egyptian columns and ordinary civilian market activity. This is one coherent headphone set, not an extra object or a display sheet.
+
+Fine visible organic film grain; warm natural daylight, soft contrast, muted sandstone and ivory, gentle highlight roll-off. The headphone materials and mark have modestly greater definition, without glossy smoothing or aggressive sharpening. Exact canonical outlined Reelix reel-and-play mark printed in VOLT #D4FF3D on the near earcup, no altered logo. No slogan or other text on this storyboard image. Single 9:16 image at 2K.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details>
+<details class="ra-prompt"><summary><span>04</span>Longboard performance<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>Saved production prompt. Replace numbered job references with your own approved images.</p><pre>A photorealistic seven-second continuous longboard performance in the approved ancient Egyptian construction courtyard. Begin exactly from the supplied start image: Danney in the approved striped headcloth and white linen, both sandals on the same neutral black-grip wooden longboard with orange wheels, crane and hanging obelisk behind/right. Original face reference defines his exact clean-shaven adult identity; preserve the accepted start-frame outfit, proportions and quiet deadpan expression. Board image preserves rigid deck/trucks/wheels. Original DNA image supplies muted dusty sunlight and fine photographic grain only. Video reference1 supplies cross-step FOOTWORK ONLY; video reference2 supplies nose-loaded pivot mechanics ONLY. Keep our actor/location/outfit, natural real-time speed and camera; do not copy reference street, people or tutorial edits. FIRST0–1s: Danney rolls naturally along the clear image-left lane with one shallow smooth carve, knees soft, hips balanced over board. 1–3s: one fluent cross-step—front foot adjusts, rear foot crosses over it, then sequentially uncrosses back into balanced stance; one planted supporting foot during each moving-foot transition. 3–5s: one controlled180-degree nose pivot—front foot/weight over front truck/nose, shoulders guide turn, rear truck lifts briefly and tail arcs around the grounded front contact, then all wheels return to ground. 5–7s: steady composed roll-out with balanced feet, maintaining momentum and deadpan face. A ground-level three-quarter side-follow camera matches riding speed and keeps entire head, both feet, full deck and wheel contacts readable throughout. One uninterrupted shot with finite actions at normal speed. Board behaves as one rigid physical object; wheels spin/turn and contact ground, feet attach naturally, linen/headcloth react subtly to motion. Background workers continue rope guidance/stonework, load remains behind and separate from the riding lane. Preserve source soft texture rather than glossy render. No voice, music or sound: silent output. Avoid foot skating through deck, extra limbs, rubber feet, teleporting, hovering or transforming the board; action clarity takes priority over extra camera tricks.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details>
+<details class="ra-prompt"><summary><span>05</span>Backward crane-to-ride extension<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>Saved production prompt. Replace numbered job references with your own approved images.</p><pre>Extend BACKWARD before the supplied approved3.5-second riding video with a four-second continuous crane-to-rider camera approach. Preserve the approved riding portion for the final edit; generated preceding action must naturally meet its exact first camera position, actor pose, face, board contacts, architecture, crane/load placement, shadows and rolling direction. Location image supplies our established Egyptian construction courtyard geometry/crane/obelisk only. DNA image supplies dusty soft muted real photographic texture only. Begin elevated very wide over the working construction courtyard and huge crane/hoisted obelisk. Brief establishment, then a brisk decisive descending forward camera approach with real depth parallax through the clear lane toward Danney on his board. End at the exact incoming riding-video first-frame viewpoint and state, carrying consistent camera and board momentum, so there is one continuous camera journey. Match source subject and wardrobe exactly, same neutral board/orange wheels. Build the near-scene from supplied video, never shift columns/statues/crane behind Danney at the join. Natural real-time energy, no slow-motion or prolonged settling. Backgroundworkers carry blocks and adjust rigging individually, away from rider lane; hoist visibly lowers obelisk slightly on taut cables, crane tower stays physically rigid. At join actor, deck and machine shapes stay consistent; no morphing, extra feet or camera jump. Silent output, no music/voice/sound. Do not redo riding techniques; generate only the preceding approach.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details>
+<div class="ra-pack"><div><strong>Take the lesson with you.</strong><p>Five prompts, approved asset examples, and a 60-minute workshop worksheet.</p></div><a class="ra-btn" href="reelix-ad/Reelix-learning-pack.zip" download>Download teaching pack ↓</a></div>
+<div class="ra-head"><span class="ra-k">05 / YOUR TURN</span><h3>Bring a reference. Change the brief.</h3><p>Choose a video, then write down what you will borrow and what you will intentionally change. If you want to join a weekend session, send me your reference and product idea.</p></div>
+<a class="ra-btn" href="mailto:hi@reelixstudio.ai?subject=Reelix%20Explainer%20weekend%20session&body=My%20reference%3A%20%0AMy%20product%20or%20idea%3A%20">Ask about the weekend session ↗</a>
+<div class="ra-head"><span class="ra-k">INSPIRATION & CREDIT</span><h3>Credit the source.</h3></div>
+<ul class="ra-credit"><li><a href="https://www.instagram.com/p/Dd1NIt2RANH/">RD / @theartofrd</a> — historical-modern comedy</li><li><a href="https://www.youtube.com/watch?v=rdQAyJvW8lQ">Joseph Abed</a> — headphone pickup camera</li><li><a href="https://x.com/higgsfield/status/2102843590938644862/video/1">Higgsfield</a> — process UI presentation</li><li><a href="https://www.pinterest.com/pin/519532507036770860/">Bryan Hynes</a> — office camera angle</li><li><a href="https://www.pinterest.com/danneytee/studiooffice/">Danney’s board</a> — additional office inspiration</li></ul>
+<p class="ra-caption">Our fictional product, film and lesson visuals are original adaptations. Original source footage is linked for credit, not republished here.</p>
+<script>(function(){document.querySelectorAll('#reelix-ad .ra-copy').forEach(function(b){b.addEventListener('click',function(){var text=b.parentElement.querySelector('pre').textContent;navigator.clipboard.writeText(text).then(function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy prompt'},1600)})})});if(Date.now()>=Date.parse('2026-10-16T15:00:00Z')){document.getElementById('ra-video').innerHTML='<iframe title="Reelix reference-to-ad explainer" src="https://www.youtube-nocookie.com/embed/Ori5IKVOT_Y" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'}})();</script>
+</section>
+
+<nav class="doc-pager"><span class="prev">&larr; <a href="s3-board.html">From shot list to storyboard</a></span><span class="next"><a href="stage.html">The cut-out stage</a> &rarr;</span></nav>
+
+</div><!-- /doc-main -->
+
+</div><!-- /doc-wrap -->
+
+<script>
+(function(){
+  var rail=document.querySelector('.doc-rail'), wrap=document.querySelector('body > .doc-wrap'); if(!rail||!wrap) return;
+  var here=(location.pathname.split('/').pop()||'index.html');
+  var links=[].slice.call(rail.querySelectorAll('a[href]')), groups=[].slice.call(rail.querySelectorAll('.doc-rail-g'));
+  // Backstage nests inside its session, so walk EVERY ancestor group, not just the innermost
+  links.forEach(function(a){ var on=(a.getAttribute('href')===here); a.classList.toggle('is-on',on);
+    if(on){ for(var g=a.closest('.doc-rail-g'); g; g=g.parentElement && g.parentElement.closest('.doc-rail-g')){ g.classList.add('is-on'); g.classList.remove('is-closed'); } } });
+  var KEY='vfs.rail';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+  function save(p){ try{ var s=load(); for(var k in p) s[k]=p[k]; localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+  var st=load();
+  groups.forEach(function(g){ var id=g.getAttribute('data-group'), head=g.querySelector('.doc-rail-s');
+    if(st.closed && st.closed[id] && !g.classList.contains('is-on')) g.classList.add('is-closed');
+    head.addEventListener('click', function(){ if(wrap.classList.contains('rail-slim')){ g.classList.remove('is-closed'); setSlim(false); return; } g.classList.toggle('is-closed'); var c=(load().closed)||{}; c[id]=g.classList.contains('is-closed'); save({closed:c}); }); });  var toggle=rail.querySelector('.doc-rail-toggle');
+  function setSlim(on){ wrap.classList.toggle('rail-slim', !!on); if(toggle){ toggle.innerHTML = on ? '&#8250;' : '&#8249;'; toggle.title = on ? 'open the outline ( [ )' : 'collapse the outline ( [ )'; } save({slim:!!on}); }
+  if(toggle) toggle.addEventListener('click', function(){ setSlim(!wrap.classList.contains('rail-slim')); });
+  document.addEventListener('keydown', function(e){ if(e.key==='[' && !/input|textarea|select/i.test((e.target&&e.target.tagName)||'')) setSlim(!wrap.classList.contains('rail-slim')); });
+  if(st.slim) setSlim(true);
+  var MIN=160, MAX=440; function setW(px){ px=Math.max(MIN, Math.min(MAX, Math.round(px))); wrap.style.setProperty('--rail-w', px+'px'); return px; }
+  if(st.w) setW(st.w);
+  var handle=rail.querySelector('.doc-rail-handle');
+  if(handle){ var dragging=false;
+    handle.addEventListener('pointerdown', function(e){ dragging=true; handle.classList.add('is-drag'); document.body.classList.add('is-dragging'); try{ handle.setPointerCapture(e.pointerId); }catch(err){} e.preventDefault(); });
+    handle.addEventListener('pointermove', function(e){ if(!dragging) return; setW(e.clientX - rail.getBoundingClientRect().left); });
+    function end(){ if(!dragging) return; dragging=false; handle.classList.remove('is-drag'); document.body.classList.remove('is-dragging'); save({w:parseInt(getComputedStyle(wrap).getPropertyValue('--rail-w'))||222}); }
+    handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+    handle.addEventListener('dblclick', function(){ wrap.style.removeProperty('--rail-w'); save({w:null}); }); }
+  // lesson frames: same origin here, load them straight away
+  [].forEach.call(document.querySelectorAll('iframe[data-src]'), function(f){ f.src=f.getAttribute('data-src'); });
+})();
+</script>
+</body>
+</html>
