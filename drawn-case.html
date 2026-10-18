@@ -1,0 +1,874 @@
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>From viral formats to a teaser · Vibe Film Sessions</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* page-local: the clock rail, the rung index and the two-up call cards. The skin owns the rest. */
+  .clock{font-family:var(--mono, ui-monospace, monospace);font-size:12px;letter-spacing:.06em;
+    color:var(--volt);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .rung{font-family:var(--mono, ui-monospace, monospace);color:var(--volt);font-weight:700;
+    text-align:center;width:38px;font-variant-numeric:tabular-nums}
+  .runrow td:first-child{font-family:var(--mono, ui-monospace, monospace);color:var(--faint);
+    text-align:center;width:34px}
+  .calls{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 4px}
+  @media(max-width:760px){.calls{grid-template-columns:1fr}}
+  .lede{font-size:15px;line-height:1.7}
+  /* page-local: LEFT RAIL — sessions → lessons (Danney, 2026-09-02: "on the left column; sessions, lessons; first one is intro") */
+  body > .doc-wrap{max-width:none;--rail-w:222px}   /* full width: the rail pins left, the content takes the rest */
+  .doc-main{min-width:0}
+  @media(min-width:980px){
+    body > .doc-wrap{display:grid;grid-template-columns:var(--rail-w) minmax(0,1320px);gap:36px;justify-content:start;align-items:start;padding-left:22px;padding-right:32px}
+    .doc-main{max-width:1320px}
+    /* slim: a strip of lesson numbers; one click opens it back out */
+    body > .doc-wrap.rail-slim{grid-template-columns:58px minmax(0,1320px)}
+    .rail-slim .doc-rail{padding-right:0;overflow:visible}
+    .rail-slim .doc-rail-top{justify-content:center;margin-bottom:10px;padding-top:36px}
+    .rail-slim .doc-rail-toggle{top:44px;right:auto;left:50%;transform:translateX(-50%)}
+    .rail-slim .doc-rail-k,.rail-slim .doc-rail-fold,.rail-slim .doc-rail-when,.rail-slim .doc-rail-chev,.rail-slim .doc-rail-handle{display:none}
+    .rail-slim .doc-rail-g{border-bottom:0;padding:0;margin:0 0 10px;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .rail-slim .doc-rail-s{margin:0 0 2px;padding:0;font-size:0;display:block;width:34px;min-width:34px}   /* the skin's *{min-width:0} let the chip shrink to 2px inside a flex header */
+    .rail-slim .doc-rail-s .n,.rail-slim .doc-rail-s > span:not(.short){display:none}
+    .rail-slim .doc-rail-s .short{font-size:10px;flex:none;display:inline-flex;align-items:center;justify-content:center;width:34px;height:22px;border:1px solid var(--line2);border-radius:6px;color:var(--dim);letter-spacing:.06em}
+    .rail-slim .doc-rail-g.is-on .doc-rail-s .short{color:var(--volt);border-color:var(--volt)}
+    .rail-slim .doc-rail-g a{display:none}
+    .rail-slim .doc-rail-g[data-group="s1"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+    .rail-slim .doc-rail-g[data-group="s1"] > a > :not(.n){display:none}
+    .rail-slim .doc-rail-g[data-group="s1"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+    .rail-slim .doc-rail-g[data-group="s1"] > a.is-on{background:var(--panel2)} .rail-slim .doc-rail-g[data-group="s1"] > a.is-on .n{color:var(--volt)}
+    /* nested Backstage: its own chip sits under Session 1's numbers, and the Studio launcher stays reachable */
+    .rail-slim .doc-rail-sub{margin:6px 0 0;padding:0;border:0}
+    .rail-slim .doc-rail-g .doc-rail-studio{display:flex}
+    .doc-rail-toggle{position:absolute;top:46px;right:6px;width:28px;height:28px;border-radius:50%;border:1px solid var(--line2);background:var(--panel2);color:var(--dim);
+      font:700 13px/1 var(--rs-mono);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:3;box-shadow:var(--rs-shadow)}
+    .doc-rail-toggle:hover{color:var(--volt);border-color:var(--volt)}
+    .doc-rail{position:sticky;top:0;max-height:100vh;overflow:auto;padding:46px 8px 40px 0;scrollbar-width:thin}
+    .doc-rail-handle{position:absolute;top:0;right:-30px;width:16px;height:100%;cursor:col-resize;z-index:2}
+    .doc-rail-handle::after{content:"";position:absolute;left:7px;top:46px;bottom:40px;width:2px;background:var(--line);border-radius:2px;transition:background .15s}
+    .doc-rail-handle:hover::after,.doc-rail-handle.is-drag::after{background:var(--volt)}
+      color:var(--volt);background:var(--panel2);border:1px solid var(--line);border-left:0;border-radius:0 999px 999px 0;padding:7px 12px 7px 10px;cursor:pointer}
+    body.is-dragging{cursor:col-resize;user-select:none}
+  }
+  .doc-rail-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 14px}
+  .doc-rail-top .doc-rail-k{margin:0}
+.doc-rail-k{display:flex;align-items:center;gap:9px}
+.doc-rail-mark{width:21px;height:21px;color:var(--volt);flex:none}
+.doc-rail-solo{text-decoration:none;border:0;margin:0 0 16px;align-items:center}
+/* the live app launcher — the same row as every other tool, tinted so it reads as "opens elsewhere" */
+.doc-rail a.doc-rail-studio{color:var(--volt);background:rgba(212,255,61,.09);border-left-color:var(--volt)}
+.doc-rail a.doc-rail-studio .n{color:var(--volt)}
+.doc-rail a.doc-rail-studio:hover{color:var(--volt);background:rgba(212,255,61,.20)}
+.doc-rail a.doc-rail-studio .rs-ext{margin-left:auto;font-size:11px;opacity:.75}
+.rail-slim .doc-rail-studio{justify-content:center;width:34px;min-width:34px;height:22px;padding:0;font-size:0;
+  margin:2px 0 0;border-radius:6px;border:1px solid var(--volt);border-left-width:1px}
+.rail-slim .doc-rail-studio .short{display:flex;font-size:11px;line-height:20px;min-width:0}
+.rail-slim .doc-rail-studio .rs-ext{display:none}
+.doc-rail-solo:hover{color:var(--ink)}
+.doc-rail-solo.is-on{color:var(--volt)}
+.rail-slim .doc-rail-solo.is-on .short{color:var(--volt);border-color:var(--volt)}
+
+/* ── "Give one away" — the session-1 send-off. Visual, not prose. ───────── */
+.ga-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:26px 0 30px}
+.ga-steps > div{background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:22px 20px 20px;position:relative;overflow:hidden}
+.ga-steps b{position:absolute;top:14px;right:18px;font-family:var(--rs-mono);font-size:11px;color:var(--faint);letter-spacing:.1em}
+.ga-steps i[data-icon]{color:var(--volt);font-size:26px;display:block;margin-bottom:14px}
+.ga-steps h4{margin:0 0 5px;font-size:19px;letter-spacing:-.01em}
+.ga-steps p{margin:0;color:var(--dim);font-size:14px;line-height:1.45}
+
+.ga-subject{background:linear-gradient(180deg,rgba(212,255,61,.07),rgba(212,255,61,.02));
+  border:1px solid rgba(212,255,61,.32);border-radius:var(--rs-radius-lg);padding:28px 30px;margin:0 0 30px}
+.ga-subject .k{margin:0 0 10px;font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.26em;
+  text-transform:uppercase;color:var(--volt)}
+.ga-subject h3{margin:0 0 8px;font-size:34px;line-height:1.1;letter-spacing:-.02em}
+.ga-subject p{margin:0;color:var(--dim);font-size:15px}
+
+.ga-crit{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 38px}
+.ga-crit > div{display:flex;align-items:center;gap:12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:var(--rs-radius);padding:15px 17px}
+.ga-crit i[data-icon]{color:var(--volt);font-size:21px;flex:none}
+.ga-crit b{display:block;font-size:15px;letter-spacing:-.01em}
+.ga-crit span{display:block;color:var(--faint);font-size:12.5px;margin-top:2px}
+
+.ga-shots{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0 30px}
+.ga-shot{border:1px solid var(--line);border-radius:var(--rs-radius-lg);overflow:hidden;background:#0b0c08}
+.ga-shot .cap{display:flex;align-items:baseline;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);
+  background:var(--panel2)}
+.ga-shot .cap b{font-family:var(--rs-mono);font-size:11px;color:var(--volt);letter-spacing:.1em}
+.ga-shot .cap span{font-size:14px;color:var(--ink)}
+.ga-ui{padding:20px;min-height:270px;display:flex;align-items:flex-start;justify-content:center}
+
+/* the little Higgsfield panels, drawn to match the real thing */
+.hf{width:100%;max-width:330px;font-size:12.5px}
+.hf-menu{background:#1b1c18;border:1px solid #34372c;border-radius:9px;padding:5px;box-shadow:0 14px 40px rgba(0,0,0,.6)}
+.hf-menu p{display:flex;align-items:center;justify-content:space-between;margin:0;padding:8px 11px;
+  border-radius:6px;color:#c9cdb8}
+.hf-menu p.on{background:rgba(212,255,61,.14);color:var(--volt);font-weight:600}
+.hf-menu p.del{color:#e07f86}
+.hf-sub{margin-left:26px;margin-top:-30px}
+.hf-tabs{display:flex;gap:5px;margin-bottom:12px}
+.hf-tabs span{padding:6px 13px;border-radius:7px;color:var(--faint);font-size:11.5px}
+.hf-tabs span.on{background:#23261c;color:var(--ink)}
+.hf-card{background:#16180f;border:1px solid #2a2e20;border-radius:9px;padding:12px 13px;margin-bottom:11px}
+.hf-card .h{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.hf-card .h b{font-family:var(--rs-mono);font-size:10px;letter-spacing:.18em;color:var(--faint)}
+.hf-card .h em{font-style:normal;font-size:10.5px;border:1px solid #3a4030;border-radius:5px;padding:3px 8px;color:var(--ink)}
+.hf-card .h em.on{border-color:var(--volt);color:var(--volt);background:rgba(212,255,61,.1);font-weight:600}
+.hf-card .body{color:#9aa085;font-size:11.5px;line-height:1.5}
+.hf-row{display:flex;justify-content:space-between;padding:4px 0;font-size:11.5px}
+.hf-row s{text-decoration:none;color:var(--faint)} .hf-row u{text-decoration:none;color:var(--ink)}
+.ga-point{display:flex;align-items:center;gap:8px;margin-top:14px;color:var(--volt);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.08em}
+
+.ga-gate{display:flex;align-items:center;gap:16px;background:rgba(224,127,134,.08);
+  border:1px solid rgba(224,127,134,.4);border-left-width:3px;border-radius:var(--rs-radius);padding:20px 24px}
+.ga-gate i[data-icon]{color:#e07f86;font-size:26px;flex:none}
+.ga-gate b{display:block;font-size:18px;letter-spacing:-.01em;margin-bottom:3px}
+.ga-gate span{color:var(--dim);font-size:14px}
+@media (max-width:900px){.ga-steps,.ga-crit,.ga-shots{grid-template-columns:1fr}}
+
+  .doc-rail-btn{font-family:var(--rs-mono);font-size:10px;letter-spacing:.10em;text-transform:uppercase;color:var(--faint);background:transparent;
+    border:1px solid var(--line);border-radius:999px;padding:3px 8px;cursor:pointer;line-height:1.4}
+  .doc-rail-btn:hover{color:var(--ink);border-color:var(--line2)}
+  .doc-rail-handle,.doc-rail-toggle{display:none}
+  @media(min-width:980px){.doc-rail-handle{display:block} .doc-rail-toggle{display:flex}}
+  .doc-rail-s{cursor:pointer;user-select:none}
+  .doc-rail-s .short{display:none}
+  .doc-rail-s .doc-rail-chev{font-family:var(--rs-mono);color:var(--faint);font-size:10px;transition:transform .15s;flex:none;margin-right:2px}
+  .doc-rail-g.is-closed .doc-rail-chev{transform:rotate(-90deg)}
+  .doc-rail-g.is-closed a,.doc-rail-g.is-closed .doc-rail-g{display:none}
+  .doc-rail-g.is-closed{padding-bottom:8px}
+  .doc-rail-k{font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 14px}
+  .doc-rail-g{margin:0 0 16px;padding:0 0 12px;border-bottom:1px solid var(--line)}
+  .doc-rail-g:last-child{border-bottom:0}
+  /* Backstage nested under its session — indented, hairline instead of a bottom rule */
+  .doc-rail-sub{margin:10px 0 0 10px;padding:0 0 0 10px;border-bottom:0;border-left:1px solid var(--line)}
+  .doc-rail-sub > .doc-rail-s{font-size:10px;color:var(--faint);margin:0 0 4px}
+  .doc-rail-sub > a{font-size:12.5px;padding-top:3px;padding-bottom:3px}
+  .doc-rail-g.is-on .doc-rail-sub:not(.is-on) > .doc-rail-s{color:var(--faint)}
+  .doc-rail-s{font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:var(--dim);font-weight:700;margin:0 0 6px;display:flex;gap:8px;align-items:baseline}
+  .doc-rail-s .n{color:var(--volt)}
+  .doc-rail-when{margin-left:auto;font-weight:400;color:var(--faint);letter-spacing:.06em;text-transform:none;font-size:10.5px}
+  .doc-rail a{display:flex;gap:9px;align-items:baseline;font-size:13px;line-height:1.35;color:var(--dim);padding:4px 8px 4px 10px;
+    border:0;border-left:2px solid transparent;border-radius:0 6px 6px 0;text-decoration:none}
+  .doc-rail a .n{font-family:var(--rs-mono);font-size:10.5px;color:var(--faint);min-width:14px;flex:none}
+  .doc-rail-g[data-group="tools"] a .n{font-size:9px;line-height:1.9}
+  .doc-rail a:hover{color:var(--ink);background:var(--panel2)}
+  .doc-rail a.is-star{color:var(--ink)}
+  .doc-rail a.is-on{color:var(--volt);border-left-color:var(--volt);background:var(--panel2);font-weight:600}
+  .doc-rail a.is-on .n{color:var(--volt)}
+  .doc-rail-g.is-on .doc-rail-s{color:var(--ink)}
+  .doc-rail-g.is-soon a{color:var(--faint)}
+  @media(max-width:979px){
+    .doc-rail{border:1px solid var(--line);border-radius:var(--rs-radius-lg);padding:16px 18px 6px;margin:26px 0 0;background:var(--card)}
+    .doc-rail-g{padding:0 0 8px;margin:0 0 10px}
+  }
+  .doc-session{margin:64px 0 -28px;padding:11px 16px;border:1px solid rgba(212,255,61,.32);border-radius:var(--rs-radius);background:var(--panel2);
+    font-family:var(--rs-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .doc-session .n{color:var(--volt);font-weight:700}
+  .doc-session-when{margin-left:auto;color:var(--faint);letter-spacing:.06em;text-transform:none}
+  .doc-session.is-back{border-color:var(--line);color:var(--dim)}
+  .doc-session.is-soon{border-style:dashed;border-color:var(--line2);color:var(--dim)}
+  /* course pages: no top bar — the left panel carries the identity */
+  .doc-main > .doc-sec:first-of-type{margin-top:46px}   /* line up with the rail brand */
+  .doc-sec > .doc-eyebrow{margin:0 0 6px}   /* not :first-child — a <script> can precede it */
+  .doc-sec > h2:first-of-type{margin-top:0}
+  /* the inlined tools need air before whatever follows them */
+  .roadinline,.doc-sec > #foundations,.doc-sec .canvas{margin-bottom:38px}
+  .doc-sec .doc-tscroll{margin-top:30px}
+  .doc-pager{display:flex;justify-content:space-between;gap:16px;margin:56px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:14px}
+  .doc-pager a{border:0} .doc-pager .prev,.doc-pager .next{color:var(--dim)}
+</style>
+<style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
+/* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
+   Source of truth for the tokens: tools/studio/studio-theme.css + tools/studio/SKIN.md
+   (the skin Danney locked 2026-07-21). This file mirrors those tokens exactly and
+   adds document-scale typography on top, because a plan is read at 15px and a room
+   is used at 14px.
+
+   DO NOT hand-edit a page's <style data-reelix-skin> block. Edit THIS file, then:
+       python3 tools/visual-explainer/apply_skin.py <page.html>
+
+   THE ACCENT CONTRACT (inherited, non-negotiable):
+     --volt  #D4FF3D  identity  → eyebrows, section rules, links, key stats, primary CTA
+     --good  #7fc8a0  semantic  → ready / synced / success ONLY
+     --amber #e8b06a  semantic  → attention / warning ONLY
+   If a heading or a primary action is any colour other than volt, it is wrong.
+   ──────────────────────────────────────────────────────────────────────────────── */
+
+:root{
+  /* surfaces — verbatim from studio-theme.css */
+  --bg:#0c0d0a; --bg2:#101208;
+  --panel:#14160f; --panel2:#1b1e15;
+  --card:#14160f; --card2:#1b1e15;
+  --line:#2a2e20; --line2:#3a4030;
+  --ink:#e9ebda; --dim:#8b9079; --mut:#8b9079; --faint:#5c6150;
+
+  /* brand / semantic */
+  --volt:#D4FF3D; --amber:#e8b06a; --good:#7fc8a0;
+  --heavy:#e0b24f; --check:#e07f86; --brass:#c9973f;
+  --pink:#e85cc0; --lav:#b8a6f0;
+
+  /* room accents */
+  --refkit:#e8b06a; --worldkit:#9fe06a; --cutkit:#d89fe0;
+  --canvaskit:#86c8ea; --dnakit:#e85cc0;
+
+  /* typography */
+  --rs-font:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --rs-mono:ui-monospace,"SF Mono","Menlo","Monaco","Consolas",monospace;
+
+  /* geometry */
+  --rs-radius-sm:6px; --rs-radius:10px; --rs-radius-lg:14px; --rs-radius-xl:18px;
+  --rs-shadow:0 4px 18px rgba(0,0,0,.45); --rs-shadow-lg:0 8px 34px rgba(0,0,0,.55);
+  --rs-transition:.15s ease;
+
+  /* primary CTA gradient */
+  --cta-a:#3a4d10; --cta-b:#26330a; --cta-line:#4f6b16; --cta-ink:#eaffc0;
+
+  /* spacing */
+  --rs-space-xs:4px; --rs-space-sm:8px; --rs-space-md:12px;
+  --rs-space-lg:16px; --rs-space-xl:22px; --rs-space-2xl:30px;
+
+  /* doc-only */
+  --doc-maxw:1080px;
+}
+
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0;padding:0}
+body{
+  background:radial-gradient(1100px 560px at 50% -12%, var(--bg2) 0%, var(--bg) 60%) fixed;
+  color:var(--ink);
+  font-family:var(--rs-font);
+  font-size:15px; line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+.doc-wrap{max-width:var(--doc-maxw);margin:0 auto;padding:0 26px 110px}
+
+/* ── links ───────────────────────────────────────────────────────────────── */
+a{color:var(--volt);text-decoration:none;border-bottom:1px solid rgba(212,255,61,.28)}
+a:hover{border-bottom-color:var(--volt)}
+
+/* ── masthead ────────────────────────────────────────────────────────────── */
+.doc-mast{padding:46px 0 20px;border-bottom:1px solid var(--line)}
+.doc-kicker{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 16px;
+}
+.doc-mast h1{
+  font-size:clamp(32px,5.6vw,54px);font-weight:800;line-height:1.03;
+  letter-spacing:-.028em;margin:0;color:var(--ink);
+}
+.doc-mast h1 em{font-style:normal;color:var(--volt)}
+.doc-dek{font-size:16.5px;color:var(--dim);margin:16px 0 0;max-width:70ch;line-height:1.58}
+.doc-byline{
+  display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:22px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);
+}
+.doc-byline b{color:var(--dim);font-weight:600}
+
+/* ── sections ────────────────────────────────────────────────────────────── */
+.doc-sec{margin:58px 0 0;scroll-margin-top:20px}
+.doc-eyebrow{
+  font-family:var(--rs-mono);font-size:10.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--volt);font-weight:700;margin:0 0 10px;
+}
+.doc-sec h2{
+  font-size:clamp(22px,3.2vw,30px);font-weight:700;letter-spacing:-.018em;
+  line-height:1.14;margin:0;color:var(--ink);
+}
+.doc-rule{height:2px;width:56px;background:var(--volt);margin:14px 0 24px;border-radius:2px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.005em;margin:28px 0 8px;color:var(--ink)}
+p{margin:0 0 14px;max-width:74ch;color:var(--ink)}
+p.lead,.rs-lead{color:var(--dim);max-width:70ch}
+ul,ol{margin:0 0 14px;padding-left:20px;max-width:74ch}
+li{margin:0 0 7px}
+strong{font-weight:700;color:var(--ink)}
+em{color:var(--dim);font-style:italic}
+.muted,.rs-muted{color:var(--dim)}
+.faint,.rs-faint{color:var(--faint)}
+.mono,.rs-mono{font-family:var(--rs-mono);font-size:12.5px}
+
+/* ── callout / verdict panel ─────────────────────────────────────────────── */
+.doc-callout{
+  background:var(--panel2);border:1px solid var(--line);
+  border-left:3px solid var(--volt);border-radius:var(--rs-radius);
+  padding:20px 22px;margin:0 0 24px;
+}
+.doc-callout.attn{border-left-color:var(--amber)}
+.doc-callout.ok{border-left-color:var(--good)}
+.doc-callout.bad{border-left-color:var(--check)}
+.doc-callout > :last-child{margin-bottom:0}
+
+/* ── quote ───────────────────────────────────────────────────────────────── */
+blockquote,.doc-quote{
+  margin:20px 0;padding:2px 0 2px 20px;border-left:2px solid var(--volt);
+  font-size:17px;line-height:1.5;color:var(--ink);max-width:66ch;
+}
+blockquote cite,.doc-quote cite{
+  display:block;font-family:var(--rs-mono);font-style:normal;font-size:10.5px;
+  letter-spacing:.13em;text-transform:uppercase;color:var(--faint);margin-top:10px;
+}
+
+/* ── figure / ascii diagram ──────────────────────────────────────────────── */
+pre.doc-fig,pre.rs-code-block{
+  background:var(--panel2);border:1px solid var(--line);border-radius:var(--rs-radius);
+  padding:20px;overflow-x:auto;font-family:var(--rs-mono);font-size:12.5px;
+  line-height:1.55;color:var(--ink);margin:0 0 10px;
+}
+.doc-figcap{font-size:13px;color:var(--faint);font-style:italic;margin:0 0 16px}
+code,.rs-code{
+  font-family:var(--rs-mono);background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:1px 6px;font-size:12px;color:var(--brass);
+}
+
+/* ── tables ──────────────────────────────────────────────────────────────── */
+.doc-tscroll{
+  overflow-x:auto;border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  background:var(--card);
+}
+table,.rs-table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:600px}
+th,.rs-table th{
+  text-align:left;background:var(--panel2);color:var(--dim);
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.10em;text-transform:uppercase;
+  font-weight:600;padding:11px 14px;border-bottom:1px solid var(--line2);white-space:nowrap;
+}
+td,.rs-table td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover{background:var(--card2)}
+
+/* ── chips / tags / pills ────────────────────────────────────────────────── */
+.rs-tag,.doc-tag{
+  display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;
+  border-radius:999px;padding:3px 9px;white-space:nowrap;
+  border:1px solid currentColor;line-height:1.4;
+}
+.doc-tag.volt{color:var(--volt)}
+.doc-tag.ok{color:var(--good)}
+.doc-tag.attn{color:var(--amber)}
+.doc-tag.bad{color:var(--check)}
+.doc-tag.dim{color:var(--faint)}
+.rs-status-dot{width:8px;height:8px;border-radius:50%;background:var(--faint);display:inline-block}
+.rs-status-dot.rs-on{background:var(--good)}
+.rs-status-dot.rs-attn{background:var(--amber)}
+.rs-status-dot.rs-bad{background:var(--check)}
+
+/* ── cards ───────────────────────────────────────────────────────────────── */
+.doc-cards{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:6px}
+.rs-card,.doc-card{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--rs-radius-lg);
+  padding:var(--rs-space-xl);position:relative;
+  transition:border-color var(--rs-transition),box-shadow var(--rs-transition);
+}
+.rs-card:hover,.doc-card:hover{border-color:var(--line2)}
+.doc-card.is-primary{border-color:rgba(212,255,61,.42);box-shadow:0 0 0 1px rgba(212,255,61,.10)}
+.doc-card .doc-card-flag{
+  position:absolute;top:-9px;right:16px;background:var(--volt);color:#0c0d0a;
+  font-family:var(--rs-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;padding:3px 9px;border-radius:999px;
+}
+.doc-card .doc-card-idx{
+  font-family:var(--rs-mono);font-size:11px;letter-spacing:.16em;color:var(--volt);
+  font-weight:700;display:block;margin-bottom:6px;
+}
+.doc-card h3{margin:0 0 3px;font-size:18px;letter-spacing:-.01em}
+.doc-card .doc-card-sub{color:var(--dim);font-size:14px;margin:0 0 14px;font-style:italic}
+.doc-card p{font-size:14px;margin:0 0 11px}
+.doc-card .doc-card-meta{
+  border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+  font-size:13px;color:var(--dim);
+}
+.doc-card .doc-card-meta div{margin:0 0 6px}
+.doc-card .doc-card-meta b{
+  font-family:var(--rs-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--faint);display:inline-block;min-width:76px;font-weight:600;
+}
+
+/* ── numbered build list ─────────────────────────────────────────────────── */
+ol.doc-steps{counter-reset:s;list-style:none;padding:0;margin:0;max-width:74ch}
+ol.doc-steps li{counter-increment:s;position:relative;padding:0 0 16px 44px;margin:0}
+ol.doc-steps li::before{
+  content:counter(s);position:absolute;left:0;top:0;
+  font-family:var(--rs-mono);font-size:12px;font-weight:700;color:var(--volt);
+  width:26px;height:26px;line-height:24px;text-align:center;
+  border:1px solid var(--line2);border-radius:999px;background:var(--panel2);
+}
+
+/* ── primary CTA (the canonical olive gradient) ──────────────────────────── */
+.btn-primary,.rs-btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  background:linear-gradient(180deg,var(--cta-a),var(--cta-b));
+  border:1px solid var(--cta-line);color:var(--cta-ink);font-weight:700;
+  letter-spacing:.03em;border-radius:var(--rs-radius);padding:10px 20px;
+  font:inherit;cursor:pointer;text-decoration:none;
+  transition:filter var(--rs-transition);
+}
+.btn-primary:hover,.rs-btn-primary:hover{filter:brightness(1.12)}
+
+/* ── open questions ──────────────────────────────────────────────────────── */
+.doc-open{
+  background:var(--panel);border:1px dashed var(--line2);
+  border-radius:var(--rs-radius-lg);padding:20px 24px;
+}
+.doc-open > :last-child{margin-bottom:0}
+
+/* ── footer ──────────────────────────────────────────────────────────────── */
+.doc-foot{
+  margin-top:72px;border-top:1px solid var(--line);padding-top:16px;
+  font-family:var(--rs-mono);font-size:11px;color:var(--faint);line-height:1.7;
+}
+
+@media (max-width:640px){
+  body{font-size:14.5px}
+  .doc-wrap{padding:0 18px 80px}
+  .doc-card{padding:var(--rs-space-lg)}
+}
+@media print{
+  body{background:#fff;color:#111}
+  .doc-card,.doc-callout,.doc-tscroll,pre.doc-fig{border-color:#ccc;background:#fff}
+  a{color:#111}
+}
+</style>
+<style data-s2-rail>
+  .rail-slim .doc-rail-g[data-group="s2"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s2"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s2"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s2"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s2"] > a.is-on .n{color:var(--volt)}
+  /* rail tidy — Danney 2026-09-11: no number in front of a lesson while the rail is open (the slim rail still shows
+     them, it has nothing else); Tools keeps its ▸ ◦ glyphs; a group heading never wraps onto a second line */
+  .doc-rail-g:not([data-group="tools"]) > a > .n{display:none}
+  .rail-slim .doc-rail-g[data-group] > a > .n{display:inline}
+  .doc-rail-s{white-space:nowrap}
+  /* 2026-09-21 — "Session 2 · Prompt &amp; Reference" (his name) is the longest heading; at the old 1.1px tracking the
+     topic squeezed the "Session 2" label until they overlapped. Tighter tracking keeps every heading on one line. */
+  .doc-rail-g[data-group] > .doc-rail-s{letter-spacing:.35px}
+  .doc-rail-s > .n{flex-shrink:0}
+</style>
+<style data-s3-rail>
+  .rail-slim .doc-rail-g[data-group="s3"] > a{display:flex;justify-content:center;padding:3px 0;border:0;border-radius:6px;width:34px;font-size:0;line-height:1;gap:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a > :not(.n){display:none}
+  .rail-slim .doc-rail-g[data-group="s3"] > a .n{color:var(--dim);font-size:12px;line-height:18px;min-width:0}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on{background:var(--panel2)}
+  .rail-slim .doc-rail-g[data-group="s3"] > a.is-on .n{color:var(--volt)}
+</style>
+</head>
+<body>
+<div class="doc-wrap">
+
+<aside class="doc-rail" aria-label="Sessions and lessons">
+  <div class="doc-rail-top">
+    <p class="doc-rail-k"><svg class="doc-rail-mark" viewBox="0 0 128 128" fill="none" aria-hidden="true" focusable="false"><g stroke="currentColor" stroke-width="7"><circle cx="64" cy="64" r="60"/><circle cx="64" cy="64" r="22"/><circle cx="64" cy="24" r="11.5"/><circle cx="104" cy="64" r="11.5"/><circle cx="64" cy="104" r="11.5"/><circle cx="24" cy="64" r="11.5"/></g><path d="M56.5 52.2 L56.5 75.8 L78 64 Z" fill="currentColor"/></svg>Reelix Explainer</p>
+  </div>
+
+  <a href="index.html" class="doc-rail-solo is-star"><span class="short">S0</span><span class="n">&#9654;</span> Start here</a>
+  <div class="doc-rail-g" data-group="s1">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S1</span><span class="n">Session 1</span> Intro <span class="doc-rail-when">Sat Sep 5</span></p>
+    <a href="about.html" class="is-star"><span class="n">0</span> About me</a>
+    <a href="film.html" class="is-star"><span class="n">1</span> How filming works</a>
+    <a href="ladder.html" class="is-star"><span class="n">2</span> The levels</a>
+    <a href="foundations.html" class="is-star"><span class="n">3</span> How the AI part works</a>
+    <a href="assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
+    </div>
+  <!-- s2-rail --><div class="doc-rail-g" data-group="s2">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S2</span><span class="n">Session 2</span> Prompt &amp; Reference</p>
+    <a href="s2-crew.html" class="is-star"><span class="n">1</span> Meet the crew</a>
+    <a href="s2-story.html" class="is-star"><span class="n">2</span> Fifteen seconds</a>
+    <a href="s2-proof.html" class="is-star"><span class="n">3</span> Words vs pictures</a>
+    <a href="s2-assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
+    </div><!-- /s2-rail -->
+
+  <!-- s3-rail --><div class="doc-rail-g" data-group="s3">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S3</span><span class="n">Session 3</span> Storyboard</p>
+    <a href="s3-board.html"><span class="n">01</span> From shot list to storyboard</a>
+    </div><!-- /s3-rail -->
+
+  <div class="doc-rail-g" data-group="case">
+  <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">CS</span><span class="n">Case studies</span> Ad + teaser</p>
+  <a href="reelix-ad.html"><span class="n">01</span> Earphone ad</a>
+  <a href="drawn-case.html"><span class="n">02</span> Teaser</a>
+</div>
+<div class="doc-rail-g" data-group="tools">
+    <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">T</span><span>Tools</span></p>
+    <a href="stage.html"><span class="n">&#9702;</span> Cut-out stage</a>
+    <a href="roadtool.html"><span class="n">&#9702;</span> The levels tool</a>
+    <a href="words.html"><span class="n">&#9702;</span> Prompt words</a>
+  </div>
+
+  <div class="doc-rail-handle" title="drag to resize · double-click to reset"></div>
+  <button type="button" class="doc-rail-toggle" title="collapse the outline ( [ )">&#8249;</button>
+</aside>
+
+<div class="doc-main">
+
+<section class="doc-sec" id="drawn-case">
+<style>
+#drawn-case{--ra-card:#181b14;--ra-line:#383d30;max-width:1120px}
+#drawn-case .ra-k,#drawn-case .ra-overline{color:var(--volt);font:700 11px var(--rs-mono,monospace);letter-spacing:.13em;text-transform:uppercase}
+#drawn-case .ra-hero{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;margin:30px 0 42px}
+#drawn-case .ra-hero h3{font-size:clamp(38px,4vw,60px);letter-spacing:-.055em;line-height:1.02;margin:14px 0 18px;max-width:11ch}
+#drawn-case .ra-hero h3 em{font-style:normal;color:var(--volt)}
+#drawn-case .ra-dek{color:var(--dim);font-size:17px;line-height:1.65;max-width:53ch}
+#drawn-case .ra-hero img{display:block;width:100%;border-radius:13px;border:1px solid var(--ra-line);box-shadow:0 18px 48px #0007}
+#drawn-case .ra-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:23px}
+#drawn-case .ra-btn{display:inline-block;background:var(--volt);color:#10130a;text-decoration:none;padding:11px 16px;border-radius:8px;font-weight:800;font-size:13px}
+#drawn-case .ra-actions a:not(.ra-btn){color:var(--volt);font-size:13px;text-decoration:none}
+#drawn-case .ra-head{margin:58px 0 21px}#drawn-case .ra-head .ra-k{display:block;margin-bottom:8px}
+#drawn-case .ra-head h3{font-size:29px;letter-spacing:-.035em;margin:0 0 8px}
+#drawn-case .ra-head p{color:var(--dim);max-width:76ch;margin:0;line-height:1.55}
+#drawn-case .ra-video{aspect-ratio:16/9;background:#090b08;border:1px solid var(--ra-line);border-radius:12px;overflow:hidden}
+#drawn-case .ra-video iframe{width:100%;height:100%;border:0}
+#drawn-case .ra-premiere{height:100%;position:relative;display:grid;place-items:center;text-align:center;overflow:hidden}
+#drawn-case .ra-premiere img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:blur(6px) brightness(.35);transform:scale(1.04)}
+#drawn-case .ra-premiere strong{position:relative;font-size:clamp(20px,3vw,38px);letter-spacing:-.035em}
+#drawn-case .ra-caption{font:12px var(--rs-mono,monospace);color:var(--dim);margin:11px 0}#drawn-case .ra-caption a{color:var(--volt)}
+#drawn-case .ra-map{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+#drawn-case .ra-map div{padding:17px;border:1px solid var(--ra-line);background:var(--ra-card);border-radius:10px;min-height:126px}
+#drawn-case .ra-map b{display:block;color:var(--volt);font:700 12px var(--rs-mono,monospace);margin-bottom:16px}
+#drawn-case .ra-map strong{display:block;font-size:15px;line-height:1.2}#drawn-case .ra-map span{display:block;font-size:12px;color:var(--dim);margin-top:8px;line-height:1.4}
+#drawn-case .ra-jump{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 8px}
+#drawn-case .ra-jump a{border:1px solid var(--ra-line);background:#171a13;border-radius:8px;padding:9px 12px;font-size:12px;text-decoration:none;color:var(--volt)}
+#drawn-case .ra-asset{display:grid;grid-template-columns:minmax(0,42%) minmax(0,58%);gap:0;border:1px solid var(--ra-line);border-radius:12px;background:var(--ra-card);overflow:hidden;margin:13px 0;box-shadow:0 10px 29px #0004}
+#drawn-case .ra-asset-visual{position:relative;display:flex;align-items:center;justify-content:center;background:#11130f;min-height:260px;padding:15px}
+#drawn-case .ra-asset-visual a{display:block;width:100%}#drawn-case .ra-asset-visual img{width:100%;height:auto;max-height:410px;object-fit:contain;display:block;border-radius:5px}
+#drawn-case .ra-asset-visual span{position:absolute;bottom:16px;right:19px;background:#111c;color:#fff;padding:5px 8px;border-radius:5px;font-size:10px}
+#drawn-case .ra-asset-content{padding:20px 22px;min-width:0}
+#drawn-case .ra-overline{font-size:10px}#drawn-case .ra-overline span{color:var(--dim);margin:0 5px}
+#drawn-case .ra-asset h4{font-size:21px;line-height:1.2;margin:8px 0 9px;letter-spacing:-.02em}
+#drawn-case .ra-asset p{font-size:13px;line-height:1.53;color:var(--dim);margin:7px 0}
+#drawn-case .ra-asset .ra-used b,#drawn-case .ra-asset .ra-limit b{color:var(--ink)}
+#drawn-case .ra-prompt{border:1px solid var(--ra-line);border-radius:8px;margin:15px 0 0;overflow:hidden;background:#11140f}
+#drawn-case .ra-prompt summary{display:flex;align-items:center;gap:10px;cursor:pointer;padding:11px 13px;list-style:none;color:var(--volt);font:700 11px var(--rs-mono,monospace);letter-spacing:.04em}
+#drawn-case .ra-prompt summary::-webkit-details-marker{display:none}#drawn-case .ra-prompt summary b{margin-left:auto;color:var(--dim);font-size:18px}#drawn-case .ra-prompt[open] summary b{transform:rotate(45deg)}
+#drawn-case .ra-prompt-body{border-top:1px solid var(--ra-line);padding:13px}#drawn-case .ra-prompt-body p{font-size:11px}
+#drawn-case .ra-prompt pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:330px;overflow:auto;background:#0b0d09;border:1px solid var(--ra-line);border-radius:6px;padding:12px;font:11px/1.58 var(--rs-mono,monospace);color:#dce4cf}
+#drawn-case .ra-copy{background:transparent;border:1px solid var(--ra-line);border-radius:6px;color:var(--volt);padding:7px 9px;cursor:pointer;font-size:11px}
+#drawn-case .ra-direct{display:grid;grid-template-columns:1fr auto 1.5fr;gap:13px;align-items:center;margin:20px 0}
+#drawn-case .ra-direct>div{border:1px solid var(--ra-line);background:var(--ra-card);border-radius:9px;padding:18px;min-height:104px}
+#drawn-case .ra-direct span{color:var(--volt);font:700 10px var(--rs-mono,monospace);letter-spacing:.1em}
+#drawn-case .ra-direct p{margin:8px 0 0;font-size:14px;line-height:1.45}#drawn-case .ra-direct>i{font-size:23px;color:var(--volt);font-style:normal}
+#drawn-case .ra-route{border-left:2px solid var(--volt);padding:5px 0 5px 18px;margin:16px 0;color:var(--dim);line-height:1.55;font-size:14px}
+#drawn-case .ra-pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}
+#drawn-case .ra-pair figure{margin:0;background:var(--ra-card);border:1px solid var(--ra-line);border-radius:9px;overflow:hidden}
+#drawn-case .ra-pair img{display:block;width:100%;height:240px;object-fit:cover}#drawn-case .ra-pair figcaption{padding:10px 12px;font-size:12px;color:var(--dim)}
+#drawn-case .ra-motion{border:1px solid var(--ra-line);border-radius:11px;background:var(--ra-card);padding:18px 19px;margin:13px 0;box-shadow:0 10px 29px #0004}
+#drawn-case .ra-motion h4{font-size:20px;margin:8px 0;letter-spacing:-.02em}#drawn-case .ra-motion p{font-size:13px;line-height:1.5;color:var(--dim);margin:5px 0}
+#drawn-case .ra-motion .ra-pair img{height:290px;object-fit:contain;background:#0d0e0b}
+#drawn-case .ra-steps{counter-reset:ra;list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+#drawn-case .ra-steps li{padding:17px;border:1px solid var(--ra-line);border-radius:9px;background:var(--ra-card);font-size:13px;line-height:1.5;color:var(--dim)}
+#drawn-case .ra-steps b{color:var(--ink);display:block;margin-bottom:5px;font-size:15px}
+#drawn-case .ra-pack{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:22px 0;padding:22px;background:#202b11;border:1px solid #46582d;border-radius:10px}
+#drawn-case .ra-pack strong{display:block;font-size:18px}#drawn-case .ra-pack p{color:var(--dim);font-size:13px;margin:4px 0 0}
+#drawn-case .ra-credit{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;list-style:none;padding:0}
+#drawn-case .ra-credit li{font-size:13px;color:var(--dim)}#drawn-case .ra-credit a{color:var(--volt)}
+@media(max-width:900px){#drawn-case .ra-map{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){#drawn-case .ra-hero,#drawn-case .ra-asset,#drawn-case .ra-direct,#drawn-case .ra-pair,#drawn-case .ra-steps{grid-template-columns:1fr}#drawn-case .ra-map{grid-template-columns:repeat(2,1fr)}#drawn-case .ra-asset-visual{min-height:190px}#drawn-case .ra-asset-content{padding:16px}#drawn-case .ra-direct>i{transform:rotate(90deg);text-align:center}#drawn-case .ra-pack{display:block}#drawn-case .ra-pack .ra-btn{margin-top:14px}#drawn-case .ra-credit{grid-template-columns:1fr}}
+
+#drawn-case .ra-video video{width:100%;height:100%;display:block;background:#090b08}
+#drawn-case .dc-chs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:12px 0}
+#drawn-case .dc-ch{text-align:left;background:var(--ra-card);border:1px solid var(--ra-line);border-radius:8px;color:var(--ink);padding:9px 11px;cursor:pointer;font-size:13px;line-height:1.3}
+#drawn-case .dc-ch span{display:block;color:var(--volt);font:700 11px var(--rs-mono,monospace);margin-bottom:3px}
+#drawn-case .dc-ch.is-on{border-color:var(--volt);background:#222b14}
+#drawn-case button:focus-visible,#drawn-case summary:focus-visible{outline:2px solid var(--volt);outline-offset:2px}
+#drawn-case .ra-pair video{display:block;width:100%;height:240px;object-fit:contain;background:#0d0e0b}
+#drawn-case .ra-motion .ra-pair video{height:290px}
+#drawn-case .ra-pair figure{min-width:0}
+#drawn-case .dc-options{margin-top:4px}#drawn-case .dc-options img{height:190px}#drawn-case .dc-options .ra-prompt{margin:0 10px 10px}
+#drawn-case .dc-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin:0 0 10px}
+#drawn-case .dc-meta div{background:#0b0d09;border:1px solid var(--ra-line);border-radius:6px;padding:7px 9px}
+#drawn-case .dc-meta dt{font:700 10px var(--rs-mono,monospace);color:var(--dim);text-transform:uppercase;letter-spacing:.08em}#drawn-case .dc-meta dd{margin:2px 0 0;font-size:12.5px}
+#drawn-case .dc-atts{margin:4px 0 10px;padding-left:18px;font-size:12px;line-height:1.5;color:var(--dim)}#drawn-case .dc-atts b{color:var(--volt)}
+#drawn-case .dc-note{color:#e8c27a}
+#drawn-case .dc-see{margin-top:12px;background:#202b11;border:1px solid #46582d;border-radius:6px;color:var(--volt);padding:8px 11px;cursor:pointer;font-size:12px}
+#drawn-case .dc-fail{border-color:#6b3a3d;background:#1d1414}#drawn-case .dc-fail .ra-overline{color:#e07f86}
+#drawn-case .dc-wide-clip{margin:0 0 12px}#drawn-case .dc-wide-clip video{width:100%;display:block;border-radius:9px;border:1px solid var(--ra-line);background:#0d0e0b;aspect-ratio:16/9}
+#drawn-case .dc-wide-clip figcaption{font-size:12px;color:var(--dim);padding:8px 2px}
+#drawn-case .dc-board{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+#drawn-case .dc-board figure{margin:0;background:var(--ra-card);border:1px solid var(--ra-line);border-radius:9px;overflow:hidden}
+#drawn-case .dc-board img{display:block;width:100%;height:auto}#drawn-case .dc-board figcaption{padding:10px 12px;font-size:12px;color:var(--dim)}
+#drawn-case .dc-board .dc-span{grid-column:1/-1}
+#drawn-case .dc-ab{border:1px solid var(--ra-line);border-radius:10px;background:var(--ra-card);padding:14px 16px;margin:10px 0}
+#drawn-case .dc-ab-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}#drawn-case .dc-ab h4{margin:0;font-size:17px}
+#drawn-case .dc-ab-btns{display:flex;gap:6px;flex-wrap:wrap}
+#drawn-case .dc-ab-btns button{background:#11140f;border:1px solid var(--ra-line);border-radius:6px;color:var(--ink);padding:8px 11px;cursor:pointer;font-size:12.5px}
+#drawn-case .dc-ab-btns button[aria-pressed="true"]{background:var(--volt);color:#10130a;border-color:var(--volt)}
+#drawn-case .dc-ab p{font-size:13.5px;line-height:1.5;color:var(--dim);margin:8px 0 0}
+@media(max-width:650px){#drawn-case .dc-board{grid-template-columns:1fr}#drawn-case .ra-pair video,#drawn-case .ra-motion .ra-pair video{height:auto;aspect-ratio:16/9}#drawn-case .dc-options img{height:auto}}
+</style>
+<p class="doc-eyebrow">Reelix Explainer · Production case study</p>
+<h2>From viral formats to a teaser</h2><div class="doc-rule"></div>
+<div class="ra-hero"><div><span class="ra-k">The DRAWN teaser</span><h3>Five viral formats, <em>one story.</em></h3><p class="ra-dek">A boy's drawings come alive in Seoul: cute at first, then an apocalypse. Watch the 60-second film, then open every sheet, frame and clip behind it, each beside the exact prompt and images it was made from.</p><div class="ra-actions"><a class="ra-btn" href="#dc-film">Watch the film ↓</a><a href="#dc-people">Explore the inputs ↓</a></div></div><img src="drawn-case/assets/film/drawn-v16-poster.jpg" alt="Kayden, tiny at the bottom of the frame, facing the colossal paper giant"></div>
+
+<div class="ra-head" id="dc-film"><span class="ra-k">01 / FINISHED WORK</span><h3>Watch first. Then take it apart.</h3><p>The final 59.75-second cut, in Korean with English subtitles. Each chapter button plays one part and stops at its end.</p></div>
+<div class="ra-video"><video id="dc-video" controls preload="metadata" playsinline poster="drawn-case/assets/film/drawn-v16-poster.jpg" src="drawn-case/assets/film/drawn-v16.mp4"></video></div>
+<div class="dc-chs" role="group" aria-label="Chapters"><button type="button" class="dc-ch" data-start="0.0" data-end="11.71"><span>00.0</span>Real life → first magic</button><button type="button" class="dc-ch" data-start="11.71" data-end="21.71"><span>11.7</span>The door</button><button type="button" class="dc-ch" data-start="21.71" data-end="26.38"><span>21.7</span>Wings and the tiger</button><button type="button" class="dc-ch" data-start="26.38" data-end="41.38"><span>26.4</span>Breaking news → city chaos</button><button type="button" class="dc-ch" data-start="41.38" data-end="47.17"><span>41.4</span>The reveal and face-off</button><button type="button" class="dc-ch" data-start="47.17" data-end="52.71"><span>47.2</span>One last hug</button><button type="button" class="dc-ch" data-start="52.71" data-end="59.75"><span>52.7</span>Title and credits</button></div>
+<p class="ra-caption">Made in Higgsfield Cinema Studio for the Higgsfield Discord 200K contest; no result is claimed here. Edited, voiced and scored outside Higgsfield.</p>
+
+<div class="ra-head" id="dc-brief"><span class="ra-k">02 / THE BRIEF</span><h3>What we borrowed. What we made ours.</h3><p>Each viral reel was studied for its mechanism: camera, framing, timing and the moment people share. That mechanism was rebuilt with our own family and story. No frame of anyone else's video is in the film or the project.</p></div>
+<div class="ra-map"><div><b>REFERENCES</b><strong>Five viral formats</strong><span>A door into a painted world, multiplicity, flying into a painting, the giant behind you, one final hug.</span></div><div><b>OUR IDEA</b><strong>A boy's drawings come alive</strong><span>Starring Danney's sons Jason and Kayden, their dad and Boba the cat.</span></div><div><b>OUR DIRECTION</b><strong>Cute → apocalypse</strong><span>Wonder first, then the city breaks, then a sad giant and one last hug.</span></div><div><b>OUR FINISH</b><strong>Voices, three songs, edit</strong><span>Korean lines with subtitles, original music for each mood, a cut rebuilt in numbered versions.</span></div></div>
+<p class="ra-route"><b>Viewer takeaway:</b> A viral format is a camera, a framing and a timing. Measure those, keep them, and put your own people and story inside.</p>
+<div class="ra-jump"><a href="#dc-people">People · 5</a><a href="#dc-places">Places · 4</a><a href="#dc-props">Props · 4</a><a href="#dc-board">Storyboard</a><a href="#dc-frames">Frames → motion</a><a href="#dc-finish">Sound and edit</a></div>
+<div class="ra-head" id="dc-people"><span class="ra-k">05 PEOPLE / THE INPUTS</span><h3>Keep the family recognizable.</h3><p>Each person is a saved Element in the Cinema Studio project, called by its @tag in every prompt. The boys&#x27; Elements also hold a real face photo, not shown here.</p></div>
+<article class="ra-asset" id="dc-asset-1">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/sheet-dad.jpg" target="_blank" rel="noopener" aria-label="Open full Dad · Danney image"><img loading="lazy" src="drawn-case/assets/img/sheet-dad.jpg" alt="Dad · Danney"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">People <span>·</span> Soul 2.0 · from his trained Soul character</div><h4>Dad · Danney</h4><p>The @dad Element. Built from Danney&#x27;s own trained Soul character, so his face stays his in every shot.</p><p class="ra-used"><b>Where it went:</b> Every Dad shot: the kitchen fire, the car, running through the street, the breakdown.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-2">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/sheet-jason.jpg" target="_blank" rel="noopener" aria-label="Open full Jason, the big brother image"><img loading="lazy" src="drawn-case/assets/img/sheet-jason.jpg" alt="Jason, the big brother"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">People <span>·</span> Nano Banana 2.1 · plus a real face photo</div><h4>Jason, the big brother</h4><p>The @jason Element: oatmeal sherpa, light denim. The Element holds this sheet plus a real face photo, which isn&#x27;t shown here.</p><p class="ra-used"><b>Where it went:</b> Every brothers shot. House rule: slim, and only a little taller than Kayden.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-3">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/sheet-kayden.jpg" target="_blank" rel="noopener" aria-label="Open full Kayden, the artist image"><img loading="lazy" src="drawn-case/assets/img/sheet-kayden.jpg" alt="Kayden, the artist"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">People <span>·</span> Nano Banana 2.1 · plus a real face photo</div><h4>Kayden, the artist</h4><p>The @kayden Element: cream bucket hat, khaki overalls, striped tee. Also holds a real face photo, not shown.</p><p class="ra-used"><b>Where it went:</b> Every Kayden shot. House rule: he always wears the bucket hat.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-4">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/sheet-boba.jpg" target="_blank" rel="noopener" aria-label="Open full Boba the cat image"><img loading="lazy" src="drawn-case/assets/img/sheet-boba.jpg" alt="Boba the cat"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">People <span>·</span> Character sheet</div><h4>Boba the cat</h4><p>Their real Scottish Fold, white and lilac, from several angles on one sheet.</p><p class="ra-used"><b>Where it went:</b> The crayon cat squaring off with Boba.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-5">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/sheet-jason-rejected-soul.jpg" target="_blank" rel="noopener" aria-label="Open full The Jason sheet we threw away image"><img loading="lazy" src="drawn-case/assets/img/sheet-jason-rejected-soul.jpg" alt="The Jason sheet we threw away"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">People <span>·</span> Soul 2.0 · rejected</div><h4>The Jason sheet we threw away</h4><p>The first try at Jason, made with Soul 2.0, aged him into a young man.</p><p class="ra-used"><b>Where it went:</b> Nowhere. The boys&#x27; sheets were redone with Nano Banana 2.1 and their real face crops.</p><p class="ra-limit"><b>What we accepted:</b> Recognizable family faces mattered more than staying on one model.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<div class="ra-head" id="dc-places"><span class="ra-k">04 PLACES / THE INPUTS</span><h3>Real Seoul, then painted worlds.</h3><p>The first cut lives in daylight Seoul. The viral-format shots step into worlds drawn and painted by a child, always with the boys kept photoreal.</p></div>
+<article class="ra-asset" id="dc-asset-6">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/locations-board.jpg" target="_blank" rel="noopener" aria-label="Open full Seoul, in daylight image"><img loading="lazy" src="drawn-case/assets/img/locations-board.jpg" alt="Seoul, in daylight"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Places <span>·</span> Nano Banana 2.1 · seven empty plates</div><h4>Seoul, in daylight</h4><p>Empty plates of the apartment, kitchen, street and river, so every shot of the first cut stayed in the same Seoul.</p><p class="ra-used"><b>Where it went:</b> The opening: the aerial, the kitchen fire, the living room.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-7">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/frame-D2.jpg" target="_blank" rel="noopener" aria-label="Open full The drawn world beyond the door image"><img loading="lazy" src="drawn-case/assets/img/frame-D2.jpg" alt="The drawn world beyond the door"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Places <span>·</span> Nano Banana 2.1 · frame D2</div><h4>The drawn world beyond the door</h4><p>A real front door standing open in a world drawn in crayon, watercolor and ink, full of copies of Kayden&#x27;s fuzzy creature.</p><p class="ra-used"><b>Where it went:</b> The start frame of the door clip, held for all 8 seconds.</p>
+<details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>b62832f0</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Wide shot from outside, looking back: a real apartment front door stands open in the middle of a vast hand-drawn world, and @jason and @kayden step out of it, photoreal, hand in hand, amazed. Around them hundreds of identical small round fuzzy blue creatures with orange bellies, copies of one drawing, fill the drawn hills all the way to the horizon. The world mixes crayon, watercolor, ink and colored pencil, alive with drawn birds and a paper whale in the sky. Kayden in cream bucket hat, khaki overalls, striped tee; Jason only a little taller. 16:9 film still. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></div></article>
+<article class="ra-asset" id="dc-asset-8">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/frame-W4.jpg" target="_blank" rel="noopener" aria-label="Open full Inside a gouache painting image"><img loading="lazy" src="drawn-case/assets/img/frame-W4.jpg" alt="Inside a gouache painting"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Places <span>·</span> Nano Banana 2.1 · frame W4</div><h4>Inside a gouache painting</h4><p>A painted ocean spiraling into a whirlpool full of rubber ducks. The painted style came from three Pinterest pins, described in words and never uploaded.</p><p class="ra-used"><b>Where it went:</b> The start frame of the wings clip.</p>
+<details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>577f8652</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Follow camera directly behind and above @jason and @kayden flying side by side like Superman: bodies horizontal, both arms stretched straight forward, hand-drawn crayon paper wings spread on their backs, diving down toward a painted ocean. The whole ocean is painted in bold gouache and watercolor: swirling layers of teal and deep blue spiraling into a huge whirlpool in the middle, flat saturated color shapes, visible brush strokes and paper texture, a few big yellow rubber ducks bobbing on the painted waves. They are about to dive into the center of the swirl. The boys stay photoreal. Kayden in cream bucket hat, khaki overalls, striped tee; Jason only a little taller. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></div></article>
+<article class="ra-asset" id="dc-asset-9">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/frame-F05.jpg" target="_blank" rel="noopener" aria-label="Open full A Korean minhwa folk painting image"><img loading="lazy" src="drawn-case/assets/img/frame-F05.jpg" alt="A Korean minhwa folk painting"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Places <span>·</span> Nano Banana 2.1 · frame F05</div><h4>A Korean minhwa folk painting</h4><p>A friendly tiger under a pine. It replaced a painted sea with a red sun, which read as a national flag: a political-statement risk under the contest rules.</p><p class="ra-used"><b>Where it went:</b> The start frame of the tiger clip, where Jason asks his question.</p>
+<details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>c51bb8dd</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>@jason and @kayden as photoreal real children (photographed, NOT painted) sitting on a low pine branch inside a Korean minhwa folk painting: a big friendly smiling tiger with round eyes sits under the pine tree beside them, two magpies on the branches, flat bright traditional mineral colors on aged mulberry paper. Only the painting world is illustrated; the boys stay fully photographic: Kayden in cream bucket hat and khaki overalls grinning at the tiger, Jason in oatmeal sherpa jacket. 16:9. No text, no seals, no calligraphy, no flags.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></div></article>
+<div class="ra-head" id="dc-props"><span class="ra-k">04 PROPS / THE INPUTS</span><h3>Make the giant out of his drawings.</h3><p>The monster is paper: Kayden&#x27;s own drawings, including the torn family picture. It had to evoke a monster movie without looking like any famous monster.</p></div>
+<article class="ra-asset" id="dc-asset-10">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/sheet-golem-v5.jpg" target="_blank" rel="noopener" aria-label="Open full The paper giant image"><img loading="lazy" src="drawn-case/assets/img/sheet-golem-v5.jpg" alt="The paper giant"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Props <span>·</span> Character sheet · v5</div><h4>The paper giant</h4><p>The @golem Element: all crumpled paper covered in children&#x27;s drawings, including the torn family drawing.</p><p class="ra-used"><b>Where it went:</b> The reveal and the face-off.</p><p class="ra-limit"><b>What we accepted:</b> Version 5. Earlier versions were only partly paper.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-11">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/giant-options-A-E.jpg" target="_blank" rel="noopener" aria-label="Open full Five giant designs image"><img loading="lazy" src="drawn-case/assets/img/giant-options-A-E.jpg" alt="Five giant designs"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Props <span>·</span> Nano Banana 2.1 · design options</div><h4>Five giant designs</h4><p>Options A to E, each checked against the no-third-party-characters rule: no reptile spikes, no ape face.</p><p class="ra-used"><b>Where it went:</b> Option E, the torn family drawing, became the paper giant.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+<article class="ra-asset" id="dc-asset-12">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/frame-H10.jpg" target="_blank" rel="noopener" aria-label="Open full The paper wave image"><img loading="lazy" src="drawn-case/assets/img/frame-H10.jpg" alt="The paper wave"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Props <span>·</span> Nano Banana 2.1 · an edit of H7</div><h4>The paper wave</h4><p>The river and the wave turned mostly to paper: children&#x27;s drawings carried by water.</p><p class="ra-used"><b>Where it went:</b> The start frame of the last-hug clip.</p><p class="ra-limit"><b>What we accepted:</b> Edits stay conservative: the wave face still reads partly as water. Regenerate when the change is big.</p>
+<details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>849bf457</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · image to edit</b> · Frame H7</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Edit image 1. Keep its exact camera, framing, horizon and the two boys exactly as they are, same pose, same place: @jason and @kayden holding hands, looking at the wave. Change only the water: this is the aftermath of the battle, and paper drawings now fill the whole world. About 80 percent of the river and of the giant wave is paper: a towering, churning mass of white sheets covered in children&#x27;s crayon drawings, crumpled, folded and torn, so thick the wave reads as a wall of paper. Only about 20 percent is water: thin streaks of dark teal water and white spray between the sheets and pouring off the crest, a hint that water is moving all the paper toward them. The wave still spans the entire width and rolls straight toward the camera, sheets flying off its crest. Same cool teal-cyan, low-saturation grade. No monster anywhere. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></div></article>
+<article class="ra-asset" id="dc-asset-13">
+<div class="ra-asset-visual"><a href="drawn-case/assets/img/hug-layout-guide.jpg" target="_blank" rel="noopener" aria-label="Open full Our layout guide image"><img loading="lazy" src="drawn-case/assets/img/hug-layout-guide.jpg" alt="Our layout guide"></a><span>Open full image ↗</span></div>
+<div class="ra-asset-content"><div class="ra-overline">Props <span>·</span> Made locally · not generated</div><h4>Our layout guide</h4><p>Danney asked to attach the original reel&#x27;s frame. We drew our own grey guide instead: the project goes public, and the rules forbid uploading other creators&#x27; footage.</p><p class="ra-used"><b>Where it went:</b> Attached to H7 as &quot;image 1 · layout guide only&quot;.</p>
+<details class="ra-prompt"><summary>Prompt not saved<b aria-hidden="true">+</b></summary><div class="ra-prompt-body"><p>This sheet is the real output, but its prompt was not exported from Cinema Studio, so none is shown.</p></div></details></div></article>
+
+<div class="ra-head" id="dc-board"><span class="ra-k">03 / STORYBOARD</span><h3>Plan on sheets. Then make real frames.</h3><p>Many options fit on one sheet. Sheets made outside the contest project were for planning only; every frame that starts a clip was made inside the project with the Elements.</p></div>
+<div class="dc-board"><figure><a href="drawn-case/assets/img/planning-sheet-A.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/planning-sheet-A.jpg" alt="Planning sheet A"></a><figcaption>PLANNING A · door → painted Seoul → clones → paintings</figcaption></figure>
+<figure><a href="drawn-case/assets/img/planning-sheet-B.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/planning-sheet-B.jpg" alt="Planning sheet B"></a><figcaption>PLANNING B · the real street, Dad, the river, the giant</figcaption></figure>
+<figure class="dc-span"><a href="drawn-case/assets/img/frames-F01-F12.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frames-F01-F12.jpg" alt="Twelve in-project frames"></a><figcaption>REAL FRAMES · the same plan rebuilt as 12 frames inside the project, usable as clip start frames</figcaption></figure>
+<figure class="dc-span"><a href="drawn-case/assets/img/storyboard-v9-30-panels.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/storyboard-v9-30-panels.jpg" alt="Thirty-panel storyboard of the first cut"></a><figcaption>THE FIRST CUT · 30 panels; its opening became the first 60–70% of the final film</figcaption></figure></div>
+
+<div class="ra-head" id="dc-frames"><span class="ra-k">04 / SHEETS → SHOTS</span><h3>Turn a frame into movement.</h3><p>Each clip starts from one approved frame. The prompt names the camera, a timed action, the physics and the sound. Below each pair: the options we tried, what Danney said, and the exact prompt with the images it was given.</p></div>
+<article class="ra-motion"><div class="ra-overline">MOVEMENT 01 · bbb03a17</div><h4>The door opens</h4><p>The real hallway stays real, so the drawn world lands as a surprise. Only the first 2 seconds of this clip were used.</p>
+<div class="ra-pair"><figure><a href="drawn-case/assets/img/frame-F01.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-F01.jpg" alt="Start frame for The door opens"></a><figcaption>START · Kayden&#x27;s hands on the half-open door</figcaption></figure>
+<figure><video controls preload="none" playsinline poster="drawn-case/assets/clips/V1-door-opens.jpg" src="drawn-case/assets/clips/V1-door-opens.mp4"></video><figcaption>CLIP · raw output with its own sound · <b>used: 0–2 s</b></figcaption></figure></div>
+<details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 4 s · audio on</dd></div><div><dt>Cost</dt><dd>12 credits</dd></div><div><dt>Job</dt><dd>bbb03a17</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame F01</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: morning, a narrow real Seoul apartment hallway, two boys at the front door. CHARACTERS: KAYDEN = @kayden (6). JASON = @jason (9). They are the only people visible. FIRST FRAME: image 1 exactly, Kayden&#x27;s hands on the half-open door, Jason beside him, both seen from behind. OPTICS AND CAMERA: 45 degree FOV, child eye level, a slow steady glide forward behind the boys, no shake. ACTION TIMING: 0-1.5 s Kayden pushes the door wide open with both hands. 1.5-3 s soft light floods in and pale watercolor paint bleeds across the real floor tiles toward their sneakers. 3-4 s through the doorway a whole Seoul painted in loose watercolor is revealed; both boys freeze, mouths open. PHYSICS: dust motes in the light, the door swings with weight and slows, wet pigment spreads and blooms along the tile grout. LIGHTING: dim hallway, bright warm daylight from the doorway. AUDIO: door latch click, a soft creak, a faint airy shimmer as the paint spreads; no music, no speech. POSITIVE LOCKS: the hallway, door and boys stay photographic; only the world outside the door is a watercolor painting. Kayden keeps his cream bucket hat, khaki overalls and striped tee. Jason is slim, only a little taller.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details><button type="button" class="dc-see" data-start="11.71" data-end="13.71">▶ Watch it in the film · 11.7–13.7 s</button></article>
+<article class="ra-motion"><div class="ra-overline">MOVEMENT 02 · 5d466064</div><h4>The drawn world multiplies</h4><p>Danney&#x27;s note in the clip library: hold all 8 seconds. It must sink in, because this is the viral moment.</p>
+<div class="ra-pair"><figure><a href="drawn-case/assets/img/frame-D2.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-D2.jpg" alt="Start frame for The drawn world multiplies"></a><figcaption>START · wide, from outside looking back</figcaption></figure>
+<figure><video controls preload="none" playsinline poster="drawn-case/assets/clips/V_door-world.jpg" src="drawn-case/assets/clips/V_door-world.mp4"></video><figcaption>CLIP · creatures copy themselves across the hills · <b>used: all 8 s</b></figcaption></figure></div>
+<div class="ra-pair dc-options"><figure><a href="drawn-case/assets/img/frame-D1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-D1.jpg" alt="Frame D1 · creatures pour in"></a><figcaption>Frame D1 · creatures pour in</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>552b512f</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Camera low behind @jason and @kayden in a real Seoul apartment hallway; the front door swings wide open. Beyond it lies a living world drawn by a child, made of many drawing styles at once: crayon sky, watercolor hills, ink-wash trees, colored-pencil apartment towers, everything moving. The very first thing right outside the door: dozens of copies of one small round fuzzy blue creature with an orange belly and big eyes, multiplying and tumbling toward the doorway like a wave of identical creatures. The boys, hallway and door are photoreal; only the world beyond is drawn. Kayden in cream bucket hat, khaki overalls, striped tee; Jason only a little taller. 16:9 film still. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure><figure><a href="drawn-case/assets/img/frame-D2.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-D2.jpg" alt="Frame D2 · wide outside the door"></a><figcaption>Frame D2 · wide outside the door</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>b62832f0</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Wide shot from outside, looking back: a real apartment front door stands open in the middle of a vast hand-drawn world, and @jason and @kayden step out of it, photoreal, hand in hand, amazed. Around them hundreds of identical small round fuzzy blue creatures with orange bellies, copies of one drawing, fill the drawn hills all the way to the horizon. The world mixes crayon, watercolor, ink and colored pencil, alive with drawn birds and a paper whale in the sky. Kayden in cream bucket hat, khaki overalls, striped tee; Jason only a little taller. 16:9 film still. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure></div><details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 8 s · audio on</dd></div><div><dt>Cost</dt><dd>24 credits</dd></div><div><dt>Job</dt><dd>5d466064</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame D2</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: a real apartment front door standing open in the middle of a vast living hand-drawn world. CHARACTERS: JASON = @jason, KAYDEN = @kayden, photoreal, stepping out of the doorway hand in hand. FIRST FRAME: image 1 exactly. CAMERA: locked-off wide, slow gentle push-in, no shake. ACTION TIMING: 0-2 s the boys step through the door, mouths open in wonder. 2-5 s MULTIPLICITY on a steady beat: each small round fuzzy blue creature pops and splits into two identical copies, again and again, rows doubling across the drawn hills until hundreds fill them to the horizon. 5-8 s the creatures bounce toward the boys; Kayden laughs and spins, Jason grins; the paper whale swims slowly across the sky, drawn birds flap, the crayon sun glows and the hills sway. PHYSICS: every pop leaves a small burst of colored-pencil strokes, grass strokes ripple, the door swings slightly. AUDIO: soft pops on each doubling, birds, a playful whoosh, the boys laughing; no music. POSITIVE LOCKS: every creature is the same design; the world stays drawn and moving; the boys and the door stay photoreal; Kayden keeps his cream bucket hat and khaki overalls; Jason in oatmeal sherpa jacket.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details><button type="button" class="dc-see" data-start="13.71" data-end="21.71">▶ Watch it in the film · 13.7–21.7 s</button></article>
+<article class="ra-motion"><div class="ra-overline">MOVEMENT 03 · 3383cd4b</div><h4>Into the painting</h4><p>Both boys in a Superman pose with paper wings (Danney&#x27;s call), diving into a living gouache whirlpool. Sped up 2× so the montage starts fast.</p>
+<div class="ra-pair"><figure><a href="drawn-case/assets/img/frame-W4.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-W4.jpg" alt="Start frame for Into the painting"></a><figcaption>START · Superman pose above the whirlpool</figcaption></figure>
+<figure><video controls preload="none" playsinline poster="drawn-case/assets/clips/V_wings.jpg" src="drawn-case/assets/clips/V_wings.mp4"></video><figcaption>CLIP · everything in the painting moves · <b>used: 1–6 s at 2×</b></figcaption></figure></div>
+<div class="ra-pair dc-options"><figure><a href="drawn-case/assets/img/frame-W3.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-W3.jpg" alt="Frame W3 · Superman pose over wheat"></a><figcaption>Frame W3 · Superman pose over wheat</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>2bfff526</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Follow camera directly behind and slightly above @jason and @kayden flying side by side like Superman: bodies horizontal, both arms stretched straight forward, legs together behind them, hand-drawn crayon paper wings spread on their backs. They fly over a world painted in bold gouache and acrylic: flat saturated color shapes, visible brush strokes and canvas texture, golden wheat fields below and a bright blue sky with puffy white clouds. Straight ahead the painted sky is torn open like ripped paper, revealing deep space inside the tear with big painted planets, a ringed orange planet and stars, and they are about to fly through it. The boys stay photoreal. Kayden in cream bucket hat, khaki overalls, striped tee; Jason only a little taller. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure><figure><a href="drawn-case/assets/img/frame-W4.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-W4.jpg" alt="Frame W4 · Superman pose into the whirlpool"></a><figcaption>Frame W4 · Superman pose into the whirlpool</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>577f8652</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Follow camera directly behind and above @jason and @kayden flying side by side like Superman: bodies horizontal, both arms stretched straight forward, hand-drawn crayon paper wings spread on their backs, diving down toward a painted ocean. The whole ocean is painted in bold gouache and watercolor: swirling layers of teal and deep blue spiraling into a huge whirlpool in the middle, flat saturated color shapes, visible brush strokes and paper texture, a few big yellow rubber ducks bobbing on the painted waves. They are about to dive into the center of the swirl. The boys stay photoreal. Kayden in cream bucket hat, khaki overalls, striped tee; Jason only a little taller. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure></div><details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 8 s · audio on</dd></div><div><dt>Cost</dt><dd>24 credits</dd></div><div><dt>Job</dt><dd>3383cd4b</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame W4</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: inside a living gouache painting of an ocean. CHARACTERS: JASON = @jason, KAYDEN = @kayden, photoreal, flying like Superman with arms stretched forward and hand-drawn paper wings on their backs. FIRST FRAME: image 1 exactly. CAMERA: follow camera behind and above the boys, flying with them, one smooth continuous dive, 60 degree FOV, no shake. ACTION TIMING: 0-3 s the whole painted ocean is ALIVE: the teal and blue brush strokes swirl and spiral into the whirlpool, painted waves curl and break, the rubber ducks bob, spin and get pulled around the swirl; the boys glide over it, wings flapping. 3-6 s they tilt down and dive toward the center of the whirlpool, the painted water rushing around them in rings. 6-8 s they plunge into the swirling center and the brush strokes wrap around the camera. PHYSICS: every brush stroke moves like real water, wet paint flows and blooms, paper wings flex in the wind, hair and clothes whip back. AUDIO: rushing wind, swirling water, paper wings flapping, the boys laughing and cheering; no music. POSITIVE LOCKS: the world stays a bold painted gouache style, everything in it moving; the boys stay photoreal; Kayden keeps his cream bucket hat and khaki overalls; Jason in oatmeal sherpa jacket.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details><button type="button" class="dc-see" data-start="21.71" data-end="24.21">▶ Watch it in the film · 21.7–24.2 s</button></article>
+<article class="ra-motion"><div class="ra-overline">MOVEMENT 04 · 3a71c3be</div><h4>The tiger painting</h4><p>Over this shot Jason asks, &quot;But what if someone erases it?&quot; That line turns the film toward the danger.</p>
+<div class="ra-pair"><figure><a href="drawn-case/assets/img/frame-F05.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-F05.jpg" alt="Start frame for The tiger painting"></a><figcaption>START · the minhwa tiger painting</figcaption></figure>
+<figure><video controls preload="none" playsinline poster="drawn-case/assets/clips/V4-tiger.jpg" src="drawn-case/assets/clips/V4-tiger.mp4"></video><figcaption>CLIP · the tiger stirs, magpies hop · <b>used: 0.8–3.0 s</b></figcaption></figure></div>
+<details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 4 s · audio on</dd></div><div><dt>Cost</dt><dd>12 credits</dd></div><div><dt>Job</dt><dd>3a71c3be</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame F05</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: a Korean minhwa folk painting, a big friendly tiger under a pine, magpies in the branches. CHARACTERS: JASON = @jason, KAYDEN = @kayden, photoreal, sitting on the low pine branch. FIRST FRAME: image 1 exactly. OPTICS AND CAMERA: 50 degree FOV, locked-off. ACTION TIMING: 0-1.5 s the painted tiger blinks and grins up at the boys. 1.5-3 s a magpie hops along the branch. 3-4 s Kayden swings his legs and laughs, Jason grins. PHYSICS: the painted pine needles flutter like paper; the tiger&#x27;s whiskers twitch. AUDIO: a soft rumbling purr, magpie chirps, the boys laughing; no music. POSITIVE LOCKS: the painting stays flat folk-art; the boys stay photographic; no text, no seals, no flags; Kayden keeps his cream bucket hat and khaki overalls.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details><button type="button" class="dc-see" data-start="24.21" data-end="26.38">▶ Watch it in the film · 24.2–26.4 s</button></article>
+<article class="ra-motion"><div class="ra-overline">MOVEMENT 05 · 58497e8c</div><h4>The giant behind you</h4><p>The reference: symmetric frontal camera, the head filling about 75% of the frame, a tiny figure at the bottom. Our first two frames missed (the head was about 38%), so the numbers went into the prompt.</p>
+<div class="ra-pair"><figure><a href="drawn-case/assets/img/frame-G4.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-G4.jpg" alt="Start frame for The giant behind you"></a><figcaption>START · symmetric, the head fills the frame</figcaption></figure>
+<figure><video controls preload="none" playsinline poster="drawn-case/assets/clips/V_giant.jpg" src="drawn-case/assets/clips/V_giant.mp4"></video><figcaption>CLIP · the giant leans in close · <b>used: 2.4–6.0 s, then black</b></figcaption></figure></div>
+<div class="ra-pair dc-options"><figure><a href="drawn-case/assets/img/frame-G1.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-G1.jpg" alt="Frame G1 · giant head over the rooftop"></a><figcaption>Frame G1 · giant head over the rooftop</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>562d5bb5</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @golem</b> · The paper golem v5 sheet</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Epic fantasy-poster framing, camera low and behind: @kayden stands small at the bottom center of the frame on the edge of a Seoul apartment rooftop, back to camera, pencil in hand. The colossal head of @gol fills almost the entire upper frame right in front of him, lowered toward him; the head alone is bigger than the apartment towers around it, faint red glow in its eyes, loose paper flakes and grey smoke drifting. Keep the giant&#x27;s exact look from its reference: all crumpled paper with children&#x27;s drawings, never a human face. Overcast, photoreal, quiet and sad. 16:9 film still. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button><p class="dc-note">Typed twice: on the first try the tag menu picked a prop called &quot;mic-gold&quot; under the mouse instead of @golem. This is the corrected second typing.</p></div></details></figure><figure><a href="drawn-case/assets/img/frame-G4.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-G4.jpg" alt="Frame G4 · symmetric, riverbank"></a><figcaption>Frame G4 · symmetric, riverbank</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>5b6ba306</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @golem</b> · The paper golem v5 sheet</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Perfectly symmetrical, frontal, centered composition like an epic fantasy poster, camera low and straight behind @kayden: he stands tiny at the bottom center of the frame on the rubble-strewn bank of the Han River, back to camera, looking up, a pencil in his hand, small fires and smoke on both sides. Directly in front of him, centered and facing straight into the camera, the enormous head of @golem fills almost the whole frame from the top edge down to just above the boy, lowered to the ground so close and so big that only the face and the top of its chest show, glowing red eyes looking down at him; paper flakes and embers drifting between them. Keep the giant&#x27;s exact look from its reference: all crumpled paper with children&#x27;s drawings, never a human face. Overcast, photoreal, quiet and sad. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure></div><div class="ra-direct"><div><span>DANNEY SAYS</span><p>&quot;It should feel like that reel. The giant is way too small.&quot;</p></div><i aria-hidden="true">→</i><div><span>THE MODEL NEEDS</span><p>Perfectly symmetrical, frontal, camera low behind Kayden. The head fills almost the whole frame, down to just above the boy. Kayden tiny at the bottom center, back to camera.</p></div></div><details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 8 s · audio on</dd></div><div><dt>Cost</dt><dd>24 credits</dd></div><div><dt>Job</dt><dd>58497e8c</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame G4</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @golem</b> · The paper golem v5 sheet</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: the rubble-strewn Han River bank after the battle, overcast, smoke and small fires. CHARACTERS: KAYDEN = @kayden, tiny, back to camera, pencil in hand. THE GIANT = @golem, all crumpled paper with children&#x27;s drawings. FIRST FRAME: image 1 exactly. CAMERA: locked-off, perfectly symmetrical and frontal, low behind Kayden, the camera does not move. ACTION TIMING: one held moment, nearly still. 0-3 s the giant breathes slowly, its paper sheets rising and falling, its red eyes dimming and softening as it looks down at the boy. 3-6 s it lowers its enormous head a little closer to him, gently. 6-8 s Kayden slowly raises his small hand toward it. PHYSICS: paper flakes and embers drift between them, small fires flicker, smoke curls, loose sheets on the giant flutter in the wind, Kayden&#x27;s hat brim lifts slightly. AUDIO: low wind, crackling fire, soft paper rustle, a deep slow breath from the giant; no music, no speech. POSITIVE LOCKS: the giant keeps its exact paper look from its reference, never a human face; its head fills most of the frame and Kayden stays tiny at the bottom center; Kayden keeps his cream bucket hat and khaki overalls.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details><button type="button" class="dc-see" data-start="41.38" data-end="47.17">▶ Watch it in the film · 41.4–47.2 s</button></article>
+<article class="ra-motion"><div class="ra-overline">MOVEMENT 06 · d808b344</div><h4>One final hug</h4><p>Locked eye-level camera, the brothers centered, a full-width wave behind them. The cut fades to black before the wave hits, so viewers wonder what happens next.</p>
+<div class="ra-pair"><figure><a href="drawn-case/assets/img/frame-H10.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-H10.jpg" alt="Start frame for One final hug"></a><figcaption>START · holding hands, the paper wave rising</figcaption></figure>
+<figure><video controls preload="none" playsinline poster="drawn-case/assets/clips/V_hug.jpg" src="drawn-case/assets/clips/V_hug.mp4"></video><figcaption>CLIP · they turn and hug as the wave towers · <b>used: 1.0–6.6 s, fade before the crash</b></figcaption></figure></div>
+<div class="ra-pair dc-options"><figure><a href="drawn-case/assets/img/frame-H7.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-H7.jpg" alt="Frame H7 · hug framing from our layout guide"></a><figcaption>Frame H7 · hug framing from our layout guide</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>28b087e1</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · layout guide only</b> · Our own grey blockout (no other creator&#x27;s frame)</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Image 1 is only a layout guide: copy its exact camera position, eye-level horizon, the wave wall spanning the full width at the same height, and where the two figures stand, but none of its flat look. Photoreal film still: on the riverbank, @jason and @kayden stand close together in the center, holding hands, bodies in profile, both turning their heads to look back at the wave, framed from the knees up, locked-off camera at eye level. The river behind them is a churning mix of water and thousands of floating paper drawings. Across the ENTIRE width of the frame, a colossal straight wave of water and paper drawings has risen out of the river and is rolling straight toward the camera, its white crest at the height shown in image 1, sheets of drawings spraying off it with the foam, the far shore hidden behind it. Cool teal-cyan, low-saturation grade, soft overcast light, warm skin tones. Kayden in cream bucket hat, khaki overalls, striped tee; Jason in oatmeal sherpa jacket, only a little taller. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure><figure><a href="drawn-case/assets/img/frame-H10.jpg" target="_blank" rel="noopener"><img loading="lazy" src="drawn-case/assets/img/frame-H10.jpg" alt="Frame H10 · edit: river and wave ~80% paper"></a><figcaption>Frame H10 · edit: river and wave ~80% paper</figcaption><details class="ra-prompt"><summary>Exact prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Nano Banana 2.1</dd></div><div><dt>Settings</dt><dd>16:9 · 2K · 1 image</dd></div><div><dt>Cost</dt><dd>2 credits</dd></div><div><dt>Job</dt><dd>849bf457</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · image to edit</b> · Frame H7</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>Edit image 1. Keep its exact camera, framing, horizon and the two boys exactly as they are, same pose, same place: @jason and @kayden holding hands, looking at the wave. Change only the water: this is the aftermath of the battle, and paper drawings now fill the whole world. About 80 percent of the river and of the giant wave is paper: a towering, churning mass of white sheets covered in children&#x27;s crayon drawings, crumpled, folded and torn, so thick the wave reads as a wall of paper. Only about 20 percent is water: thin streaks of dark teal water and white spray between the sheets and pouring off the crest, a hint that water is moving all the paper toward them. The wave still spans the entire width and rolls straight toward the camera, sheets flying off its crest. Same cool teal-cyan, low-saturation grade. No monster anywhere. 16:9. No text, no logos.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></figure></div><div class="ra-direct"><div><span>DANNEY SAYS</span><p>&quot;A whole lot more paper. After the battle, 20–30% water.&quot;</p></div><i aria-hidden="true">→</i><div><span>THE MODEL NEEDS</span><p>Edit image 1. Keep the exact camera, framing and both boys. Change only the water: about 80% of the river and the wave is paper drawings, carried by water.</p></div></div><details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 8 s · audio on</dd></div><div><dt>Cost</dt><dd>24 credits</dd></div><div><dt>Job</dt><dd>d808b344</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame H10</li><li><b>Element @jason</b> · Jason&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: the aftermath of the battle on the Han River bank; the river and the giant wave are mostly paper drawings, about 80 percent, carried by water, about 20 percent. CHARACTERS: JASON = @jason, KAYDEN = @kayden; they are the only people. FIRST FRAME: image 1 exactly. CAMERA: locked-off at eye level, 40 degree FOV, the camera never moves, no shake. ACTION TIMING: 0-3 s the full-width wave of paper and water rolls straight toward the camera and keeps growing taller, the paper river surging forward under it; the boys stand holding hands, watching it come. 3-5 s they turn to each other and hug tightly like it is the last time, Jason wrapping both arms around Kayden, Kayden burying his face in his brother&#x27;s chest. 5-7 s the wave towers over them, sheets of drawings raining down and swirling around them; they hold on with eyes closed. 7-8 s the wave crashes over them and the frame fills completely with white paper. PHYSICS: paper sheets flutter, flip and slide on the moving water; foam and spray between the sheets; wind whips their clothes; loose sheets stick to their jackets. AUDIO: the rising roar of a huge wave, crashing water, thousands of paper sheets rustling and flapping; no music, no speech. POSITIVE LOCKS: the wave spans the entire width and comes straight at the camera; mostly paper, some water; no monster anywhere; Kayden keeps his cream bucket hat, khaki overalls and striped tee; Jason in oatmeal sherpa jacket, only a little taller.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details><button type="button" class="dc-see" data-start="47.17" data-end="52.71">▶ Watch it in the film · 47.2–52.7 s</button></article>
+<article class="ra-motion dc-fail"><div class="ra-overline">MISTAKE · 8e32593a</div><h4>Two images, one hard cut</h4><p>This push-in attached a start frame and a second image "where the move ends". The model treated image 2 as a locked end frame: it held the wide shot, then jumped to the close-up instead of moving. The fix: one start frame plus a timed action.</p>
+<div class="ra-pair"><figure><img loading="lazy" src="drawn-case/assets/img/frame-F11.jpg" alt="Image 1, the start frame"><figcaption>IMAGE 1 · start</figcaption></figure><figure><img loading="lazy" src="drawn-case/assets/img/frame-F12.jpg" alt="Image 2, which became a locked end frame"><figcaption>IMAGE 2 · became a locked end</figcaption></figure></div>
+<figure class="dc-wide-clip"><video controls preload="none" playsinline poster="drawn-case/assets/clips/V8-end-frame-failure.jpg" src="drawn-case/assets/clips/V8-end-frame-failure.mp4"></video><figcaption>The result: watch for the jump about halfway through. Not used in the film.</figcaption></figure>
+<details class="ra-prompt"><summary>Exact movement prompt, as typed<b aria-hidden="true">+</b></summary><div class="ra-prompt-body">
+<dl class="dc-meta"><div><dt>Model</dt><dd>Seedance 2.5 · References mode</dd></div><div><dt>Settings</dt><dd>16:9 · 480p · 4 s · audio on</dd></div><div><dt>Cost</dt><dd>12 credits</dd></div><div><dt>Job</dt><dd>8e32593a</dd></div></dl>
+<p><b>Attached with this prompt:</b></p><ul class="dc-atts"><li><b>Image 1 · start frame</b> · Frame F11</li><li><b>Image 2 · where the move ends</b> · Frame F12 (acted as a locked end frame)</li><li><b>Element @kayden</b> · Kayden&#x27;s character sheet (Nano Banana 2.1 three-panel) + a real face photo, not shown here</li><li><b>Element @golem</b> · The paper golem v5 sheet</li></ul>
+<p>The words alone won't reproduce this. The model also saw the attachments above; use your own approved sheets and frames in their place. Recovered word for word from what was typed into Cinema Studio.</p>
+<pre>SCENE: the top of a very tall Seoul apartment rooftop, overcast; the colossal paper golem has bent down so its head is level with the roof. CHARACTERS: KAYDEN = @kayden, back to camera at the railing, pencil in hand. THE GOLEM = @golem, made only of crumpled paper covered in children&#x27;s drawings. FIRST FRAME: image 1 exactly. Image 2 shows where the move ends: over Kayden&#x27;s shoulder, the golem&#x27;s face filling the frame, his hand reaching out; reference only, not a locked end frame. OPTICS AND CAMERA: 40 degree FOV, one slow steady push-in from behind Kayden toward the golem&#x27;s face, no shake. ACTION TIMING: 0-2 s the camera glides in behind Kayden. 2-4 s Kayden lifts his small hand toward the golem&#x27;s paper face; the golem tilts its head gently. PHYSICS: paper flakes drift in the wind, the golem&#x27;s sheets flutter, Kayden&#x27;s bucket hat brim lifts slightly. AUDIO: wind, soft paper rustle; no music, no speech; Kayden&#x27;s mouth is not visible. POSITIVE LOCKS: the golem keeps its exact paper look from its reference, never a human face; Kayden is tiny next to it.</pre><button type="button" class="ra-copy">Copy prompt</button></div></details></article>
+<ol class="ra-steps"><li><b>1 · Measure the reference</b>Write its camera, framing and timing as numbers ("the head fills 75% of the frame"), not adjectives.</li><li><b>2 · Make options, pick one</b>Two frames per beat when unsure. Keep the one that matches the numbers.</li><li><b>3 · One start frame</b>Attach a single start frame plus the Elements. A second image can turn into a locked end frame.</li><li><b>4 · Use what works</b>A clip can be trimmed, sped up or held in full. Pick the seconds that do the job.</li></ol>
+
+<div class="ra-head" id="dc-finish"><span class="ra-k">05 / THE FINISH</span><h3>Picture leads. Sound follows.</h3><p>Each pair plays the same picture twice. Press one button, then the other; the second picks up where the first left off.</p></div>
+<div class="dc-ab" data-ab><div class="dc-ab-head"><h4>The door</h4><div class="dc-ab-btns" role="group" aria-label="Choose what to hear">
+<button type="button" data-which="a" aria-pressed="false">▶ Raw clip</button><button type="button" data-which="b" aria-pressed="false">▶ Final mix</button></div></div><p>Raw clip: Seedance added its own background music. Final: that music is muted so only one music bed plays, the cute music-box cue.</p>
+<audio preload="none" data-a src="drawn-case/assets/sound/door-raw.mp3"></audio><audio preload="none" data-b src="drawn-case/assets/sound/door-final.mp3"></audio></div><div class="dc-ab" data-ab><div class="dc-ab-head"><h4>The face-off</h4><div class="dc-ab-btns" role="group" aria-label="Choose what to hear">
+<button type="button" data-which="a" aria-pressed="false">▶ Raw clip</button><button type="button" data-which="b" aria-pressed="false">▶ Final mix</button></div></div><p>Raw clip: wind and breathing. Final: footsteps, close breathing, a roar over the cut to black, sirens, the sad swell, and Kayden&#x27;s shout with the music ducked under it.</p>
+<audio preload="none" data-a src="drawn-case/assets/sound/giant-raw.mp3"></audio><audio preload="none" data-b src="drawn-case/assets/sound/giant-final.mp3"></audio></div><div class="dc-ab" data-ab><div class="dc-ab-head"><h4>The last hug</h4><div class="dc-ab-btns" role="group" aria-label="Choose what to hear">
+<button type="button" data-which="a" aria-pressed="false">▶ Raw clip</button><button type="button" data-which="b" aria-pressed="false">▶ Final mix</button></div></div><p>Raw clip: the wave&#x27;s roar. Final: Jason&#x27;s line, &quot;Close your eyes. I&#x27;m right here,&quot; then a fade before the crash.</p>
+<audio preload="none" data-a src="drawn-case/assets/sound/hug-raw.mp3"></audio><audio preload="none" data-b src="drawn-case/assets/sound/hug-final.mp3"></audio></div><div class="dc-ab" data-ab><div class="dc-ab-head"><h4>The mood shift</h4><div class="dc-ab-btns" role="group" aria-label="Choose what to hear">
+<button type="button" data-which="a" aria-pressed="false">▶ Earlier cut</button><button type="button" data-which="b" aria-pressed="false">▶ Final</button></div></div><p>Earlier cut: the cute song simply hands over. Final: the song tape-stops on Jason&#x27;s question, a radio boom hits on &quot;Breaking news&quot;, the drums come in.</p>
+<audio preload="none" data-a src="drawn-case/assets/sound/shift-v12.mp3"></audio><audio preload="none" data-b src="drawn-case/assets/sound/shift-v16.mp3"></audio></div><div class="dc-ab" data-ab><div class="dc-ab-head"><h4>The peak</h4><div class="dc-ab-btns" role="group" aria-label="Choose what to hear">
+<button type="button" data-which="a" aria-pressed="false">▶ Earlier cut</button><button type="button" data-which="b" aria-pressed="false">▶ Final</button></div></div><p>Earlier cut: the montage song faded out by itself right before the reveal. Final: the drums stay loud, a riser ends exactly on a boom at the reveal.</p>
+<audio preload="none" data-a src="drawn-case/assets/sound/peak-v12.mp3"></audio><audio preload="none" data-b src="drawn-case/assets/sound/peak-v16.mp3"></audio></div>
+<ol class="ra-steps"><li><b>One background bed</b>Never two music beds at once. Generated clips can carry their own music, so check every clip's sound.</li><li><b>Three songs, three moods</b>Cute, then montage, then apocalypse. Measure each song's loud and quiet parts and land them on story beats.</li><li><b>Designed voices</b>The boys' Korean lines come from voice design with fixed settings, so each boy always sounds the same. English subtitles carry the meaning.</li><li><b>Check the render</b>A sped-up shot once put the picture 1 second behind the sound; a clip hid 2 stray frames. Check every cut after each render.</li></ol>
+
+<div class="ra-head"><span class="ra-k">06 / YOUR TURN</span><h3>Pick one format. Measure it. Make it yours.</h3><p>Choose one viral reel. Write down its camera, framing and timing as numbers, plus one story change only you could make. Build a sheet for each character, one start frame, then one clip. Bring all three to a weekend session.</p></div>
+<a class="ra-btn" href="mailto:hi@reelixstudio.ai?subject=Reelix%20Explainer%20weekend%20session&body=My%20reference%3A%20%0AMy%20story%3A%20">Ask about the weekend session ↗</a>
+
+<div class="ra-head"><span class="ra-k">INSPIRATION &amp; CREDIT</span><h3>Credit the source.</h3></div>
+<ul class="ra-credit"><li><a href="https://www.instagram.com/reel/DarI4g8hBMc/">@kaye.creatives</a> — the door into a painted world</li><li><a href="https://www.instagram.com/reel/Ddt-jwsIZKW/">@nina.nayko</a> — Multiplicity</li><li><a href="https://www.instagram.com/reel/DeJm1_sIYMp/">@neuro.space.ai</a> — stepping into a painting</li><li><a href="https://www.instagram.com/reel/C2kMj4bCPVK/">@orhan_be_art</a> — the giant behind you</li><li><a href="https://www.instagram.com/reel/DX7zvAvsu3P/">@wedjo.studio</a> — #onefinalkiss</li><li>"Magic Pencil" (@laurelfang8) and "If Kids' Drawings Were Real" (@funny_car_598) on TikTok — the premise</li></ul>
+<p class="ra-caption">Original reels are linked for credit, never shown here or uploaded to the project. DRAWN was written and directed by Danney Trieu, who also made the AI visuals. Creative consultants: Jason &amp; Kayden. Credit costs on this page are for the original teaser only; the later how-to video's presenter scenes were generated separately.</p>
+<script>(function(){
+  var root=document.getElementById('drawn-case'), v=document.getElementById('dc-video'), stopAt=null;
+  var chs=[].slice.call(root.querySelectorAll('.dc-ch'));
+  function playRange(a,b){ v.currentTime=a; stopAt=b; var p=v.play(); if(p&&p.catch)p.catch(function(){}); }
+  chs.forEach(function(c){ c.addEventListener('click',function(){ playRange(+c.dataset.start,+c.dataset.end); }); });
+  root.querySelectorAll('.dc-see').forEach(function(b){ b.addEventListener('click',function(){ document.getElementById('dc-film').scrollIntoView({behavior:'smooth'}); playRange(+b.dataset.start,+b.dataset.end); }); });
+  v.addEventListener('timeupdate',function(){
+    if(stopAt!==null && v.currentTime>=stopAt){ v.pause(); stopAt=null; }
+    var t=v.currentTime; chs.forEach(function(c){ c.classList.toggle('is-on', t>=+c.dataset.start && t<+c.dataset.end); });
+  });
+  root.querySelectorAll('.ra-copy').forEach(function(b){ b.addEventListener('click',function(){
+    var pre=b.parentElement.querySelector('pre'), text=pre.textContent;
+    function sel(){ var r=document.createRange(); r.selectNodeContents(pre); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+    function done(){ b.textContent='Copied'; setTimeout(function(){ b.textContent='Copy prompt'; },1600); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done,sel); } else { sel(); }
+  }); });
+  var media=[].slice.call(root.querySelectorAll('audio,video'));
+  function soloPlay(me){ media.forEach(function(m){ if(m!==me && !m.paused)m.pause(); }); }
+  media.forEach(function(m){ m.addEventListener('play',function(){ soloPlay(m); }); });
+  root.querySelectorAll('[data-ab]').forEach(function(box){
+    var a=box.querySelector('[data-a]'), b=box.querySelector('[data-b]'), btns=box.querySelectorAll('[data-which]');
+    function mark(){ btns.forEach(function(x){ var m=x.dataset.which==='a'?a:b; x.setAttribute('aria-pressed', String(!m.paused)); }); }
+    [a,b].forEach(function(m){ ['play','pause','ended'].forEach(function(ev){ m.addEventListener(ev,mark); }); });
+    btns.forEach(function(btn){
+      var me=btn.dataset.which==='a'?a:b, other=btn.dataset.which==='a'?b:a;
+      btn.addEventListener('click',function(){
+        if(!me.paused){ me.pause(); return; }
+        var t=other.currentTime||0; other.pause();
+        if(t>0 && (!me.duration || t<me.duration))me.currentTime=t;
+        var p=me.play(); if(p&&p.catch)p.catch(function(){});
+      });
+    });
+  });
+})();</script>
+</section>
+
+<nav class="doc-pager"><span class="prev">&larr; <a href="reelix-ad.html">From reference to ad</a></span><span class="next"><a href="stage.html">The cut-out stage</a> &rarr;</span></nav>
+
+</div><!-- /doc-main -->
+
+</div><!-- /doc-wrap -->
+
+<script>
+(function(){
+  var rail=document.querySelector('.doc-rail'), wrap=document.querySelector('body > .doc-wrap'); if(!rail||!wrap) return;
+  var here=(location.pathname.split('/').pop()||'index.html');
+  var links=[].slice.call(rail.querySelectorAll('a[href]')), groups=[].slice.call(rail.querySelectorAll('.doc-rail-g'));
+  // Backstage nests inside its session, so walk EVERY ancestor group, not just the innermost
+  links.forEach(function(a){ var on=(a.getAttribute('href')===here); a.classList.toggle('is-on',on);
+    if(on){ for(var g=a.closest('.doc-rail-g'); g; g=g.parentElement && g.parentElement.closest('.doc-rail-g')){ g.classList.add('is-on'); g.classList.remove('is-closed'); } } });
+  var KEY='vfs.rail';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+  function save(p){ try{ var s=load(); for(var k in p) s[k]=p[k]; localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
+  var st=load();
+  groups.forEach(function(g){ var id=g.getAttribute('data-group'), head=g.querySelector('.doc-rail-s');
+    if(st.closed && st.closed[id] && !g.classList.contains('is-on')) g.classList.add('is-closed');
+    head.addEventListener('click', function(){ if(wrap.classList.contains('rail-slim')){ g.classList.remove('is-closed'); setSlim(false); return; } g.classList.toggle('is-closed'); var c=(load().closed)||{}; c[id]=g.classList.contains('is-closed'); save({closed:c}); }); });  var toggle=rail.querySelector('.doc-rail-toggle');
+  function setSlim(on){ wrap.classList.toggle('rail-slim', !!on); if(toggle){ toggle.innerHTML = on ? '&#8250;' : '&#8249;'; toggle.title = on ? 'open the outline ( [ )' : 'collapse the outline ( [ )'; } save({slim:!!on}); }
+  if(toggle) toggle.addEventListener('click', function(){ setSlim(!wrap.classList.contains('rail-slim')); });
+  document.addEventListener('keydown', function(e){ if(e.key==='[' && !/input|textarea|select/i.test((e.target&&e.target.tagName)||'')) setSlim(!wrap.classList.contains('rail-slim')); });
+  if(st.slim) setSlim(true);
+  var MIN=160, MAX=440; function setW(px){ px=Math.max(MIN, Math.min(MAX, Math.round(px))); wrap.style.setProperty('--rail-w', px+'px'); return px; }
+  if(st.w) setW(st.w);
+  var handle=rail.querySelector('.doc-rail-handle');
+  if(handle){ var dragging=false;
+    handle.addEventListener('pointerdown', function(e){ dragging=true; handle.classList.add('is-drag'); document.body.classList.add('is-dragging'); try{ handle.setPointerCapture(e.pointerId); }catch(err){} e.preventDefault(); });
+    handle.addEventListener('pointermove', function(e){ if(!dragging) return; setW(e.clientX - rail.getBoundingClientRect().left); });
+    function end(){ if(!dragging) return; dragging=false; handle.classList.remove('is-drag'); document.body.classList.remove('is-dragging'); save({w:parseInt(getComputedStyle(wrap).getPropertyValue('--rail-w'))||222}); }
+    handle.addEventListener('pointerup', end); handle.addEventListener('pointercancel', end);
+    handle.addEventListener('dblclick', function(){ wrap.style.removeProperty('--rail-w'); save({w:null}); }); }
+  // lesson frames: same origin here, load them straight away
+  [].forEach.call(document.querySelectorAll('iframe[data-src]'), function(f){ f.src=f.getAttribute('data-src'); });
+})();
+</script>
+</body>
+</html>
