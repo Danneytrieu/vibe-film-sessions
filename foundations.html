@@ -176,8 +176,6 @@
   /* the inlined tools need air before whatever follows them */
   .roadinline,.doc-sec > #foundations,.doc-sec .canvas{margin-bottom:38px}
   .doc-sec .doc-tscroll{margin-top:30px}
-  .doc-pager{display:flex;justify-content:space-between;gap:16px;margin:56px 0 0;padding-top:18px;border-top:1px solid var(--line);font-size:14px}
-  .doc-pager a{border:0} .doc-pager .prev,.doc-pager .next{color:var(--dim)}
 </style>
 <style data-reelix-skin data-source="tools/visual-explainer/reelix-doc-skin.css">
 /* ── REELIX DOC SKIN — VOLT olive, for PAGES (plans · recaps · audits · reviews) ──
@@ -451,6 +449,65 @@ ol.doc-steps li::before{
   .rail-slim .doc-rail-g[data-group="s3"] > a.is-on{background:var(--panel2)}
   .rail-slim .doc-rail-g[data-group="s3"] > a.is-on .n{color:var(--volt)}
 </style>
+<style data-course-polish>
+  :root{--c-col:1120px;--c-rhythm:32px}
+  /* one column: every page shares the same left edge and the same right edge */
+  @media(min-width:980px){
+    body > .doc-wrap{grid-template-columns:var(--rail-w) minmax(0,var(--c-col));column-gap:56px;padding-left:24px;padding-right:40px}
+    body > .doc-wrap.rail-slim{grid-template-columns:58px minmax(0,var(--c-col))}
+  }
+  .doc-main{max-width:var(--c-col);width:100%}
+  /* page header: eyebrow → title → lede → note, always the same gaps */
+  .doc-main > .doc-sec:first-of-type{margin-top:48px}
+  .doc-sec > .doc-eyebrow{margin:0 0 10px}
+  .doc-sec > h2:first-of-type{margin:0;font-size:clamp(26px,3.4vw,34px);line-height:1.12}
+  .doc-sec > .lede{margin:14px 0 0;max-width:68ch;color:var(--dim);font-size:16px;line-height:1.6}
+  .doc-sec > .rs-faint{margin:10px 0 0}
+  /* body blocks: one rhythm between them, and each one fills the column */
+  .doc-sec > :is(.doc-tscroll,.roadinline,.canvas,.sh-links,.st-in,.st-film,.pf-grid,.pw-grid,.niches,.reelixwrap,.s3-presenter){margin-top:var(--c-rhythm);margin-bottom:0;width:100%;max-width:none}
+  .doc-sec > :is(.doc-tscroll,.roadinline,.canvas) + :is(.btnrow,.pf-bar,.pw-credit,p){margin-top:18px}
+  body #words .pw-grid,body #words .pw-credit{max-width:none}
+  body #words .pw-grid{grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+  body #start .sh-links{gap:16px}
+  body #start .sh-links > *{min-height:100%}
+  /* prev / next: two cards on one grid row */
+  .doc-pager{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:72px 0 0;padding:0;border:0}
+  .doc-pager a{display:flex;flex-direction:column;gap:6px;padding:16px 20px;border:1px solid var(--line);border-radius:12px;
+    background:var(--card);color:var(--ink);text-decoration:none;transition:border-color .15s,background .15s}
+  .doc-pager a:hover{border-color:var(--volt);background:var(--panel2)}
+  .doc-pager a small{font:700 10.5px/1 var(--rs-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+  .doc-pager a b{font-size:16px;font-weight:600;line-height:1.3}
+  .doc-pager a.next{grid-column:2;align-items:flex-end;text-align:right}
+  /* phone: the outline folds into one sticky bar — the lesson is the first thing you see */
+  .doc-rail-mbar{display:none}
+  @media(max-width:979px){
+    body > .doc-wrap{padding-left:16px;padding-right:16px}
+    .doc-rail.has-mbar{position:sticky;top:0;z-index:40;margin:0 -16px;padding:0 16px;border:0;border-bottom:1px solid var(--line);
+      border-radius:0;background:var(--bg);max-height:100vh;overflow:auto}
+    .doc-rail.has-mbar:not(.is-open) > :not(.doc-rail-mbar){display:none}
+    .doc-rail.has-mbar.is-open{padding-bottom:12px;box-shadow:0 18px 40px rgba(0,0,0,.5)}
+    .doc-rail.has-mbar .doc-rail-handle,.doc-rail.has-mbar .doc-rail-toggle{display:none}
+    .doc-rail-mbar{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:0;border:0;background:none;color:var(--ink);
+      font:inherit;font-size:14px;cursor:pointer;text-align:left}
+    .doc-rail-mbar .mk{font:700 10.5px/1 var(--rs-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--volt);
+      border:1px solid var(--line);border-radius:999px;padding:7px 11px;flex:none}
+    .doc-rail-mbar .cur{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+    .doc-rail-mbar .chev{color:var(--dim);transition:transform .15s}
+    .doc-rail.is-open .doc-rail-mbar .chev{transform:rotate(180deg)}
+    .doc-main > .doc-sec:first-of-type{margin-top:28px}
+    .doc-pager{grid-template-columns:minmax(0,1fr);margin-top:56px}
+    .doc-pager a.next{grid-column:1}
+    :root{--c-rhythm:24px}
+  }
+  /* the levels stepper + roll bar on a phone: short labels, and the caption gets its own line */
+  @media(max-width:640px){
+    body .roadinline .road .stop .keep{display:none}
+    body .roadinline .road .stop .name{font-size:8.5px;letter-spacing:.04em;white-space:nowrap}
+    body .roadinline .road{height:auto}
+    body .roadinline .bottom{flex-wrap:wrap;height:auto;gap:10px;row-gap:12px}
+    body .roadinline .bottom .verdict{order:3;flex:1 1 100%;min-width:0}
+  }
+</style>
 </head>
 <body>
 <div class="doc-wrap">
@@ -467,14 +524,12 @@ ol.doc-steps li::before{
     <a href="film.html" class="is-star"><span class="n">1</span> How filming works</a>
     <a href="ladder.html" class="is-star"><span class="n">2</span> The levels</a>
     <a href="foundations.html" class="is-star"><span class="n">3</span> How the AI part works</a>
-    <a href="assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
     </div>
   <!-- s2-rail --><div class="doc-rail-g" data-group="s2">
     <p class="doc-rail-s"><span class="doc-rail-chev">&#9660;</span><span class="short">S2</span><span class="n">Session 2</span> Prompt &amp; Reference</p>
     <a href="s2-crew.html" class="is-star"><span class="n">1</span> Meet the crew</a>
     <a href="s2-story.html" class="is-star"><span class="n">2</span> Fifteen seconds</a>
     <a href="s2-proof.html" class="is-star"><span class="n">3</span> Words vs pictures</a>
-    <a href="s2-assignment.html" class="is-star"><span class="n">4</span> Assignment</a>
     </div><!-- /s2-rail -->
 
   <!-- s3-rail --><div class="doc-rail-g" data-group="s3">
@@ -922,7 +977,7 @@ ol.doc-steps li::before{
 </script>
 </section>
 
-<nav class="doc-pager"><span class="prev">&larr; <a href="ladder.html">The levels of AI filmmaking</a></span><span class="next"><a href="assignment.html">Assignment</a> &rarr;</span></nav>
+<nav class="doc-pager"><span class="prev">&larr; <a href="ladder.html">The levels of AI filmmaking</a></span><span class="next"><a href="s2-crew.html">Meet the crew</a> &rarr;</span></nav>
 
 </div><!-- /doc-main -->
 
@@ -960,5 +1015,24 @@ ol.doc-steps li::before{
   [].forEach.call(document.querySelectorAll('iframe[data-src]'), function(f){ f.src=f.getAttribute('data-src'); });
 })();
 </script>
+<script>(function(){
+  var rail=document.querySelector('.doc-rail'); if(!rail) return;
+  var on=rail.querySelector('a.is-on'), b=document.createElement('button');
+  b.type='button'; b.className='doc-rail-mbar'; b.setAttribute('aria-expanded','false');
+  b.innerHTML='<span class="mk">Menu</span><span class="cur"></span><span class="chev">&#9662;</span>';
+  var lbl=document.title.split(' · ')[0];
+  if(on){ var c=on.cloneNode(true); [].forEach.call(c.querySelectorAll('.n,.short,.rs-ext'), function(x){ x.remove(); }); lbl=c.textContent.trim()||lbl; }
+  b.querySelector('.cur').textContent = lbl;
+  rail.insertBefore(b, rail.firstChild); rail.classList.add('has-mbar');
+  b.addEventListener('click', function(){ var o=rail.classList.toggle('is-open'); b.setAttribute('aria-expanded', o?'true':'false'); });
+  /* the embedded tools (stage, film, call sheet) grow to their own height: no clipped controls, no
+     inner scrollbar, at any width. Same-origin only; the night market keeps its 16:9 world. */
+  [].forEach.call(document.querySelectorAll('.doc-tscroll iframe[data-src*="embed=1"]'), function(f){
+    if(/nightmarket/.test(f.getAttribute('data-src'))) return;
+    function fit(){ try{ var d=f.contentDocument; if(!d||!d.body) return; var h=Math.max(d.documentElement.scrollHeight, d.body.scrollHeight);
+      if(h>80){ f.style.aspectRatio='auto'; f.style.height=(h+2)+'px'; } }catch(e){} }
+    f.addEventListener('load', function(){ fit(); try{ new ResizeObserver(fit).observe(f.contentDocument.body); }catch(e){} setTimeout(fit,600); setTimeout(fit,2000); });
+  });
+})();</script>
 </body>
 </html>

@@ -1,0 +1,83 @@
+[
+ {
+  "id": "danney-front",
+  "file": "danney-front.png",
+  "webp": "danney-front.webp",
+  "color": "danney-front-color.webp",
+  "role": "WHO",
+  "caption": "Danney",
+  "source": "clean element"
+ },
+ {
+  "id": "what-bicycle",
+  "file": "what-bicycle.png",
+  "webp": "what-bicycle.webp",
+  "color": "what-bicycle-color.webp",
+  "role": "WHAT",
+  "caption": "a red bicycle",
+  "source": "clean element"
+ },
+ {
+  "id": "what-camera",
+  "file": "what-camera.png",
+  "webp": "what-camera.webp",
+  "color": "what-camera-color.webp",
+  "role": "WHAT",
+  "caption": "the camera, on its tripod",
+  "source": "clean element"
+ },
+ {
+  "id": "what-suitcase",
+  "file": "what-suitcase.png",
+  "webp": "what-suitcase.webp",
+  "color": "what-suitcase-color.webp",
+  "role": "WHAT",
+  "caption": "an old suitcase",
+  "source": "clean element"
+ },
+ {
+  "id": "where-beach",
+  "file": "where-beach.png",
+  "webp": "where-beach.webp",
+  "color": "where-beach-color.webp",
+  "role": "WHERE",
+  "caption": "a beach, noon",
+  "source": "clean element"
+ },
+ {
+  "id": "where-courtyard",
+  "file": "where-courtyard.png",
+  "webp": "where-courtyard.webp",
+  "color": "where-courtyard-color.webp",
+  "role": "WHERE",
+  "caption": "the courtyard, empty",
+  "source": "clean element"
+ },
+ {
+  "id": "where-rooftop",
+  "file": "where-rooftop.png",
+  "webp": "where-rooftop.webp",
+  "color": "where-rooftop-color.webp",
+  "role": "WHERE",
+  "caption": "a rooftop, dusk",
+  "source": "clean element"
+ },
+ {
+  "id": "who-man",
+  "file": "who-man.png",
+  "webp": "who-man.webp",
+  "color": "who-man-color.webp",
+  "role": "WHO",
+  "caption": "a man in a grey suit",
+  "source": "clean element"
+ },
+ {
+  "id": "who-woman",
+  "file": "who-woman.png",
+  "webp": "who-woman.webp",
+  "color": "who-woman-color.webp",
+  "role": "WHO",
+  "caption": "a woman in a yellow coat",
+  "source": "clean element"
+ }
+]
